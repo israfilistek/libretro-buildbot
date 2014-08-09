@@ -15,24 +15,19 @@ WORKDIR /root/
 RUN repo init -u https://github.com/libretro/libretro-manifest.git
 RUN repo sync
 RUN repo forall -c git submodule update --init
+WORKDIR /root/libretro-super/
+RUN ./retroarch-build.sh
+RUN ./libretro-build.sh 
+RUN mkdir -p /output/cores
+WORKDIR /root/libretro-super/retroarch/
+RUN make DESTDIR=/output install
+WORKDIR /root/libretro-super/
+RUN ./libretro-install.sh /output/cores
+WORKDIR /output
+RUN 7za a -r retroarch-linux.7z .
 
-#above here is all cached. below gets run every time the image is rebuilt to ensure it stays fresh. this is a complete rebuild
-ONBUILD RUN apt-get update
-ONBUILD RUN apt-get -y dist-upgrade
-ONBUILD RUN repo sync
-ONBUILD RUN repo forall -c git submodule update --init
-ONBUILD WORKDIR /root/libretro-super/
-ONBUILD RUN ./retroarch-build.sh
-ONBUILD RUN ./libretro-build.sh
-ONBUILD RUN mkdir -p /output/cores
-ONBUILD WORKDIR /root/libretro-super/retroarch/
-ONBUILD RUN make DESTDIR=/output install
-ONBUILD WORKDIR /root/libretro-super/
-ONBUILD RUN ./libretro-install.sh /output/cores
-ONBUILD WORKDIR /output
-ONBUILD RUN 7za a -r retroarch-linux.7z .
-
-#this gets executed with the `docker run` command. it freshens the source code to the latest and does an incrimental build on that
+#the following is executed with the `docker run` command. it freshens the source code, cleans and builds from scratch.
+#for a faster incrimental (delta) build use `docker run --env NOCLEAN=1`
 CMD cd / && \
 rm -rf /output && \
 mkdir -p /output/cores && \
@@ -40,8 +35,8 @@ cd /root/ && \
 repo sync && \
 repo forall -c git submodule update --init && \
 cd /root/libretro-super/ && \
-NOCLEAN=1 ./retroarch-build.sh && \
-NOCLEAN=1 ./libretro-build.sh && \
+./retroarch-build.sh && \
+./libretro-build.sh && \
 ./libretro-install.sh /output/cores && \
 cd /root/libretro-super/retroarch/ && \
 make DESTDIR=/output install && \
