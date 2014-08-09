@@ -5,7 +5,7 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository multiverse
 RUN apt-get update
 RUN apt-get -y dist-upgrade
-RUN apt-get install -y git python curl p7zip-full
+RUN apt-get install -y git python curl p7zip-full vim
 RUN git config --global user.email "buildbot@libretro.org"
 RUN git config --global user.name "Build Bot"
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
@@ -17,7 +17,7 @@ RUN repo sync
 RUN repo forall -c git submodule update --init
 WORKDIR /root/libretro-super/
 RUN ./retroarch-build.sh
-RUN ./libretro-build.sh 
+RUN ./libretro-build.sh
 RUN mkdir -p /output/cores
 WORKDIR /root/libretro-super/retroarch/
 RUN make DESTDIR=/output install
