@@ -6,8 +6,8 @@ This project can be used to build linux binaries on your local machine for devel
 # Typical usage
 1. [Install Docker](http://docs.docker.com/installation/)
 1. Run the build bot:  
-  `docker run l3iggs/libretro-linux-buildimage`
-   This command wil fetch the build image, update libretro code and build the latest libretro and all cores
+  `docker run l3iggs/libretro-linux-buildimage`  
+   This command will fetch the build image, update libretro code and build the latest libretro and all cores
 1. Extract the binary you just built:  
   `docker cp $(docker ps -l -q):/output/retroarch-linux.7z .`
 
