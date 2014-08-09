@@ -25,9 +25,6 @@ WORKDIR /root/libretro-super/
 RUN ./libretro-install.sh /output/cores
 WORKDIR /output
 RUN 7za a -r retroarch-linux.7z .
-
-#the following is executed with the `docker run` command. it freshens the source code, cleans and builds from scratch.
-#for a faster incrimental (delta) build use `docker run --env NOCLEAN=1`
 CMD cd / && \
 rm -rf /output && \
 mkdir -p /output/cores && \
