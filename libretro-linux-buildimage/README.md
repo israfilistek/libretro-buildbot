@@ -21,7 +21,7 @@ For a faster delta or incrimental build replace step 2 above with
 ## 
 If you wish to replace any of the upstream git repositores with your own personal repositories during the build do the following  
 `TODO: docker ... /root/.repo/local_manifest/local.xml ...`  
-where `local.xml` is a xml file that describes your repositories that you'd like to use in place of the upstream ones formatted like this (for reference see the upstream default manifest .xml file [here](https://github.com/libretro/libretro-manifest/blob/master/default.xml):
+where `local.xml` is a xml file that describes your repositories that you'd like to use in place of the upstream ones formatted like this (for reference see the upstream default manifest .xml file [here](https://github.com/libretro/libretro-manifest/blob/master/default.xml)):
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
