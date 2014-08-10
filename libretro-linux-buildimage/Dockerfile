@@ -18,8 +18,11 @@ RUN repo sync
 RUN repo forall -c git submodule update --init
 WORKDIR /root/libretro-super/
 
-# pull in packages required to build for linux x86_64
+# packages required to build for linux x86_64
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
+
+# packages required to build for win x86_64
+RUN pacman -Suy --noconfirm mingw-w64-toolchain
 
 # build once for linux x86_64 to populate ccache
 RUN ./retroarch-build.sh
@@ -32,7 +35,7 @@ WORKDIR /root/
 
 # the commands above here set up the static image
 # the commands below are executed with the docker run command
-CMD repo sync && \
+CMD repo sync && \ddd
 repo forall -c git submodule update --init && \
 cd libretro-super && \
 ./retroarch-build.sh && \
