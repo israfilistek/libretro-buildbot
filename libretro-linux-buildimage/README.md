@@ -18,7 +18,7 @@ __* .rpm .deb and arch package output in developement *__
 For a faster delta or incrimental build replace step 2 above with  
 `docker run --env NOCLEAN=1 l3iggs/libretro-linux-buildimage`
 
-## 
+## Building your own code
 If you wish to replace any of the upstream git repositores with your own personal repositories during the build do the following  
 `TODO: docker ... /root/.repo/local_manifest/local.xml ...`  
 where `local.xml` is a xml file that describes your repositories that you'd like to use in place of the upstream ones formatted like this (for reference see the upstream default manifest .xml file [here](https://github.com/libretro/libretro-manifest/blob/master/default.xml)):
