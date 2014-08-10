@@ -44,4 +44,4 @@ cd libretro-super && \
 ./libretro-install.sh /output/linux/x86_64/cores && \
 cd retroarch/ && \
 make DESTDIR=/output/linux/x86_64 install && \
-7za a -r /nightly/linux/x86_64/$(date +"%Y-%m-%d_%T")_retroarch-linux_x86_64.7z /output/linux_x86_64/*
+7za a -r /nightly/linux/x86_64/$(date +"%Y-%m-%d_%T")_retroarch-linux_x86_64.7z /output/linux/x86_64/*
