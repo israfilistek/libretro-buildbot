@@ -16,4 +16,4 @@ For a faster delta or incrimental build replace step 2 above with
 `docker run --env NOCLEAN=1 l3iggs/libretro-linux-buildimage`
 
 If you wish to replace any of the upstream git repositores with your own personal repositories during the build do the following  
-`TODO: docker ...`
+`TODO: docker ... /root/.repo/local_manifest/local.xml ...`
