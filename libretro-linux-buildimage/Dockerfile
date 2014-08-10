@@ -30,10 +30,9 @@ RUN mkdir -p /output/linux/x86_64/cores
 RUN mkdir -p /nightly/linux/x86_64
 WORKDIR /root/
 
-
 # the commands above here set up the static image
 # the commands below are executed with the docker run command
-CMD repo sync && \ddd
+CMD repo sync && \
 repo forall -c git submodule update --init && \
 cd libretro-super && \
 ./retroarch-build.sh && \
