@@ -15,8 +15,9 @@ __* .rpm .deb and arch package output in developement *__
 
 # Extras
 ## Delta Builds
-For a faster delta or incrimental build replace step 2 above with  
-`docker run --env NOCLEAN=1 l3iggs/libretro-linux-buildimage`
+~~For a faster delta or incrimental build replace step 2 above with  
+`docker run --env NOCLEAN=1 l3iggs/libretro-linux-buildimage`~~
+ The build bot now uses ccache, so incrimental builds are of little benefit.
 
 ## Building your own code
 If you wish to replace any of the upstream git repositores with your own personal repositories during the build do the following  
