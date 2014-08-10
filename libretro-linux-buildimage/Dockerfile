@@ -9,7 +9,7 @@ RUN git config --global user.name "Build Bot"
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
 RUN sed -i 's/python/python2/g' /bin/repo
 RUN chmod a+x /bin/repo
-RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python
+RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu
 WORKDIR /root/
 RUN repo init -u https://github.com/libretro/libretro-manifest.git
 RUN repo sync
