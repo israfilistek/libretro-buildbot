@@ -26,6 +26,6 @@ where `local.xml` is a xml file that describes your repositories that you'd like
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <remote fetch="https://github.com/l3iggs/" name="mygithub"/>
-	<project name="snes9x" path="libretro-super/libretro-s9x" remote="mygithub" />
+  <project name="snes9x" path="libretro-super/libretro-s9x" remote="mygithub" />
 </manifest>
 ```
