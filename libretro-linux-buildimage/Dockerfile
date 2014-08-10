@@ -2,8 +2,9 @@ FROM base/devel:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 RUN pacman -Suy --noconfirm p7zip vim python2 ccache
 RUN mkdir /ccache
-ENV PATH "/usr/lib/ccache/bin/:$PATH"
+ENV PATH /usr/lib/ccache/bin:$PATH
 ENV CCACHE_DIR /ccache
+RUN ccache -M 6
 RUN git config --global user.email "buildbot@libretro.org"
 RUN git config --global user.name "Build Bot"
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
