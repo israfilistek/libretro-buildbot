@@ -1,4 +1,5 @@
-FROM base/devel:latest #this is the Arch Linux base
+ #this is the Arch Linux base
+FROM base/devel:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment, grab the source code
@@ -22,7 +23,7 @@ WORKDIR /root/libretro-super/
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
 
 # packages required to build for win x86_64
-RUN pacman -Suy --noconfirm mingw-w64-toolchain
+RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
 
 # build once for linux x86_64 to populate ccache
 RUN ./retroarch-build.sh
