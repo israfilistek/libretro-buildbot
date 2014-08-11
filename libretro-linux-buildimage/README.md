@@ -9,7 +9,7 @@ This project can be used to build linux binaries on your local machine for devel
   `docker run l3iggs/libretro-linux-buildimage`  
    This command will fetch the build image, update libretro code and build the latest libretro and all cores
 1. Extract the compressed binaries you just built:  
-  `docker cp $(docker ps -l -q):/output/retroarch-linux.7z .`
+  `docker cp $(docker ps -l -q):/nightly/ .`
 
 __* .rpm .deb and arch package output in developement *__
 
