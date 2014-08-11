@@ -19,22 +19,37 @@ RUN repo sync
 RUN repo forall -c git submodule update --init
 
 # linux x86_64 setup section
-RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
+# build the cores now to populate ccache
+WORKDIR /root/libretro-super/
+RUN ./libretro-build.sh
 
-# build once for linux x86_64 to populate ccache
+#for ffmpeg static
+#RUN pacman -Suy --noconfirm cmake mercurial
+RUN git clone https://github.com/stvs/ffmpeg-static.git
+WORKDIR /root/ffmpeg-static
+RUN ./build.sh
+#TODO: point ra's makefile at these .a files
+
+#for retroarch
+#ffmpeg python glu
+RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl libxkbcommon libxinerama libxv clang
+
+# build retroarch now to populate ccache
 WORKDIR /root/libretro-super/
 RUN ./retroarch-build.sh
-RUN ./libretro-build.sh
 
 # win x86_64 setup section
 RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
 
 # Android setup section
+ENV SDK_URL https://dl.google.com/android/android-sdk_r23.0.2-linux.tgz
+ENV NDK_URL https://dl.google.com/android/ndk/android-ndk32-r10-linux-x86_64.tar.bz2
 RUN pacman -Suy --noconfirm apache-ant
 RUN mkdir /root/android-tools
 WORKDIR /root/android-tools/
 RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
-RUN curl http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz > /root/android-tools/android-sdk.tgz
+
+RUN curl ${SDK_URL} > /root/android-tools/android-sdk.tgz
 RUN tar -xf android-sdk.tgz
 RUN rm android-sdk.tgz
 ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
@@ -48,11 +63,13 @@ RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-18
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-19
 RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-20
-RUN curl http://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 > /root/android-tools/android-ndk.tar.bz2
-RUN tar -xf android-ndk.tar.bz2
+RUN curl ${NDK_URL} > /root/android-tools/android-ndk.tar.bz2
+RUN tar -xf android-ndk.tar.bz2 -C /root/android-tools/android-ndk-linux
 RUN rm android-ndk.tar.bz2
-ENV PATH $PATH:/root/android-tools/android-ndk-r10
-RUN echo "export NDK_ROOT_DIR_ARM=/root/android-tools/android-ndk-r10" > /root/libretro-super/libretro-config-user.sh
+ENV PATH $PATH:/root/android-tools/android-ndk-linux
+RUN echo "export NDK_ROOT_DIR_ARM=/root/android-tools/android-ndk-linux" > /root/libretro-super/libretro-config-user.sh
+
+# TODO: get android build working with ccache
 
 WORKDIR /root/
 
