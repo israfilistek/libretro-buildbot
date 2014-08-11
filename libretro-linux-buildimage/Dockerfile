@@ -1,4 +1,4 @@
- #this is the Arch Linux base
+#this is the Arch Linux base
 FROM base/devel:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
@@ -17,31 +17,27 @@ WORKDIR /root/
 RUN repo init -u https://github.com/libretro/libretro-manifest.git
 RUN repo sync
 RUN repo forall -c git submodule update --init
-WORKDIR /root/libretro-super/
 
 # packages required to build for linux x86_64
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
 
-# packages required to build for win x86_64
-RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
-
 # build once for linux x86_64 to populate ccache
+WORKDIR /root/libretro-super/
 RUN ./retroarch-build.sh
 RUN ./libretro-build.sh
 
-# create the output directories
-RUN mkdir -p /output/linux/x86_64/cores
-RUN mkdir -p /nightly/linux/x86_64
+# packages required to build for win x86_64
+RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
+
+# packages required to build for Android
+RUN pacman -Suy --noconfirm apache-ant
+
 WORKDIR /root/
+
+#all the build script
+ADD https://raw.githubusercontent.com/l3iggs/dockerfiles/master/libretro-linux-buildimage/lr-build.sh /bin/lr-build
+RUN chmod a+x /bin/lr-build
 
 # the commands above here set up the static image
 # the commands below are executed with the docker run command
-CMD repo sync && \ddd
-repo forall -c git submodule update --init && \
-cd libretro-super && \
-./retroarch-build.sh && \
-./libretro-build.sh && \
-./libretro-install.sh /output/linux/x86_64/cores && \
-cd retroarch/ && \
-make DESTDIR=/output/linux/x86_64 install && \
-7za a -r /nightly/linux/x86_64/$(date +"%Y-%m-%d_%T")_retroarch-linux_x86_64.7z /output/linux/x86_64/*
+CMD lr-build
