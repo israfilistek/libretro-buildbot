@@ -18,7 +18,7 @@ RUN repo init -u https://github.com/libretro/libretro-manifest.git
 RUN repo sync
 RUN repo forall -c git submodule update --init
 
-# packages required to build for linux x86_64
+# linux x86_64 setup section
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
 
 # build once for linux x86_64 to populate ccache
@@ -26,15 +26,16 @@ WORKDIR /root/libretro-super/
 RUN ./retroarch-build.sh
 RUN ./libretro-build.sh
 
-# packages required to build for win x86_64
+# win x86_64 setup section
 RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
 
-# packages required to build for Android
+# Android setup section
 RUN pacman -Suy --noconfirm apache-ant
+#TODO: create the apk signing key store here
 
 WORKDIR /root/
 
-#all the build script
+#add the build script
 ADD https://raw.githubusercontent.com/l3iggs/dockerfiles/master/libretro-linux-buildimage/lr-build.sh /bin/lr-build
 RUN chmod a+x /bin/lr-build
 
