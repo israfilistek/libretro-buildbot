@@ -3,7 +3,7 @@ FROM base/devel:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment, grab the source code
-RUN pacman -Suy --noconfirm p7zip vim python2 ccache
+RUN pacman -Suy --noconfirm p7zip vim python2 ccache expect
 RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
 ENV PATH /usr/lib/ccache/bin:$PATH
@@ -31,7 +31,26 @@ RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
 
 # Android setup section
 RUN pacman -Suy --noconfirm apache-ant
-#TODO: create the apk signing key store here
+RUN mkdir /root/android-tools
+RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
+RUN curl http://dl.google.com/android/android-sdk_r23.0.2-linux.tgz > /root/android-tools/android-sdk.tgz
+RUN tar -xf android-sdk.tgz
+RUN rm android-sdk.tgz
+ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
+# this next line installs every android thing ever, it's probably worth it to look at
+# http://stackoverflow.com/questions/4681697/is-there-a-way-to-automate-the-android-sdk-installation
+# to figure out how to reduce the crap it pulls in
+RUN expect -c '
+set timeout -1;
+spawn android - update sdk --no-ui;
+expect {
+    "Do you accept the license" { exp_send "y\r" ; exp_continue }
+    eof
+}
+'
+RUN curl http://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 > /root/android-tools/android-ndk.tar.bz2
+RUN tar -xf android-ndk.tar.bz2
+RUN rm android-ndk.tar.bz2
 
 WORKDIR /root/
 
