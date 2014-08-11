@@ -8,7 +8,7 @@ RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
 ENV PATH /usr/lib/ccache/bin:$PATH
 RUN ccache -M 6
-RUN git config --global user.email "buildbot@libretro.org"
+RUN git config --global user.email "buildbot@libretro.com"
 RUN git config --global user.name "Build Bot"
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
 RUN sed -i 's/python/python2/g' /bin/repo
