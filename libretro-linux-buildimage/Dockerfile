@@ -45,6 +45,8 @@ RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --
 RUN curl http://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 > /root/android-tools/android-ndk.tar.bz2
 RUN tar -xf android-ndk.tar.bz2
 RUN rm android-ndk.tar.bz2
+ENV PATH $PATH:/root/android-tools/android-ndk-r10
+RUN echo "export NDK_ROOT_DIR_ARM=/root/android-tools/android-ndk-r10" > /root/libretro-super/libretro-config-user.sh
 
 WORKDIR /root/
 
