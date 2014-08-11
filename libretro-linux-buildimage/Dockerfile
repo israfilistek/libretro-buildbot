@@ -41,7 +41,13 @@ ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
 # this next line installs every android thing ever, it's probably worth it to look at
 # http://stackoverflow.com/questions/4681697/is-there-a-way-to-automate-the-android-sdk-installation
 # to figure out how to reduce the crap it pulls in
-RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter platform-tools
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter tool
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter extra
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-17
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-18
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-19
+RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-20
 RUN curl http://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 > /root/android-tools/android-ndk.tar.bz2
 RUN tar -xf android-ndk.tar.bz2
 RUN rm android-ndk.tar.bz2
