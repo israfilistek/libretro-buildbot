@@ -1,22 +1,20 @@
 # Overview
-This repo houses the Dockerfile that defines the docker image that builds libretro for linux x86_64. 
+This repo houses the Dockerfile that defines the docker image that builds libretro cores for linux x86_64 and Android. 
 
-This project can be used to build linux binaries on your local machine for development/testing purposes. This image is also deployed in the cloud [here](https://registry.hub.docker.com/u/l3iggs/libretro-linux-buildimage/) for automated nightly builds of linux x86_64 binaries.
+This project can be used to build cores on your local machine for development/testing purposes. This image is also deployed in the cloud [here](https://registry.hub.docker.com/u/l3iggs/libretro-core-builder) for automated nightly builds of cores.
 
 # Typical usage
 1. [Install Docker](http://docs.docker.com/installation/)
 1. Run the build bot:  
-  `docker run l3iggs/libretro-linux-buildimage`  
-   This command will fetch the build image, update libretro code and build the latest libretro and all cores
+  `docker run l3iggs/libretro-core-builder`  
+   This command will fetch the build image, update libretro code and attempt to build all the libretro cores for Linux x86_64 and Android
 1. Extract the compressed binaries you just built:  
   `docker cp $(docker ps -l -q):/nightly/ .`
-
-__* .rpm .deb and arch package output in developement *__
 
 # Extras
 ## Delta Builds
 ~~For a faster delta or incrimental build replace step 2 above with  
-`docker run --env NOCLEAN=1 l3iggs/libretro-linux-buildimage`~~  
+`docker run --env NOCLEAN=1 l3iggs/libretro-core-builder`~~  
  The build bot now uses ccache, so incrimental builds are of little benefit.
 
 ## Building your own code
