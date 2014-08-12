@@ -1,3 +1,3 @@
 libretro-docker
 ===========
-A collection of Dockerfiles and scripts for libretro that define the build bots.
+A collection of Dockerfiles and scripts for libretro that define the nightly build bots.
