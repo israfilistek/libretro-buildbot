@@ -17,8 +17,8 @@ linux_retroarch()
   
   # build frontend
   cd /root/libretro-super
-  ./libretro-build.sh
-  cd retroarch/
+  ./retroarch-build.sh
+  cd /root/libretro-super/retroarch/
   make DESTDIR=/output/linux/ install
   7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_retroarch-linux.7z /output/linux/*
 }
@@ -33,7 +33,7 @@ linux_cores()
   
   # build cores
   cd /root/libretro-super
-  ./retroarch-build.sh
+  ./libretro-build.sh
   ./libretro-install.sh /output/linux/cores
   
   7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_libretro-cores-linux.7z /output/linux/*
