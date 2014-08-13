@@ -37,6 +37,7 @@ android_armeabi-v7a()
   
   # build android frontend
   ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-17
+  ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter tools
   cd /root/libretro-super/retroarch/android/phoenix
   android update project --path .
   echo "ndk.dir=/root/android-tools/android-ndk" >> local.properties
