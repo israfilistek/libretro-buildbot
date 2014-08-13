@@ -25,10 +25,10 @@ WORKDIR /root/libretro-super/
 RUN ./retroarch-build.sh
 
 # for working in the image
-RUN pacman -Suy --noconfirm vim
+RUN apt-get install -y vim
 
 # for packaging outputs
-RUN pacman -Suy --noconfirm p7zip
+RUN apt-get install -y p7zip-full
 
 WORKDIR /root/
 
