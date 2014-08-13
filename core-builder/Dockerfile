@@ -58,12 +58,13 @@ RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias
 # build android cores to populate ccache
 RUN NDK_TOOLCHAIN_VERSION=4.8 ./libretro-build-android-mk.sh
 
+# update/install android sdk components
+RUN pacman -Suy --noconfirm expect
+ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
+RUN python2 /root/android-tools/android-sdk-installer.py
+
 # win x86_64 setup section
 #RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
-
-#add the build script
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/lr-build.sh /bin/lr-build
-RUN chmod a+x /bin/lr-build
 
 # for working in the image
 RUN pacman -Suy --noconfirm vim
@@ -71,10 +72,11 @@ RUN pacman -Suy --noconfirm vim
 # for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
 
-# for android sdk install script
-RUN pacman -Suy --noconfirm expect
-
 WORKDIR /root/
+
+#add the build script
+ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/lr-build.sh /bin/lr-build
+RUN chmod a+x /bin/lr-build
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
