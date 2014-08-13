@@ -49,8 +49,8 @@ android_armeabi-v7a()
   cp /root/libretro-super/dist/android/armeabi-v7a/* assets/cores/	
   cp -r /root/libretro-super/dist/info/ assets/
   cp -r /root/libretro-super/libretro-overlays/* assets/overlays/
-  ant clean
-  ant debug #TODO, make release and sign
+  NDK_TOOLCHAIN_VERSION=4.8 ant clean
+  NDK_TOOLCHAIN_VERSION=4.8 ant debug #TODO, make release and sign
   cp bin/retroarch-debug.apk /nightly/android/armeabi-v7a/$(date +"%Y-%m-%d_%T")_android-armeabi-v7a.apk
 }
 
