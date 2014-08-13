@@ -18,7 +18,7 @@ ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-bu
 RUN chmod a+x /bin/nightly-build
 
 # build once now to populate ccache
-RUN nightly-build linux_retroarch
+RUN nightly-build linux_cores
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
