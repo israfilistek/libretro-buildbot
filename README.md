@@ -1,4 +1,5 @@
-# Overview
-This repo houses the Dockerfile that defines the docker image that serves as the starting point for the other libretro Arch Linux based images. 
+This repo houses the Dockerfile used to build a docker image associated with the libretro build bot.
 
-https://github.com/l3iggs/libretro-buildbot
+The images are served from here: https://registry.hub.docker.com/repos/l3iggs/
+
+For usage see: https://github.com/l3iggs/libretro-buildbot
