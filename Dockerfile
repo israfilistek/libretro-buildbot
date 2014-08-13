@@ -39,7 +39,7 @@ WORKDIR /root/
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
 
-#build the frontend once now to populate ccache
+# build once now to populate ccache
 RUN nightly-build linux_retroarch
 
 # the commands above here set up the static image
