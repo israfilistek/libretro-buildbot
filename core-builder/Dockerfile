@@ -56,18 +56,7 @@ RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias
 # TODO: enable ccache for android core builds
 
 # build android cores to populate ccache
-RUN ./libretro-build-android-mk.sh
-
-# this next line installs every android thing ever, it's probably worth it to look at
-# http://stackoverflow.com/questions/4681697/is-there-a-way-to-automate-the-android-sdk-installation
-# to figure out how to reduce the crap it pulls in
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter platform-tools
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter tool
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter extra
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-17
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-18
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-19
-#RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-20
+RUN NDK_TOOLCHAIN_VERSION=4.8 ./libretro-build-android-mk.sh
 
 # win x86_64 setup section
 #RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
@@ -76,8 +65,14 @@ RUN ./libretro-build-android-mk.sh
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/lr-build.sh /bin/lr-build
 RUN chmod a+x /bin/lr-build
 
+# for working in the image
 RUN pacman -Suy --noconfirm vim
+
+# for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
+
+# for android sdk install script
+RUN pacman -Suy --noconfirm expect
 
 WORKDIR /root/
 
