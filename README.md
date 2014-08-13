@@ -1,3 +1,2 @@
-libretro-buildbot
-===========
-A collection of Dockerfiles and scripts for libretro that define the nightly build bots.
+# Overview
+This repo houses the Dockerfile that defines the docker image that serves as the starting point for the other Arch Linux based images. 
