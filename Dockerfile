@@ -33,8 +33,6 @@ RUN apt-get install -y vim
 # for packaging outputs
 RUN apt-get install -y p7zip-full
 
-WORKDIR /root/
-
 #add the build script
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
