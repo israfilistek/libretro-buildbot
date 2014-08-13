@@ -5,10 +5,10 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 ## Quick Usage
 **Step 1**: [Install Docker](https://docs.docker.com/installation/)  
 **Step 2**: Build libretro apk for Android:  
-`NOCLEAN=1 docker run l3iggs/libretro-android-builder`  
+`docker run --env NOCLEAN=1 l3iggs/libretro-android-builder`  
 and/or  
 **Step 2**: Build libretro cores for Linux:  
-`NOCLEAN=1 docker run l3iggs/libretro-core-builder`  
+`NOCLEAN=1 docker run --env NOCLEAN=1 l3iggs/libretro-core-builder`  
 **Step 3**: Copy whatever you just built out of the build container:  
 `docker cp $(docker ps -l -q):/nightly/ .`
 
@@ -27,7 +27,7 @@ The branches in this repository are:
  - When run, this image builds the Android front-end GUI and all of the cores and packages them into an .apk:  
 `docker run l3iggs/libretro-android-builder`
 
-Note that the first time you run these commands, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/l3iggs/) before performing the build locally on your computer. This download may be on the order of 10GB (you're downloading the entire build invironment, all libretro code and all depenancies) and should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain). Typically, the complete builds should take 10-15 minutes on most computers (after the download completes). Currently, Android builds may take longer since those builds are not using ccache at the moment. Build speed can be greatly increased by skipping the clean step. Do this by inserting `NOCLEAN=1 ` before your `docker run` command, but this might cause build errors.
+Note that the first time you run these commands, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/l3iggs/) before performing the build locally on your computer. This download may be on the order of 10GB (you're downloading the entire build invironment, all libretro code and all depenancies) and should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain). Typically, the complete builds should take 10-15 minutes on most computers (after the download completes). Currently, Android builds may take longer since those builds are not using ccache at the moment. Build speed can be greatly increased by skipping the clean step. Do this by inserting `--env NOCLEAN=1` after your `docker run` command, but this might cause build errors.
 
 Now that the binaries have been built, you must copy them out of the build environment. You can do this with the following command:  
 `docker cp $(docker ps -l -q):/nightly/ .`  
