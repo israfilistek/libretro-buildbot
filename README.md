@@ -33,7 +33,8 @@ Now that the binaries have been built, you must copy them out of the build envir
 `docker cp $(docker ps -l -q):/nightly/ .`  
 That copies the build output into your current working directory. 
 
-If you wish to replace any of the upstream git repositories with your own personal repositories during the build process do the following:  
+### Substituting upstream repos
+If you wish to replace any of the upstream git repositories with your own personal repositories during the build process, do the following:  
 **Step 1**: Create a folder called local_manifest:  
 `mkdir local_manifest`  
 **Step 2**: Create a .xml file with any name (say, local.xml) inside the `local_manifest` folder from step 1. This file describes where your personal repositories should be cloned from and to. For example, if you have your own personal repository for scummvm at https://github.com/l3iggs/scummvm your local.xml manifest file might look like:
