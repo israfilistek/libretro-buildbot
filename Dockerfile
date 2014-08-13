@@ -29,7 +29,7 @@ RUN NDK_TOOLCHAIN_VERSION=4.8 ./libretro-build-android-mk.sh
 
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/android-builder/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
+ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/android-builder/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
 RUN python2 /root/android-tools/android-sdk-installer.py
 
 # for working in the image
