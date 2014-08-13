@@ -11,6 +11,13 @@ RUN apt-get -y dist-upgrade
 RUN git config --global user.email "buildbot@libretro.com"
 RUN git config --global user.name "Build Bot"
 
+#setup ccache
+RUN apt-get install -y ccache
+RUN mkdir /ccache
+ENV CCACHE_DIR /ccache
+ENV PATH /usr/lib/ccache/bin:$PATH
+RUN ccache -M 6
+
 # get the source code
 WORKDIR /root/
 RUN repo init -u https://github.com/libretro/libretro-manifest.git
@@ -19,10 +26,6 @@ RUN repo forall -c git submodule update --init
 
 # all the front-end dependancies
 RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libasound2-dev libsdl2-dev libsdl1.2-dev libavformat-dev libavcodec-dev libswscale-dev libgbm-dev libxml2-dev libopenvg1-mesa-dev libv4l-dev libfreetype6-dev libxv-dev libxinerama-dev python3-dev nvidia-cg-toolkit libavdevice-dev libavresample-dev libass-dev libxkbcommon-dev
-
-# build the front end
-WORKDIR /root/libretro-super/
-RUN ./retroarch-build.sh
 
 # for working in the image
 RUN apt-get install -y vim
@@ -36,6 +39,9 @@ WORKDIR /root/
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
 
+#build the frontend once now to populate ccache
+RUN nightly-build linux_retroarch
+
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD nightly-build linux_x86_64
+CMD nightly-build linux_retroarch
