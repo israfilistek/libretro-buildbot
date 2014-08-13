@@ -8,34 +8,44 @@ updateCode()
   repo forall -c git submodule update --init
 }
 
-linux_x86_64()
+linux_retroarch()
 {
-  echo Building cores for Linux x86_64...
-  rm -rf /output/linux/x86_64/
+  rm -rf /output/linux/
+  mkdir -p /output/linux/
+  mkdir -p /nightly/linux/
+  
+  
+  # build frontend
+  cd /root/libretro-super
+  ./libretro-build.sh
+  cd retroarch/
+  make DESTDIR=/output/linux/ install
+  7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_retroarch-linux.7z /output/linux/*
+}
+
+linux_cores()
+{
+  echo Building cores ...
+  rm -rf /output/linux/
   rm -rf /root/libretro-super/dist/unix*
-  mkdir -p /output/linux/x86_64/cores
-  mkdir -p /nightly/linux/x86_64
+  mkdir -p /output/linux/cores
+  mkdir -p /nightly/linux/
   
   # build cores
   cd /root/libretro-super
   ./retroarch-build.sh
-  ./libretro-install.sh /output/linux/x86_64/cores
+  ./libretro-install.sh /output/linux/cores
   
-  # build frontend
-  #./libretro-build.sh
-  #cd retroarch/
-  #make DESTDIR=/output/linux/x86_64 install
-  
-  7za a -r /nightly/linux/x86_64/$(date +"%Y-%m-%d_%T")_retroarch-linux_x86_64.7z /output/linux/x86_64/*
+  7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_libretro-cores-linux.7z /output/linux/*
 }
 
-android_armeabi-v7a()
+android()
 {
-  echo Building for Android armeabi-v7a...
-  rm -rf /output/android/armeabi-v7a/
+  echo Building for Android ...
+  rm -rf /output/android/
   rm -rf /root/libretro-super/dist/android*
-  mkdir -p /output/android/armeabi-v7a/cores 
-  mkdir -p /nightly/android/armeabi-v7a
+  mkdir -p /output/android/cores 
+  mkdir -p /nightly/android
 
   # build cores
   cd /root/libretro-super/
@@ -57,7 +67,7 @@ android_armeabi-v7a()
   cp -r /root/libretro-super/libretro-overlays/* assets/overlays/
   NDK_TOOLCHAIN_VERSION=4.8 ant clean
   NDK_TOOLCHAIN_VERSION=4.8 ant debug #TODO, make release and sign
-  cp bin/retroarch-debug.apk /nightly/android/armeabi-v7a/$(date +"%Y-%m-%d_%T")_android-armeabi-v7a.apk
+  cp bin/retroarch-debug.apk /nightly/android/$(date +"%Y-%m-%d_%T")_android.apk
 }
 
 
