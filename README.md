@@ -8,7 +8,7 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 `docker run --env NOCLEAN=1 l3iggs/libretro-android-builder`  
 and/or  
 **Step 2**: Build libretro cores for Linux:  
-`NOCLEAN=1 docker run --env NOCLEAN=1 l3iggs/libretro-core-builder`  
+`docker run --env NOCLEAN=1 l3iggs/libretro-core-builder`  
 **Step 3**: Copy whatever you just built out of the build container:  
 `docker cp $(docker ps -l -q):/nightly/ .`
 
