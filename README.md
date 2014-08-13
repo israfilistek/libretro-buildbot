@@ -1,3 +1,50 @@
 libretro-buildbot
 ===========
-A collection of Dockerfiles and scripts for libretro that define the nightly build bots.
+A collection of Dockerfiles and scripts for libretro that define a set of nightly build bots.
+
+## Quick Usage
+**Step 1**: [Install Docker](https://docs.docker.com/installation/)  
+**Step 2**: Build libretro apk for Android:  
+`NOCLEAN=1 docker run l3iggs/libretro-android-builder`  
+and/or  
+**Step 2**: Build libretro cores for Linux:  
+`NOCLEAN=1 docker run l3iggs/libretro-core-builder`  
+**Step 3**: Copy whatever you just built out of the build container:  
+`docker cp $(docker ps -l -q):/nightly/ .`
+
+## Details
+This project is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/l3iggs/) should be generated. These images are updated automatically with updates pushes to this repository.
+
+To use any of these images to build libretro on your own computer you must have Docker installed. Docker is available for many different environments including Windows, OSX and many different Linux flavors. Currently, Docker only works on 64 bit systems. To install docker, follow the instructions for your system [here](https://docs.docker.com/installation/)
+
+The branches in this repository are:
+- **arch-base**
+ - This is the base Arch Linux image that several other build images are based upon. It does nothing when run.
+- **core-builder**
+ - When run, this image builds all of the cores for linux x86_64:  
+`docker run l3iggs/libretro-core-builder`
+- **android-builder**
+ - When run, this image builds the Android front-end GUI and all of the cores and packages them into an .apk:  
+`docker run l3iggs/libretro-android-builder`
+
+Note that the first time you run these commands, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/l3iggs/) before performing the build locally on your computer. This download may be on the order of 10GB (you're downloading the entire build invironment, all libretro code and all depenancies) and should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain). Typically, the complete builds should take 10-15 minutes on most computers (after the download completes). Currently, Android builds may take longer since those builds are not using ccache at the moment. Build speed can be greatly increased by skipping the clean step. Do this by inserting `NOCLEAN=1 ` before your `docker run` command, but this might cause build errors.
+
+Now that the binaries have been built, you must copy them out of the build environment. You can do this with the following command:  
+`docker cp $(docker ps -l -q):/nightly/ .`  
+That copies the build output into your current working directory. 
+
+If you wish to replace any of the upstream git repositories with your own personal repositories during the build process do the following:  
+**Step 1**: Create a folder called local_manifest:  
+`mkdir local_manifest`  
+**Step 2**: Create a .xml file with any name (say, local.xml) inside the `local_manifest` folder from step 1. This file describes where your personal repositories should be cloned from and to. For example, if you have your own personal repository for scummvm at https://github.com/l3iggs/scummvm your local.xml manifest file might look like:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <remote fetch="https://github.com/l3iggs/" name="mygithub"/>
+  <project name="scummvm" path="libretro-super/libretro-scummvm" remote="mygithub" />
+</manifest>
+```  
+**Step 3**: Copy your local_manifest folder into the build image:  
+`docker cp ./local_manifest/ $(docker ps -l -q):/root/.repo/`  
+**Step 4**: Bild as normal, for example:  
+`docker run l3iggs/libretro-core-builder`
