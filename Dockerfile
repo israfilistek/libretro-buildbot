@@ -24,10 +24,6 @@ ENV PATH $PATH:/root/android-tools/android-ndk
 # for optional signing of release  apk
 RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
-# build android cores to populate ccache
-WORKDIR /root/libretro-super/
-RUN NDK_TOOLCHAIN_VERSION=4.8 ./libretro-build-android-mk.sh
-
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/android-builder/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
@@ -39,12 +35,13 @@ RUN pacman -Suy --noconfirm vim
 # for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
 
-WORKDIR /root/
-
 #add the build script
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
 
+# build once now to populate ccache
+CMD nightly-build android
+
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD nightly-build android_armeabi-v7a
+CMD nightly-build android
