@@ -53,10 +53,11 @@ ENV PATH $PATH:/root/android-tools/android-ndk
 # for optional signing of release  apk
 RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
+# TODO: enable ccache for android core builds
 
-#RUN tar -xf android-sdk.tgz
-#RUN rm android-sdk.tgz
-#ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
+# build android cores to populate ccache
+RUN ./libretro-build-android-mk.sh
+
 # this next line installs every android thing ever, it's probably worth it to look at
 # http://stackoverflow.com/questions/4681697/is-there-a-way-to-automate-the-android-sdk-installation
 # to figure out how to reduce the crap it pulls in
@@ -67,25 +68,19 @@ RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias
 #RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-18
 #RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-19
 #RUN ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --no-ui --filter android-20
-#RUN curl ${NDK_URL} > /root/android-tools/android-ndk.tar.bz2
-#RUN tar -xf android-ndk.tar.bz2 -C /root/android-tools/android-ndk-linux
-#RUN rm android-ndk.tar.bz2
-#ENV PATH $PATH:/root/android-tools/android-ndk-linux
-#RUN echo "export NDK_ROOT_DIR_ARM=/root/android-tools/android-ndk-linux" > /root/libretro-super/libretro-config-user.sh
 
 # win x86_64 setup section
 #RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
 
-# TODO: get android build working with ccache
-#WORKDIR /root/
-
 #add the build script
-#ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/lr-build.sh /bin/lr-build
-#RUN chmod a+x /bin/lr-build
+ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/core-builder/lr-build.sh /bin/lr-build
+RUN chmod a+x /bin/lr-build
 
-#RUN pacman -Suy --noconfirm vim
-#RUN pacman -Suy --noconfirm p7zip
+RUN pacman -Suy --noconfirm vim
+RUN pacman -Suy --noconfirm p7zip
+
+WORKDIR /root/
 
 # the commands above here set up the static image
-# this is what gets executed by default when the container is "run" with `docker run` command
-#CMD lr-build
+# the command below here gets executed by default when the container is "run" with the `docker run` command
+CMD lr-build
