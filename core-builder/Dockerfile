@@ -19,64 +19,22 @@ RUN repo init -u https://github.com/libretro/libretro-manifest.git
 RUN repo sync
 RUN repo forall -c git submodule update --init
 
-# linux x86_64 setup section
-#for libass static
-#ENV S_PACKAGE libass
-#RUN mkdir /root/${S_PACKAGE}-static/
-#WORKDIR /root/libass-static/
-#ADD https://projects.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/libass /root/libass-static/PKGBUILD
-#RUN sed -i 's,./configure,./configure --disable-shared --with-pic,g' PKGBUILD
-#RUN makepkg --noconfirm --asroot --syncdeps
-#RUN cp `find . -name *.a` /usr/lib
-#RUN pacman --noconfirm -Rsn `pacman -Qdtq`
-#RUN pacman --noconfirm -U /root/${S_PACKAGE}-static/*.pkg.tar.xz
-#WORKDIR /root/
-#RUN rm -rf /root/${S_PACKAGE}-static/
-
-#for x265 static
-#ENV S_PACKAGE x265
-#RUN mkdir /root/${S_PACKAGE}-static/
-#WORKDIR /root/x265-static/
-#ADD https://projects.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/x265 /root/x265-static/PKGBUILD
-#RUN sed -i 's,./configure,./configure --disable-shared --with-pic,g' PKGBUILD
-#RUN makepkg --noconfirm --asroot --syncdeps
-#RUN cp `find . -name *.a` /usr/lib
-#RUN pacman --noconfirm -Rsn `pacman -Qdtq`
-#RUN pacman --noconfirm -U /root/${S_PACKAGE}-static/*.pkg.tar.xz
-#WORKDIR /root/
-#RUN rm -rf /root/${S_PACKAGE}-static/
-
-#for ffmpeg static
-#RUN mkdir /root/ffmpeg-static/
-#WORKDIR /root/ffmpeg-static/
-#ADD https://projects.archlinux.org/svntogit/packages.git/plain/trunk/PKGBUILD?h=packages/ffmpeg /root/ffmpeg-static/PKGBUILD
-#RUN sed -i 's/--disable-static/--enable-static/g' PKGBUILD
-#RUN sed -i 's/--enable-shared/--disable-shared/g' PKGBUILD
-#RUN makepkg --noconfirm --asroot --syncdeps
-#RUN cp `find . -name *.a` /usr/lib
-#RUN pacman --noconfirm -Rsn `pacman -Qdtq`
-#RUN pacman --noconfirm -U /root/ffmpeg-static/*.pkg.tar.xz
-#WORKDIR /root/
-#RUN rm -rf /root/ffmpeg-static/
-
 #setup ccache
-#RUN pacman -Suy --noconfirm ccache
-#RUN mkdir /ccache
-#ENV CCACHE_DIR /ccache
-#ENV PATH /usr/lib/ccache/bin:$PATH
-#RUN ccache -M 6
+RUN pacman -Suy --noconfirm ccache
+RUN mkdir /ccache
+ENV CCACHE_DIR /ccache
+ENV PATH /usr/lib/ccache/bin:$PATH
+RUN ccache -M 6
+
+# switch on the ffmpeg core's portable mode
+RUN sed -i 's/LIBRETRO_SWITCH        = 0/LIBRETRO_SWITCH        = 1/g' /root/libretro-super/libretro-ffmpeg/libretro/Makefile
+
+# our one oprn-gl dependancy
+RUN pacman -Suy --noconfirm mesa-libgl
 
 # build the cores now to populate ccache
-RUN pacman -Suy --noconfirm mesa-libgl
-#RUN pacman --noconfirm -U /root/ffmpeg-static/*.pkg.tar.xz
 WORKDIR /root/libretro-super/
-RUN sed -i 's/LIBRETRO_SWITCH        = 0/LIBRETRO_SWITCH        = 1/g' /root/libretro-super/libretro-ffmpeg/libretro/Makefile
 RUN ./libretro-build.sh
-
-# build retroarch now to populate ccache
-#ffmpeg python glu
-#RUN pacman -Suy --noconfirm nvidia-cg-toolkit sdl sdl2 libxkbcommon libxinerama libxv clang
-#RUN ./retroarch-build.sh
 
 # win x86_64 setup section
 #RUN pacman -Suy --noconfirm mingw-w64-toolchain zip unzip wget
@@ -112,15 +70,15 @@ RUN ./libretro-build.sh
 
 # TODO: get android build working with ccache
 # make platform=unix-opengl CC="gcc" CXX="g++" -j8 
-#WORKDIR /root/
+WORKDIR /root/
 
 #add the build script
-#ADD https://raw.githubusercontent.com/l3iggs/dockerfiles/master/libretro-linux-buildimage/lr-build.sh /bin/lr-build
-#RUN chmod a+x /bin/lr-build
+ADD https://raw.githubusercontent.com/l3iggs/dockerfiles/master/libretro-linux-buildimage/lr-build.sh /bin/lr-build
+RUN chmod a+x /bin/lr-build
 
-#RUN pacman -Suy --noconfirm vim
-#RUN pacman -Suy --noconfirm p7zip
+RUN pacman -Suy --noconfirm vim
+RUN pacman -Suy --noconfirm p7zip
 
 # the commands above here set up the static image
 # the commands below are executed with the docker run command
-#CMD lr-build
+CMD lr-build
