@@ -25,6 +25,7 @@ ENV PATH $PATH:/root/android-tools/android-ndk
 RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
 # build android cores to populate ccache
+WORKDIR /root/libretro-super/
 RUN NDK_TOOLCHAIN_VERSION=4.8 ./libretro-build-android-mk.sh
 
 # update/install android sdk components
