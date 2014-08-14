@@ -3,9 +3,8 @@ FROM ubuntu:14.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository multiverse
+RUN echo deb http://archive.ubuntu.com/ubuntu/ trusty multiverse >> /etc/apt/sources.list
+RUN echo deb http://archive.ubuntu.com/ubuntu/ trusty-updates multiverse >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
