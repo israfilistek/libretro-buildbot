@@ -2,12 +2,6 @@
 FROM l3iggs/libretro-arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# grab the latest code
-WORKDIR /root/
-RUN repo init -u https://github.com/libretro/libretro-manifest.git
-RUN repo sync
-RUN repo forall -c git submodule update --init
-
 # packages required to build for linux x86_64
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
 
@@ -17,7 +11,10 @@ RUN pacman -Suy --noconfirm vim
 # for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
 
-#add the build script
+# setup repo for this project
+RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
+
+# add the build script
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
 
