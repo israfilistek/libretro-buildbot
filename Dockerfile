@@ -28,7 +28,11 @@ RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libas
 RUN apt-get install -y ccache
 RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
-ENV PATH /usr/lib/ccache/bin:$PATH
+RUN cp ccache /usr/local/bin/
+RUN ln -s ccache /usr/local/bin/gcc
+RUN ln -s ccache /usr/local/bin/g++
+RUN ln -s ccache /usr/local/bin/cc
+RUN ln -s ccache /usr/local/bin/c++
 RUN ccache -M 6
 
 # for working in the image
