@@ -1,13 +1,11 @@
-# this builds the frontend for ubuntu 13.04
-FROM ubuntu:13.04
+# this builds the frontend for ubuntu 12.04
+FROM ubuntu:12.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository multiverse
-RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
