@@ -45,8 +45,8 @@ If you wish to replace any of the upstream git repositories with your own person
 </manifest>
 ```  
 To accomplish this, you'll have to "chroot" to inside the container:  
-`docker run -i -t l3iggs/libretro-core-builder`
-Once you've added your local.xml file to /root/.repo/local_manifests you should update the code to reflect the change you just made:
+`docker run -i -t l3iggs/libretro-core-builder`  
+Once you've added your local.xml file to /root/.repo/local_manifests you should update the code to reflect the change you just made:  
 `cd /root && repo sync && repo forall -c git submodule update --init`  
-then build the project
+Then build the project  
 `nightly-build linux_cores`
