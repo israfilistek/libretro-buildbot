@@ -3,10 +3,8 @@ FROM ubuntu:13.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository multiverse
+RUN echo deb http://archive.ubuntu.com/ubuntu/ raring multiverse >> /etc/apt/sources.list
+RUN echo deb http://archive.ubuntu.com/ubuntu/ raring-updates multiverse >> /etc/apt/sources.list
 RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y dist-upgrade
