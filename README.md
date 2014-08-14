@@ -6,7 +6,7 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 **Step 1**: [Install Docker](https://docs.docker.com/installation/)  
 **Step 2**: Build something:  
 `docker run --env NOCLEAN=1 l3iggs/$PROJECT`  
-Where $PROJECT is the name of one of the branches in this repository (other than master)
+Where $PROJECT is the name of one of the branches in this repository (other than master)  
 **Step 3**: Copy whatever you just built out of the build container:  
 `docker cp $(docker ps -l -q):/nightly/ .`
 
