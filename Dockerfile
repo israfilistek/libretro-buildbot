@@ -38,10 +38,3 @@ RUN pacman -Suy --noconfirm p7zip
 #add the build script
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
-
-# build once now to populate ccache
-CMD nightly-build android
-
-# the commands above here set up the static image
-# the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD nightly-build android
