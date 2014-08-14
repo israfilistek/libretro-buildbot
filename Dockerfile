@@ -3,9 +3,8 @@ FROM ubuntu:12.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN apt-get update
-RUN apt-get install -y python-software-properties
-RUN add-apt-repository multiverse
+RUN echo deb http://archive.ubuntu.com/ubuntu/ precise multiverse >> /etc/apt/sources.list
+RUN echo deb http://archive.ubuntu.com/ubuntu/ precise-updates multiverse >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
