@@ -3,7 +3,7 @@ FROM ubuntu:13.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-sudo sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+sudo sed -i -e 's/archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get install -y software-properties-common
 RUN add-apt-repository multiverse
