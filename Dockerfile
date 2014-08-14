@@ -33,9 +33,5 @@ RUN pacman -Suy --noconfirm vim
 # for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
 
-# add the build script
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
-RUN chmod a+x /bin/nightly-build
-
 # enable ccache for NDK builds
 ENV NDK_CCACHE ccache
