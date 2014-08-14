@@ -1,9 +1,9 @@
-#this builds cores for linux
+#this builds the frontend for Arch Linux
 FROM l3iggs/libretro-arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# our one open-gl dependency
-RUN pacman -Suy --noconfirm mesa-libgl
+# packages required to build for linux x86_64
+RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
 
 # for working in the image
 RUN pacman -Suy --noconfirm vim
@@ -18,8 +18,8 @@ ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-bu
 RUN chmod a+x /bin/nightly-build
 
 # build once now to populate ccache
-RUN nightly-build linux_cores
+RUN nightly-build linux_retroarch
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD nightly-build linux_cores
+CMD nightly-build linux_retroarch
