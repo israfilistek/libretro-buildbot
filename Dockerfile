@@ -1,4 +1,4 @@
-#this builds cores and frontend for Android and packages them into an apk
+#this builds prepares the android build environment
 FROM l3iggs/libretro-arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
