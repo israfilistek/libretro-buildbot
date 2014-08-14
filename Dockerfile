@@ -5,6 +5,10 @@ MAINTAINER l3iggs <l3iggs@live.com>
 # setup the generic build environment
 RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository multiverse
+RUN sed -i 's/archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+RUN apt-get update
 RUN apt-get -y dist-upgrade
 
 # setup repo
@@ -28,7 +32,7 @@ ENV PATH /usr/lib/ccache/bin:$PATH
 RUN ccache -M 6
 
 # all the front-end dependancies
-RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libasound2-dev libsdl2-dev libsdl1.2-dev libavformat-dev libavcodec-dev libswscale-dev libgbm-dev libxml2-dev libopenvg1-mesa-dev libv4l-dev libfreetype6-dev libxv-dev libxinerama-dev python3-dev nvidia-cg-toolkit libavdevice-dev libavresample-dev libass-dev libxkbcommon-dev
+RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libasound2-dev libsdl1.2-dev libavformat-dev libavcodec-dev libswscale-dev libgbm-dev libxml2-dev libopenvg1-mesa-dev libv4l-dev libfreetype6-dev libxv-dev libxinerama-dev python3-dev nvidia-cg-toolkit libavdevice-dev libass-dev libxkbcommon-dev
 
 # for working in the image
 RUN apt-get install -y vim
