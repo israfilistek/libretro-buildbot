@@ -2,8 +2,6 @@
 FROM l3iggs/libretro-arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# TODO: enable ccache for android core builds
-
 # Android setup section
 RUN pacman -Suy --noconfirm apache-ant
 RUN mkdir /root/android-tools
@@ -35,6 +33,9 @@ RUN pacman -Suy --noconfirm vim
 # for packaging outputs
 RUN pacman -Suy --noconfirm p7zip
 
-#add the build script
+# add the build script
 ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
 RUN chmod a+x /bin/nightly-build
+
+# enable ccache for NDK builds
+ENV NDK_CCACHE ccache
