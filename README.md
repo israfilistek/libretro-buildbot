@@ -38,7 +38,7 @@ That copies the build output into your current working directory.
 If you wish to replace any of the upstream git repositories with your own personal repositories during the build process, do the following:  
 **Step 1**: Create a folder called local_manifest:  
 `mkdir local_manifest`  
-**Step 2**: Create a .xml file with any name (say, local.xml) inside the `local_manifest` folder from step 1. This file describes where your personal repositories should be cloned from and to. For example, if you have your own personal repository for scummvm at https://github.com/l3iggs/scummvm your local.xml manifest file might look like:
+**Step 2**: Create a .xml file with any name (say, local.xml) inside the `local_manifests` folder from step 1. This file describes where your personal repositories should be cloned from and to. For example, if you have your own personal repository for scummvm at https://github.com/l3iggs/scummvm your local.xml manifest file might look like:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
@@ -46,7 +46,7 @@ If you wish to replace any of the upstream git repositories with your own person
   <project name="scummvm" path="libretro-super/libretro-scummvm" remote="mygithub" />
 </manifest>
 ```  
-**Step 3**: Copy your local_manifest folder into the build image:  
-`docker cp ./local_manifest/ $(docker ps -l -q):/root/.repo/`  
+**Step 3**: Copy your local_manifest folder into the build image under the .repo directory:  
+`docker cp ./local_manifests/ $(docker ps -l -q):/root/.repo/`  
 **Step 4**: Bild as normal, for example:  
 `docker run l3iggs/libretro-core-builder`
