@@ -1,5 +1,5 @@
-# this builds the frontend for ubuntu 13.04
-FROM ubuntu:13.04
+# this builds the frontend for ubuntu 14.04
+FROM ubuntu:14.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
