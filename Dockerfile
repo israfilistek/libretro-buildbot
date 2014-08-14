@@ -1,4 +1,4 @@
-#this builds prepares the android build environment
+#this prepares the android build environment
 FROM l3iggs/libretro-arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
