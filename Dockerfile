@@ -4,7 +4,7 @@ MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
 RUN apt-get update
-RUN apt-get install -y software-properties-common
+RUN apt-get install -y python-software-properties
 RUN add-apt-repository multiverse
 RUN apt-get update
 RUN apt-get -y dist-upgrade
