@@ -66,7 +66,7 @@ android_all()
   cp -r /root/libretro-super/dist/info/ assets/
   cp -r /root/libretro-super/libretro-overlays/* assets/overlays/
   NDK_TOOLCHAIN_VERSION=4.8 ant clean
-  NDK_TOOLCHAIN_VERSION=4.8 ant debug #TODO, make release and sign
+  #NDK_TOOLCHAIN_VERSION=4.8 ant debug #TODO, make release and sign
   cp bin/retroarch-debug.apk /nightly/android/$(date +"%Y-%m-%d_%T")_android.apk
 }
 
