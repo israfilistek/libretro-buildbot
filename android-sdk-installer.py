@@ -18,8 +18,9 @@ filters.extend(['extra', 'platform', 'platform-tool', 'tool'])
 filter = ",".join(filters)
 
 expect= '''set timeout -1;
+spawn android update sdk --no-ui;
 expect {
-    "\[y\/\n]: " {
+    "\[y\/n\]: " {
         send "y\r"
         expect "y\r"
         exp_continue
