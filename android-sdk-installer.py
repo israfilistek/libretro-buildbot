@@ -19,7 +19,7 @@ filter = ",".join(filters)
 
 expect= '''set timeout -1;
 expect {
-    "[y/n]: " {
+    "\[y\/\n]: " {
         send "y\r"
         expect "y\r"
         exp_continue
