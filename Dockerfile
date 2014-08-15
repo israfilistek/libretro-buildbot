@@ -1,5 +1,5 @@
 # this builds the frontend for Arch Linux
-FROM l3iggs/libretro-arch-base:latest
+FROM l3iggs/libretro-code-prefetcher:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # packages required to build for linux x86_64
