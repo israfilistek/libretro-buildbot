@@ -3,7 +3,7 @@ FROM l3iggs/libretro-code-prefetcher:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # packages required to build for linux x86_64
-RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl ffmpeg libxkbcommon libxinerama libxv python glu clang
+RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl sdl2 ffmpeg libxkbcommon libxinerama libxv python glu clang
 
 # for working in the image
 RUN pacman -Suy --noconfirm vim
