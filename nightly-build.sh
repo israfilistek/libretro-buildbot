@@ -39,7 +39,7 @@ linux_cores()
   7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_libretro-cores-linux.7z /output/linux/*
 }
 
-android()
+android_all()
 {
   echo Building for Android ...
   rm -rf /output/android/
