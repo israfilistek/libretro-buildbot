@@ -18,11 +18,11 @@ filters.extend(['extra', 'platform', 'platform-tool', 'tool'])
 filter = ",".join(filters)
 
 expect= '''set timeout -1;
-spawn android update sdk --no-ui --all;
+spawn android update sdk --no-ui;
 expect {
   "Do you accept the license" { exp_send "y\\r" ; exp_continue }
   eof
-}''' % (filter)
+}'''
 
 print expect
 
