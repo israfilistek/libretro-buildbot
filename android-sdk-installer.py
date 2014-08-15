@@ -23,6 +23,7 @@ expect {
         send "y\r"
         expect "y\r"
         exp_continue
+        }
 }'''
 
 print expect
