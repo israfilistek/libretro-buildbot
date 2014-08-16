@@ -25,7 +25,7 @@ RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk
 ENV PATH $PATH:/root/android-tools/android-ndk
 
 # for optional signing of release  apk
-RUN keytool -genkey -keystore /root/android-tools/my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
+RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
