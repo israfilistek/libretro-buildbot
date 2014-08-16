@@ -1,6 +1,7 @@
 #!/bin/bash
 
-updateCode()
+# grabs the latest code for all of libretro
+update_code()
 {
   echo Updating code...
   cd /root/
@@ -8,6 +9,7 @@ updateCode()
   repo forall -c git submodule update --init
 }
 
+# builds the front end
 linux_retroarch()
 {
   rm -rf /output/linux/
@@ -23,6 +25,7 @@ linux_retroarch()
   7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_retroarch-linux.7z /output/linux/*
 }
 
+# builds all the cores
 linux_cores()
 {
   echo Building cores ...
@@ -39,6 +42,7 @@ linux_cores()
   7za a -r /nightly/linux/$(date +"%Y-%m-%d_%T")_libretro-cores-linux.7z /output/linux/*
 }
 
+# builds the android frontend and cores and packages into an apk
 android_all()
 {
   echo Building for Android ...
@@ -82,6 +86,6 @@ android_all()
 
 
 if [ $1 ]; then
-  updateCode
+  update_code
   $1
 fi
