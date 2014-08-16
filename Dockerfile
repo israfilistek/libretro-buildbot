@@ -13,8 +13,8 @@ RUN rm -rf /root/android-tools/android-sdk.tgz
 ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
 
 #need to be able to run 32bit programs for some SDK pieces
-RUN echo /etc/pacman.conf >> "[multilib]"
-RUN echo /etc/pacman.conf >> "Include = /etc/pacman.d/mirrorlist"
+RUN echo "[multilib]" >> /etc/pacman.conf 
+RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf 
 RUN pacman -Suy --noconfirm lib32-glibc lib32-zlib lib32-ncurses lib32-gcc-libs
 
 # Android NDK
