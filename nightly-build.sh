@@ -63,15 +63,16 @@ android_all()
   android update project --path libs/appcompat/
   
   # setup paths
-  rm -rf assets
-  mkdir -p assets/cores
-  mkdir assets/overlays
+  rm -rf /root/libretro-super/retroarch/android/phoenix/assets
+  mkdir -p /root/libretro-super/retroarch/android/phoenix/assets/
   
   # copy cores and other assets
   #TODO: refactor for any target
-  cp /root/libretro-super/dist/android/armeabi-v7a/* assets/cores/	
-  cp -r /root/libretro-super/dist/info/ assets/
-  cp -r /root/libretro-super/libretro-overlays/* assets/overlays/
+  cp -r /root/libretro-super/dist/android/armeabi-v7a /root/libretro-super/retroarch/android/phoenix/assets/cores
+  cp -r /root/libretro-super/dist/info /root/libretro-super/retroarch/android/phoenix/assets/
+  cp -r /root/libretro-super/retroarch/media/shaders /root/libretro-super/retroarch/android/phoenix/assets/shaders_glsl
+  cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
+  cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean and build
   NDK_TOOLCHAIN_VERSION=4.8 ant clean
