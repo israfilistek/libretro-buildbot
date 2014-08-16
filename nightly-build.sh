@@ -58,16 +58,26 @@ android_all()
   android update project --path libs/googleplay/
   android update project --path libs/appcompat/
   
+  # setup paths
   rm -rf assets
   mkdir -p assets/cores
   mkdir assets/overlays
+  
+  # copy cores and other assets
   #TODO: refactor for any target
   cp /root/libretro-super/dist/android/armeabi-v7a/* assets/cores/	
   cp -r /root/libretro-super/dist/info/ assets/
   cp -r /root/libretro-super/libretro-overlays/* assets/overlays/
+  
+  # clean and build
   NDK_TOOLCHAIN_VERSION=4.8 ant clean
-  #NDK_TOOLCHAIN_VERSION=4.8 ant debug #TODO, make release and sign
-  #cp bin/retroarch-debug.apk /nightly/android/$(date +"%Y-%m-%d_%T")_android.apk
+  NDK_TOOLCHAIN_VERSION=4.8 ant release
+  
+  # sign the apk
+  jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass libretro -keystore /root/android-tools/my-release-key.keystore /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
+  
+  # zipalign
+  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /nightly/android/$(date +"%Y-%m-%d_%T")_android.apk
 }
 
 
