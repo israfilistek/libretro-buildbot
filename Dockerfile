@@ -1,5 +1,5 @@
 #this prepares the android build environment
-FROM l3iggs/arch-base:latest
+FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # Android setup section
