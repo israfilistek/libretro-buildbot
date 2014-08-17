@@ -4,6 +4,8 @@
 # @daily curl https://raw.githubusercontent.com/libretro/libretro-buildbot/master/cron-master.sh > /home/buildbot/cron-master.sh; chmod a+x /home/buildbot/cron-master.sh; /home/buildbot/cron-master.sh;
 # ^^ this *should be* the only manual step required to installing this buildbot
 # everything else *shoudld be* automated and self-updating from code in this repository
+# this requires that there is a directroy /home/buildbot and the caller
+# has write access to that directory and can use the docker command
 
 # these should be names of scripts in https://github.com/libretro/libretro-buildbot/tree/master
 declare -a BUILD_SCRIPTS=("cron-android-build.sh" "cron-linux-core-build.sh")
