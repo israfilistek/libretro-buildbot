@@ -29,7 +29,7 @@ RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -al
 
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/android-setup/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
 RUN python2 /root/android-tools/android-sdk-installer.py
 
 # for working in the image
