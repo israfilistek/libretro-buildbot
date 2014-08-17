@@ -10,7 +10,8 @@ docker run --cpuset="0,1,2" l3iggs/android-builder
 
 rm -rf /home/buildbot/output
 docker cp $(docker ps -l -q):/output /home/buildbot/
-docker logs $(docker ps -l -q) > /home/buildbot/output/android/build.log 2>&1
+mkdir -p /home/buildbot/output/android/build-logs/
+docker logs $(docker ps -l -q) > /home/buildbot/output/android/build-logs/build.log 2>&1
 
 ALL_CORES=`find /home/buildbot/output/ -name *.so`
 for c in $ALL_CORES
