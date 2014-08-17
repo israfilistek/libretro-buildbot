@@ -4,16 +4,19 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 
 ## Quick Usage
 **Step 1**: [Install Docker](https://docs.docker.com/installation/)  
-**Step 2**: Build something:  
+**Step 2**: Initate a build of some aspect of libretro:  
 `docker run libretro/$PROJECT`  
 Where $PROJECT is the name of one of the branches in this repository (other than master)  
 **Step 3**: Copy whatever you just built out of the build container:  
-`docker cp $(docker ps -l -q):/staging/ .`
+`docker cp $(docker ps -l -q):/staging/ .`  
+You'll now have a folder called "staging" in your current working directory that contains the binaries you just built.
 
 ## Details
-This project is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/libretro/) should be generated. These images are updated automatically with updates pushes to this repository.
+This repository is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/libretro/) should be generated. These images are updated automatically with pushes to this repository.
 
-To use any of these images to build libretro on your own computer you must have Docker installed. Docker is available for many different environments including Windows, OSX and many different Linux flavors. Currently, Docker only works on 64 bit systems. To install docker, follow the instructions for your system [here](https://docs.docker.com/installation/)
+To use any of these images to build libretro on your own computer you must have Docker installed. Docker is available for many different environments including Windows, OSX and many different Linux flavors. Currently, Docker only works on 64 bit systems. To install Docker, follow the instructions for your system [here](https://docs.docker.com/installation/)
+
+You can now "run" one of the pre-made Docker containers to build some libretro binaries (see Step 2 above).
 
 Note that the first time you run something like `docker run libretro/android-builder`, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/libretro) before performing the build locally on your computer. This download may be on the order of 20GB (you're downloading the entire build invironment, all libretro code and all depenancies). This large download should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain, to keep your image up-to-date run `docker pull $PROJECT`). Once you have the image, new builds are very fast because they've been previously cached with ccache and because you only have to fetch small delta updates to the codebase. Typically a complete rebuild of all cores from make clean should take 10-15 minutes on most computers (after the giant download completes). Build speed can be greatly increased by skipping the clean step. Do this by inserting `--env NOCLEAN=1` after your `docker run` command, but this might cause build errors.
 
