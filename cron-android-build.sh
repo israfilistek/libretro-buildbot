@@ -5,10 +5,10 @@
 TODAY_IS=`date +"%Y-%m-%d"`
 
 # ensure the image is up to date
-docker pull l3iggs/android-builder
+docker pull libretro/android-builder
 
 # run the build
-docker run --cpuset="0,1,2" l3iggs/android-builder
+docker run --cpuset="0,1,2" libretro/android-builder
 
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/

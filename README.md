@@ -5,17 +5,17 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 ## Quick Usage
 **Step 1**: [Install Docker](https://docs.docker.com/installation/)  
 **Step 2**: Build something:  
-`docker run l3iggs/$PROJECT`  
+`docker run libretro/$PROJECT`  
 Where $PROJECT is the name of one of the branches in this repository (other than master)  
 **Step 3**: Copy whatever you just built out of the build container:  
 `docker cp $(docker ps -l -q):/staging/ .`
 
 ## Details
-This project is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/l3iggs/) should be generated. These images are updated automatically with updates pushes to this repository.
+This project is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/libretro/) should be generated. These images are updated automatically with updates pushes to this repository.
 
 To use any of these images to build libretro on your own computer you must have Docker installed. Docker is available for many different environments including Windows, OSX and many different Linux flavors. Currently, Docker only works on 64 bit systems. To install docker, follow the instructions for your system [here](https://docs.docker.com/installation/)
 
-Note that the first time you run something like `docker run l3iggs/android-builder`, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/l3iggs/) before performing the build locally on your computer. This download may be on the order of 20GB (you're downloading the entire build invironment, all libretro code and all depenancies). This large download should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain, to keep your image up-to-date run `docker pull $PROJECT`). Once you have the image, new builds are very fast because they've been previously cached with ccache and because you only have to fetch small delta updates to the codebase. Typically a complete rebuild of all cores from make clean should take 10-15 minutes on most computers (after the giant download completes). Build speed can be greatly increased by skipping the clean step. Do this by inserting `--env NOCLEAN=1` after your `docker run` command, but this might cause build errors.
+Note that the first time you run something like `docker run libretro/android-builder`, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/libretro) before performing the build locally on your computer. This download may be on the order of 20GB (you're downloading the entire build invironment, all libretro code and all depenancies). This large download should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain, to keep your image up-to-date run `docker pull $PROJECT`). Once you have the image, new builds are very fast because they've been previously cached with ccache and because you only have to fetch small delta updates to the codebase. Typically a complete rebuild of all cores from make clean should take 10-15 minutes on most computers (after the giant download completes). Build speed can be greatly increased by skipping the clean step. Do this by inserting `--env NOCLEAN=1` after your `docker run` command, but this might cause build errors.
 
 Now that the binaries have been built, you must copy them out of the build environment. You can do this with the following command:  
 `docker cp $(docker ps -l -q):/staging/ .`  
@@ -32,7 +32,7 @@ If you wish to replace any of the upstream git repositories with your own person
 </manifest>
 ```  
 To actually create the file in the proper location, you'll have to "chroot" to inside the docker image:  
-`docker run -i -t l3iggs/core-builder /bin/bash`  
+`docker run -i -t libretro/core-builder /bin/bash`  
 Once you've added your local.xml file to /root/.repo/local_manifests you should update the source code tree to reflect the change you just made:  
 `cd /root/ && repo sync && repo forall -c git submodule update --init`  
 Then build the project  
