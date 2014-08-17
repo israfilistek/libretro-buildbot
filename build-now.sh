@@ -83,13 +83,13 @@ android_all()
   # sign the apk
   jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass libretro -keystore /root/android-tools/my-release-key.keystore /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
   
-  rm -rf /output/android/${ARCH}/*
-  mkdir -p /output/android/${ARCH}/cores
-  cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /output/android/${ARCH}/cores/
-  7za a -r /output/android/${ARCH}/cores.7z /output/android/${ARCH}/cores/*
+  rm -rf /staging/android/${ARCH}/*
+  mkdir -p /staging/android/${ARCH}/cores
+  cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${ARCH}/cores/
+  7za a -r /staging/android/${ARCH}/cores.7z /staging/android/${ARCH}/cores/*
   
   # zipalign
-  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /output/android/${ARCH}/RetroArch.apk
+  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /staging/android/${ARCH}/RetroArch.apk
 }
 
 
