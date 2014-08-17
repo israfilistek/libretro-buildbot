@@ -31,5 +31,5 @@ do
   mv $f ${PARENT}/${TODAY_IS}_${FILE_NAME}
 done
 
-mkdir -p /home/buildbot/www/
+mkdir -p /home/buildbot/www/nightly/
 cp -r  /home/buildbot/output/* /home/buildbot/www/nightly/
