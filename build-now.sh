@@ -93,5 +93,5 @@ android_all()
 
 if [ $1 ]; then
   update_code
-  $1
+  $1 || echo "Non-zero return from build."
 fi
