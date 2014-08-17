@@ -1,5 +1,7 @@
 #!/bin/bash
 # this is the script that gets called by cron on the build machine/web host
+# the following line goes into crontab (change frequency as desired):
+# @daily curl https://raw.githubusercontent.com/libretro/libretro-buildbot/master/cron-master.sh > /home/buildbot/cron-master.sh; chmod a+x /home/buildbot/cron-master.sh; /home/buildbot/cron-master.sh;
 
 # these should be names of scripts in https://github.com/libretro/libretro-buildbot/tree/master
 declare -a BUILD_SCRIPTS=("cron-android-build.sh" "cron-linux-core-build.sh")
