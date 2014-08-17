@@ -12,47 +12,48 @@ update_code()
 # builds the front end
 linux_retroarch()
 {
+  ARCH="x86_64" 
   echo Building RetroArch ...
   # build frontend
   cd /root/libretro-super
   ./retroarch-build.sh
   
-  rm -rf /output/linux/RetroArch/*
-  mkdir -p /output/linux/RetroArch/files
+  rm -rf /output/linux/${ARCH}/RetroArch/*
+  mkdir -p /output/linux/${ARCH}/RetroArch/files
   cd /root/libretro-super/retroarch/
-  make DESTDIR=/output/linux/RetroArch/files install
+  make DESTDIR=/output/linux/${ARCH}/RetroArch/files install
   
-  7za a -r /output/linux/RetroArch.7z /output/linux/RetroArch/files/*
+  7za a -r /output/linux/${ARCH}/RetroArch.7z /output/linux/${ARCH}/RetroArch/files/*
 }
 
 # builds all the cores
 linux_cores()
 {
+  ARCH="x86_64"
   echo Building cores...
   # build cores
   rm -rf /root/libretro-super/dist/unix*
   cd /root/libretro-super
   ./libretro-build.sh
   
-  rm -rf /output/linux/cores/*
-  mkdir -p /output/linux/cores/files
+  rm -rf /output/linux/${ARCH}/cores/*
+  mkdir -p /output/linux/${ARCH}/cores/files
   cd /root/libretro-super
-  ./libretro-install.sh /output/linux/cores/files
+  ./libretro-install.sh /output/linux/${ARCH}/cores/files
   
   
-  7za a -r /output/linux/cores.7z /output/linux/cores/files/*
+  7za a -r /output/linux/${ARCH}/cores.7z /output/linux/${ARCH}/cores/files/*
 }
 
 # builds the android frontend and cores and packages into an apk
 android_all()
 {
+  ARCH="armeabi-v7a"
   echo Building for Android ...
   # build cores
-  rm -rf /root/libretro-super/dist/android*
+  rm -rf /root/libretro-super/dist/android/${ARCH}/*
   cd /root/libretro-super/
   ./libretro-build-android-mk.sh
-  
-  mkdir -p /nightly/android
   
   # build frontend
   cd /root/libretro-super/retroarch/android/phoenix
@@ -66,27 +67,27 @@ android_all()
   mkdir -p /root/libretro-super/retroarch/android/phoenix/assets/
   
   # copy cores and other assets
-  #TODO: refactor for any target
-  cp -r /root/libretro-super/dist/android/armeabi-v7a /root/libretro-super/retroarch/android/phoenix/assets/cores
+  cp -r /root/libretro-super/dist/android/${ARCH} /root/libretro-super/retroarch/android/phoenix/assets/cores
   cp -r /root/libretro-super/dist/info /root/libretro-super/retroarch/android/phoenix/assets/
   cp -r /root/libretro-super/retroarch/media/shaders /root/libretro-super/retroarch/android/phoenix/assets/shaders_glsl
   cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean and build
+  #TODO: modify build architecture here
   NDK_TOOLCHAIN_VERSION=4.8 ant clean
   NDK_TOOLCHAIN_VERSION=4.8 ant release
   
   # sign the apk
   jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass libretro -keystore /root/android-tools/my-release-key.keystore /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
   
-  rm -rf /output/android/*
-  mkdir -p /output/android/cores
-  cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /output/android/cores/
-  7za a -r /output/android/cores.7z /output/android/cores/*
+  rm -rf /output/android/${ARCH}/*
+  mkdir -p /output/android/${ARCH}/cores
+  cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /output/android/${ARCH}/cores/
+  7za a -r /output/android/${ARCH}/cores.7z /output/android/${ARCH}/cores/*
   
   # zipalign
-  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /output/android/RetroArch.apk
+  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /output/android/${ARCH}/RetroArch.apk
 }
 
 
