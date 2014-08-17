@@ -1,6 +1,6 @@
 libretro-buildbot
 ===========
-This is a collection of Dockerfiles and scripts for libretro that define a set of nightly build bots. For for completely automated and reoccurring builds, see installation comments in cron-master.sh
+This is a collection of Dockerfiles and scripts for libretro that define a set of nightly build bots. For completely automated and reoccurring builds, see installation comments in cron-master.sh
 
 ## Quick Usage
 **Step 1**: [Install Docker](https://docs.docker.com/installation/)  
