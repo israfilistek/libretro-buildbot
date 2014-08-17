@@ -33,7 +33,7 @@ RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libas
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
 
 # add the build script
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/build-now.sh/bin/build-now.sh
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/build-now.sh/bin/build-now.sh
 RUN chmod a+x /bin/build-now.sh
 
 # for packaging outputs
