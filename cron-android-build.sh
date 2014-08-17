@@ -32,4 +32,4 @@ do
 done
 
 mkdir -p /home/buildbot/www/
-cp -r  /home/buildbot/output/* /home/buildbot/www/
+cp -r  /home/buildbot/output/* /home/buildbot/www/nightly/
