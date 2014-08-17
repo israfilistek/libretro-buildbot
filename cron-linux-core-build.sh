@@ -13,6 +13,7 @@ docker cp $(docker ps -l -q):/output /home/buildbot/
 mkdir -p /home/buildbot/output/linux/build-logs/
 docker logs $(docker ps -l -q) > /home/buildbot/output/linux/build-logs/core-build.log 2>&1
 
+rm `find /home/buildbot/output/ -name *.info`
 ALL_CORES=`find /home/buildbot/output/ -name *.so`
 for c in $ALL_CORES
 do
