@@ -8,7 +8,7 @@ A collection of Dockerfiles and scripts for libretro that define a set of nightl
 `docker run l3iggs/$PROJECT`  
 Where $PROJECT is the name of one of the branches in this repository (other than master)  
 **Step 3**: Copy whatever you just built out of the build container:  
-`docker cp $(docker ps -l -q):/output/ .`
+`docker cp $(docker ps -l -q):/staging/ .`
 
 ## Details
 This project is split into several branches. Each branch (besides master) contains one Dockerfile that defines a specific image that is part of the automated build system. Each of the Dockerfiles/Branches in this repository describes how a Linux file system image built and hosted [here](https://registry.hub.docker.com/repos/l3iggs/) should be generated. These images are updated automatically with updates pushes to this repository.
@@ -18,7 +18,7 @@ To use any of these images to build libretro on your own computer you must have 
 Note that the first time you run something like `docker run l3iggs/android-builder`, you'll initiate a large download (the images are hosted [here](https://registry.hub.docker.com/repos/l3iggs/) before performing the build locally on your computer. This download may be on the order of 20GB (you're downloading the entire build invironment, all libretro code and all depenancies). This large download should only be needed once (parts of the image may have to be re-downloaded later if I need to update the build images in some way like add a dependancy or update a toolchain, to keep your image up-to-date run `docker pull $PROJECT`). Once you have the image, new builds are very fast because they've been previously cached with ccache and because you only have to fetch small delta updates to the codebase. Typically a complete rebuild of all cores from make clean should take 10-15 minutes on most computers (after the giant download completes). Build speed can be greatly increased by skipping the clean step. Do this by inserting `--env NOCLEAN=1` after your `docker run` command, but this might cause build errors.
 
 Now that the binaries have been built, you must copy them out of the build environment. You can do this with the following command:  
-`docker cp $(docker ps -l -q):/output/ .`  
+`docker cp $(docker ps -l -q):/staging/ .`  
 That copies the build output into your current working directory. 
 
 ### Substituting upstream repos
