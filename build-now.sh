@@ -18,12 +18,12 @@ linux_retroarch()
   cd /root/libretro-super
   ./retroarch-build.sh
   
-  rm -rf /output/linux/${ARCH}/RetroArch/*
-  mkdir -p /output/linux/${ARCH}/RetroArch/files
+  rm -rf /staging/linux/${ARCH}/RetroArch/*
+  mkdir -p /staging/linux/${ARCH}/RetroArch/files
   cd /root/libretro-super/retroarch/
-  make DESTDIR=/output/linux/${ARCH}/RetroArch/files install
+  make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
   
-  7za a -r /output/linux/${ARCH}/RetroArch.7z /output/linux/${ARCH}/RetroArch/files/*
+  7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
 }
 
 # builds all the cores
@@ -36,13 +36,13 @@ linux_cores()
   cd /root/libretro-super
   ./libretro-build.sh
   
-  rm -rf /output/linux/${ARCH}/cores/
-  mkdir -p /output/linux/${ARCH}/cores
+  rm -rf /staging/linux/${ARCH}/cores/
+  mkdir -p /staging/linux/${ARCH}/cores
   cd /root/libretro-super
-  ./libretro-install.sh /output/linux/${ARCH}/cores
+  ./libretro-install.sh /staging/linux/${ARCH}/cores
   
   
-  7za a -r /output/linux/${ARCH}/cores.7z /output/linux/${ARCH}/cores/*
+  7za a -r /staging/linux/${ARCH}/cores.7z /staging/linux/${ARCH}/cores/*
 }
 
 # builds the android frontend and cores and packages into an apk
