@@ -15,12 +15,12 @@ RUN pacman -Suy --noconfirm p7zip
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
 
 # add the build script
-ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/nightly-build.sh /bin/nightly-build
-RUN chmod a+x /bin/nightly-build
+ADD https://raw.githubusercontent.com/l3iggs/libretro-buildbot/master/build-now.sh /bin/build-now.sh
+RUN chmod a+x /bin/build-now.sh
 
 # build once now to populate ccache
-RUN nightly-build linux_retroarch
+RUN build-now.sh linux_retroarch
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD nightly-build linux_retroarch
+CMD build-now.sh linux_retroarch
