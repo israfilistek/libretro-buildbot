@@ -36,13 +36,13 @@ linux_cores()
   cd /root/libretro-super
   ./libretro-build.sh
   
-  rm -rf /output/linux/${ARCH}/cores/*
-  mkdir -p /output/linux/${ARCH}/cores/files
+  rm -rf /output/linux/${ARCH}/cores/
+  mkdir -p /output/linux/${ARCH}/cores
   cd /root/libretro-super
-  ./libretro-install.sh /output/linux/${ARCH}/cores/files
+  ./libretro-install.sh /output/linux/${ARCH}/cores
   
   
-  7za a -r /output/linux/${ARCH}/cores.7z /output/linux/${ARCH}/cores/files/*
+  7za a -r /output/linux/${ARCH}/cores.7z /output/linux/${ARCH}/cores/*
 }
 
 # builds the android frontend and cores and packages into an apk
