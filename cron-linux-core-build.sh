@@ -1,4 +1,6 @@
 #!/bin/bash -e
+# this script lives in the webserver and triggers the linux cores build and
+# readies the files it generates for http consumption
 
 TODAY_IS=`date +"%Y-%m-%d"`
 
