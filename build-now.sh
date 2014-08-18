@@ -1,11 +1,15 @@
 #!/bin/bash -e
 # this script lives in each of the Docker build images and initiates and
-# manages fetching new code and doing the actual compilation and moving the generated binaries to /staging 
+# manages fetching new code and doing the actual compilation and moving the generated binaries to /staging
+
+#TODO: need to loop through ARCH strings to grab all cores
+
+/root/libretro-super/libretro-config.sh
 
 # grabs the latest code for all of libretro
 update_code()
 {
-  echo Updating code...
+  echo "Updating code..."
   cd /root/
   repo sync
   repo forall -c git submodule update --init
@@ -15,7 +19,7 @@ update_code()
 linux_retroarch()
 {
   ARCH="x86_64" 
-  echo Building RetroArch ...
+  echo "Building RetroArch ..."
   # build frontend
   cd /root/libretro-super
   ./retroarch-build.sh
@@ -32,7 +36,7 @@ linux_retroarch()
 linux_cores()
 {
   ARCH="x86_64"
-  echo Building cores...
+  echo "Building cores..."
   # build cores
   rm -rf /root/libretro-super/dist/unix*
   cd /root/libretro-super
@@ -51,7 +55,8 @@ linux_cores()
 android_all()
 {
   ARCH="armeabi-v7a"
-  echo Building for Android ...
+  NDK_TOOLCHAIN_VERSION=4.8
+  echo "Building for Android ..."
   # build cores
   rm -rf /root/libretro-super/dist/android/${ARCH}/*
   cd /root/libretro-super/
@@ -76,20 +81,33 @@ android_all()
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean and build
-  #TODO: modify build architecture here
-  NDK_TOOLCHAIN_VERSION=4.8 ant clean
-  NDK_TOOLCHAIN_VERSION=4.8 ant release
+  
+  ant clean
   
   # sign the apk
-  jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass libretro -keystore /root/android-tools/my-release-key.keystore /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
+  KEYSTORE=/root/android-tools/my-release-key.keystore
+  if [ $KEYSTORE_PASSWORD ]; then
+    echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
+    ant release
+    curl ${KEYSTORE_URL} > ${KEYSTORE}
+    jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass ${KEYSTORE_PASSWORD} -keystore ${KEYSTORE} /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
+    rm ${KEYSTORE}
+    # zipalign
+    `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
+  else
+    KEYSTORE_PASSWORD=libretro
+    sed -i 's/com.retroarch/com.retroarchdebug/g' /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
+    mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch /root/libretro-super/retroarch/android/phoenix/src/com/retroarchdebug
+    sed -i 's/app_name">RetroArch/app_name">RetroArch Dev/g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
+    ant debug
+    mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
+  fi
   
   rm -rf /staging/android/${ARCH}/*
   mkdir -p /staging/android/${ARCH}/cores
   cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${ARCH}/cores/
   7za a -r /staging/android/${ARCH}/cores.7z /staging/android/${ARCH}/cores/*
-  
-  # zipalign
-  `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /staging/android/${ARCH}/RetroArch.apk
+  cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${ARCH}/RetroArch.apk
 }
 
 
