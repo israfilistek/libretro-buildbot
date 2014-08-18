@@ -20,4 +20,5 @@ done
 
 # let's clean up docker
 echo "Cleaning up unneeded docker images."
+docker rm $(docker ps -a -q)
 docker images | grep '<none>' |  awk '{print $3}'  | xargs docker rmi || echo "No docker cleaning needed."
