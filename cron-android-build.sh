@@ -32,7 +32,7 @@ do
   PARENT=`dirname $f`
   FILE_NAME=`basename $f`
   mv $f ${PARENT}/${TODAY_IS}_${FILE_NAME}
-  ln -s ${PARENT}/${TODAY_IS}_${FILE_NAME} ${PARENT}/latest_${FILE_NAME}
+  ln -sf ${PARENT}/${TODAY_IS}_${FILE_NAME} ${PARENT}/latest_${FILE_NAME}
 done
 
 mkdir -p /home/buildbot/www/nightly/
