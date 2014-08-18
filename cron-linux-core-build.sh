@@ -13,7 +13,7 @@ docker run --cpuset="0,1,2" libretro/core-builder
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 mkdir -p /home/buildbot/staging/linux/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/core-build.log 2>&1
+docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/core-build.txt 2>&1
 
 rm `find /home/buildbot/staging/ -name *.info`
 ALL_CORES=`find /home/buildbot/staging/ -name *.so`
