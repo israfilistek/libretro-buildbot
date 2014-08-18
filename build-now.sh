@@ -4,8 +4,6 @@
 
 #TODO: need to loop through ARCH strings to grab all cores
 
-/root/libretro-super/libretro-config.sh
-
 # grabs the latest code for all of libretro
 update_code()
 {
@@ -13,6 +11,7 @@ update_code()
   cd /root/
   repo sync
   repo forall -c git submodule update --init
+  /root/libretro-super/libretro-config.sh
 }
 
 # builds the front end
