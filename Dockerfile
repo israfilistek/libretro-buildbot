@@ -8,14 +8,14 @@ RUN yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/fedora/
 RUN yum distro-sync -y --nogpgcheck full
 
 # setup repo
-RUN yum install -y python python-gnupg git
+RUN yum install --nogpgcheck -y python python-gnupg git
 RUN git config --global user.email "buildbot@none.com"
 RUN git config --global user.name "Build Bot"
 ADD https://storage.googleapis.com/git-repo-downloads/repo /bin/repo
 RUN chmod a+x /bin/repo
 
 # setup ccache
-RUN yum install -y ccache
+RUN yum install --nogpgcheck -y ccache
 RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
 RUN cp /usr/bin/ccache /usr/local/bin/
@@ -36,10 +36,10 @@ ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/build-no
 RUN chmod a+x /bin/build-now.sh
 
 # for packaging outputs
-RUN yum install -y p7zip
+RUN yum install --nogpgcheck -y p7zip
 
 # for working in the image
-RUN yum install -y vim
+RUN yum install --nogpgcheck -y vim
 
 # build once now to populate ccache
 RUN build-now.sh linux_retroarch
