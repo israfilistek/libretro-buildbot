@@ -3,6 +3,7 @@ FROM fedora:20
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
+RUN yum install -y deltarpm
 RUN yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 RUN yum distro-sync -y full
 
