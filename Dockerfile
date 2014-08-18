@@ -1,8 +1,10 @@
+# this builds the frontend for Fedora 20
 FROM fedora:20
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN yum update -y
+RUN yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+RUN yum distro-sync -y full
 
 # setup repo
 RUN yum install -y python python-gnupg git
@@ -23,7 +25,7 @@ RUN ln -s ccache /usr/local/bin/c++
 RUN ccache -M 6
 
 # all the front-end dependancies
-RUN yum install -y make automake clang gcc gcc-c++ mesa-libEGL-devel libv4l-devel libxkbcommon-devel mesa-libgbm-devel Cg libCg zlib-devel freetype-devel libxml2-devel ffmpeg-devel SDL2-devel SDL-devel python3 libCg
+RUN yum install -y make automake clang gcc gcc-c++ mesa-libEGL-devel libv4l-devel libxkbcommon-devel mesa-libgbm-devel Cg libCg zlib-devel freetype-devel libxml2-devel ffmpeg-devel SDL2-devel SDL-devel python3-devel libXv-devel
 
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
