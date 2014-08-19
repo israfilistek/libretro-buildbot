@@ -96,7 +96,7 @@ android_all()
     KEYSTORE_PASSWORD=libretro
     sed -i 's/com\.retroarch/com\.retroarchdebug/g' `grep -lr 'com.retroarch' /root/libretro-super/retroarch/android/phoenix`
     mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch /root/libretro-super/retroarch/android/phoenix/src/com/retroarchdebug
-    sed -i 's,<string name="app_name">RetroArch</string>,<string name="app_name">RetroArch Dev</string>,g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
+    sed -i 's,<string name="app_name">[^<]*</string>,<string name="app_name">RetroArch Dev</string>,g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
     sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
     ant debug
     mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
