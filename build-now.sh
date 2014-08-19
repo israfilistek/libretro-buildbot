@@ -80,24 +80,22 @@ android_all()
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean and build
-  
   ant clean
   
-  # sign the apk
   KEYSTORE=/root/android-tools/my-release-key.keystore
-  if [ $KEYSTORE_PASSWORD ]; then
+  if [ $KEYSTORE_PASSWORD ]; then #release build case
     echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
     ant release
     curl ${KEYSTORE_URL} > ${KEYSTORE}
+    # sign the apk
     jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass ${KEYSTORE_PASSWORD} -keystore ${KEYSTORE} /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
     rm ${KEYSTORE}
     # zipalign
     `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
-  else
+  else #debug(nighlty) build case
     KEYSTORE_PASSWORD=libretro
-    sed -i 's/com\.retroarch/com\.retroarch\.debug/g' `grep -lr 'com.retroarch' .`
-    mkdir -p /root/libretro-super/retroarch/android/phoenix/src/com/retroarch/debug
-    mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch/browser /root/libretro-super/retroarch/android/phoenix/src/com/retroarch/debug/
+    sed -i 's/com\.retroarch/com\.retroarchdebug/g' `grep -lr 'com.retroarch' /root/libretro-super/retroarch/android/phoenix`
+    mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch /root/libretro-super/retroarch/android/phoenix/src/com/retroarchdebug
     sed -i 's/app_name">RetroArch/app_name">RetroArch Dev/g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
     ant debug
     mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
