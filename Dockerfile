@@ -3,7 +3,7 @@ FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # Android setup section
-RUN pacman -Suy --noconfirm apache-ant
+RUN pacman -Suy --noconfirm apache-ant python3 nvidia-cg-toolkit
 RUN mkdir /root/android-tools
 
 # Android SDK
