@@ -33,19 +33,30 @@ linux_retroarch()
 
 windows_cores()
 {
-  ARCH="x86"
-  echo "Building windows cores..."
-  # build cores
-  rm -rf /root/libretro-super/dist/windows*
-  cd /root/libretro-super
-  CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+  declare -a ARCHES=("x86_64" "x86")
+
+  for a in "${ARCHES[@]}"
+  do
+    echo "Building ${a} windows cores..."
+    # build cores
+    rm -rf /root/libretro-super/dist/win*
+    cd /root/libretro-super
+    if [[ ${a} == "x86" ]]
+    then
+      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+    fi
+    if [[ ${a} == "x86_64" ]]
+    then
+      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+    fi
   
-  rm -rf /staging/windows/${ARCH}/cores/
-  mkdir -p /staging/windows/${ARCH}/cores
-  cd /root/libretro-super
-  platform=mingw ./libretro-install.sh /staging/windows/${ARCH}/cores
+    rm -rf /staging/windows/${a}/cores/
+    mkdir -p /staging/windows/${a}/cores
+    cd /root/libretro-super
+    platform=mingw ./libretro-install.sh /staging/windows/${a}/cores
   
-  7za a -r /staging/windows/${ARCH}/cores.7z /staging/windows/${ARCH}/cores/*
+    7za a -r /staging/windows/${a}/cores.7z /staging/windows/${a}/cores/*
+  done
 }
 
 # builds all the cores
