@@ -75,24 +75,29 @@ android_all()
   cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
+  # clean before building
+  cd /root/libretro-super/retroarch/android/phoneix && ant clean -Dndk.dir=/root/android-tools/android-ndk
+  
   KEYSTORE=/root/android-tools/my-release-key.keystore
   if [ $KEYSTORE_PASSWORD ]; then #release build case
-    cd /root/libretro-super/retroarch/android && rm -rf phoenix
-    cd /root/libretro-super/retroarch/android $$ git stash
     echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
-    cd /root/libretro-super/retroarch/android/phoneix && ant clean -Dndk.dir=/root/android-tools/android-ndk
+    
+    # release build
     cd /root/libretro-super/retroarch/android/phoneix && ant release -Dndk.dir=/root/android-tools/android-ndk
+    
+    #download the keystore
     curl ${KEYSTORE_URL} > ${KEYSTORE}
+    
     # sign the apk
     jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass ${KEYSTORE_PASSWORD} -keystore ${KEYSTORE} /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
+    
+    # delete the keystore
     rm ${KEYSTORE}
+    
     # zipalign
     `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
   else #debug(nighlty) build case
-    KEYSTORE_PASSWORD=libretro
-    cd /root/libretro-super/retroarch/android && rm -rf phoenix
-    cd /root/libretro-super/retroarch/android $$ git stash
-    cd /root/libretro-super/retroarch/android/phoneix && ant clean -Dndk.dir=/root/android-tools/android-ndk
+    # KEYSTORE_PASSWORD=libretro
     
     # this hacks a new "debug" version of RetroArch that can be installed alongside the play store version for testing
     sed -i 's/com\.retroarch/com\.retroarchdebug/g' `grep -lr 'com\.retroarch' /root/libretro-super/retroarch/android/phoenix`
@@ -102,15 +107,22 @@ android_all()
     sed -i 's,<string name="app_name">[^<]*</string>,<string name="app_name">RetroArch Dev</string>,g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
     sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
     
+    # build debug apk
     cd /root/libretro-super/retroarch/android/phoneix && ant debug -Dndk.dir=/root/android-tools/android-ndk
-    mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk || true
+    mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
   fi
   
   rm -rf /staging/android/${ARCH}/*
   mkdir -p /staging/android/${ARCH}/cores
+  
+  # copy the binaries to staging
   cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${ARCH}/cores/
   7za a -r /staging/android/${ARCH}/cores.7z /staging/android/${ARCH}/cores/*
   cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${ARCH}/RetroArch.apk
+  
+  # let's not leave the debug mess here
+  cd /root/libretro-super/retroarch/android && rm -rf phoenix
+  cd /root/libretro-super/retroarch/android $$ git stash
 }
 
 
