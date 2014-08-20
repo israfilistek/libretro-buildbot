@@ -3,7 +3,18 @@ FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # packages required to build cores for windows
-RUN pacman -Suy --noconfirm mingw-w64-toolchain
+RUN pacman -Suy --noconfirm mingw-w64-toolchain 
+
+# setup ccache for this toolchain
+RUN cp /usr/bin/ccache /usr/local/bin/
+RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-gcc
+RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-g++
+RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-cc
+RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-c++
+RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-gcc
+RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-g++
+RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-cc
+RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-c++
 
 # for working in the image
 RUN pacman -Suy --noconfirm vim
