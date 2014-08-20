@@ -14,7 +14,7 @@ update_code()
   /root/libretro-super/libretro-config.sh
 }
 
-# builds the front end
+# builds the front end for linux
 linux_retroarch()
 {
   ARCH="x86_64" 
@@ -31,6 +31,7 @@ linux_retroarch()
   7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
 }
 
+# builds the windows cores
 windows_cores()
 {
   declare -a ARCHES=("x86_64" "x86")
@@ -57,7 +58,7 @@ windows_cores()
   done
 }
 
-# builds all the cores
+# builds the linux cores
 linux_cores()
 {
   ARCH="x86_64"
@@ -72,11 +73,10 @@ linux_cores()
   cd /root/libretro-super
   ./libretro-install.sh /staging/linux/${ARCH}/cores
   
-  
   7za a -r /staging/linux/${ARCH}/cores.7z /staging/linux/${ARCH}/cores/*
 }
 
-# builds the android frontend and cores and packages into an apk
+# builds the android frontend and cores and packages them into an apk
 android_all()
 {
   declare -a ARCHES=("x86_64" "armeabi-v7a")
@@ -91,9 +91,11 @@ android_all()
     
     # build cores
     rm -rf /root/libretro-super/dist/android/${a}/*
-    if [[ ${a} == "*64*" ]]; then 
+    if [[ ${a} == "*64*" ]]; then
+      64_STRING="64"
       ln -sf /root/android-tools/android-ndk64/ndk-build /bin/ndk-build
     else
+      64_STRING=""
       ln -sf /root/android-tools/android-ndk/ndk-build /bin/ndk-build
     fi
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
@@ -111,13 +113,9 @@ android_all()
     cp -r /root/libretro-super/retroarch/media/shaders_glsl /root/libretro-super/retroarch/android/phoenix/assets/
     cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
     cp -r /root/libretro-super/retroarch/media/autoconfig/android/* /root/libretro-super/retroarch/android/phoenix/assets/autoconfig/
-    
-    if [[ ${a} == "*64*" ]]; then 
-      # clean before building
-      64_STRING="64"
-    else
-      64_STRING=""
+      
     fi
+    # clean before building
     cd /root/libretro-super/retroarch/android/phoenix && ant clean -Dndk.dir=/root/android-tools/android-ndk${64_STRING}
     
     KEYSTORE=/root/android-tools/my-release-key.keystore
