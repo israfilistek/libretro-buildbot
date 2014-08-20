@@ -33,7 +33,7 @@ linux_retroarch()
 
 windows_cores()
 {
-  ARCH="x86_64"
+  ARCH="x86"
   echo "Building windows cores..."
   # build cores
   rm -rf /root/libretro-super/dist/windows*
