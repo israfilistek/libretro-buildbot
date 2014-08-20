@@ -16,8 +16,8 @@ ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/d
 ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/debug.keystore /root/.android/debug.keystore
 
 #need to be able to run 32bit programs for some SDK pieces
-RUN echo "[multilib]" >> /etc/pacman.conf 
-RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf 
+RUN echo "[multilib]" >> /etc/pacman.conf
+RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 RUN pacman -Suy --noconfirm lib32-glibc lib32-zlib lib32-ncurses lib32-gcc-libs
 
 # Android NDK for 32 bit targets
@@ -40,11 +40,13 @@ RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk64
 
 # standalone NDK32 (platform 9 too low?)
 RUN mkdir /root/android-tools/ndk-toolchain
-RUN /root/android-tools/android-ndk/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain
+RUN /root/android-tools/android-ndk/build/tools/make-standalone-toolchain.sh --platform=android-9 --toolchain=arm-linux-androideabi-4.8 --install-dir=/root/android-tools/ndk-toolchain
+# --toolchain here should be one of: arm-linux-androideabi-4.6 arm-linux-androideabi-4.8 arm-linux-androideabi-clang3.3 arm-linux-androideabi-clang3.4 llvm-3.3 llvm-3.4 mipsel-linux-android-4.6 mipsel-linux-android-4.8 mipsel-linux-android-clang3.3 mipsel-linux-android-clang3.4 renderscript x86-4.6 x86-4.8 x86-clang3.3 x86-clang3.4
 
-# standalone NDK64 (android-L is the loest available at the moment)
+# standalone NDK64
 RUN mkdir /root/android-tools/ndk-toolchain64
-RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh --platform=android-L --install-dir=/root/android-tools/ndk-toolchain64
+RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh --platform=android-L --toolchain=x86_64-4.9  --install-dir=/root/android-tools/ndk-toolchain64
+# --toolchain here should be one of: aarch64-linux-android-4.9 aarch64-linux-android-clang3.4 arm-linux-androideabi-4.9 llvm-3.4 mips64el-linux-android-4.9 mips64el-linux-android-clang3.4 mipsel-linux-android-4.9 x86-4.9 x86_64-4.9 x86_64-clang3.4
 
 # for optional signing of release  apk
 # RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
