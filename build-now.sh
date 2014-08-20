@@ -9,7 +9,6 @@ update_code()
   cd /root/
   repo sync
   repo forall -c git submodule update --init
-  /root/libretro-super/libretro-config.sh
 }
 
 # builds the front end for linux
@@ -97,7 +96,8 @@ android_all()
     export PATH=$PATH:${NDK_DIR}
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
     
-    # build frontend
+    # build frontend                  
+    echo "android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix"
     android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix
     
     # setup paths
@@ -158,11 +158,14 @@ android_all()
     
   done
   
+  rm /root/libretro-super/libretro-config-user.sh
+  
   # let's not leave the debug mess in libretro-super/retroarch/android 
   cd /root/libretro-super/retroarch/android && rm -rf phoenix
   cd /root/libretro-super/retroarch/android && git stash
 }
 
+/root/libretro-super/libretro-config.sh
 
 if [ $1 ]; then
   update_code
