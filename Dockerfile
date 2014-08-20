@@ -42,9 +42,9 @@ RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk64
 RUN mkdir /root/android-tools/ndk-toolchain
 RUN /root/android-tools/android-ndk/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain
 
-# standalone NDK64 (platform 9 too low?)
+# standalone NDK64 (android-L is the loest available at the moment)
 RUN mkdir /root/android-tools/ndk-toolchain64
-RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain64
+RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh --platform=android-L --install-dir=/root/android-tools/ndk-toolchain64
 
 # for optional signing of release  apk
 # RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
