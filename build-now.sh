@@ -41,12 +41,10 @@ windows_cores()
     # build cores
     rm -rf /root/libretro-super/dist/win*
     cd /root/libretro-super
-    if [[ ${a} == "x86" ]]
-    then
+    if [[ ${a} == "x86" ]]; then
       CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
     fi
-    if [[ ${a} == "x86_64" ]]
-    then
+    if [[ ${a} == "x86_64" ]]; then
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh
     fi
   
