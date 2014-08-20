@@ -122,7 +122,7 @@ android_all()
   
   # let's not leave the debug mess here
   cd /root/libretro-super/retroarch/android && rm -rf phoenix
-  cd /root/libretro-super/retroarch/android $$ git stash
+  cd /root/libretro-super/retroarch/android && git stash
 }
 
 
