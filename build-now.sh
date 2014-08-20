@@ -92,12 +92,11 @@ android_all()
     # build cores
     rm -rf /root/libretro-super/dist/android/${b}/*
     if [[ ${b} == "*64*" ]]; then
-      STRING_64="64"
-      ln -sf /root/android-tools/android-ndk64/ndk-build /bin/ndk-build
+      export NDK_DIR=/root/android-tools/android-ndk64
     else
-      STRING_64=""
-      ln -sf /root/android-tools/android-ndk/ndk-build /bin/ndk-build
+      export NDK_DIR=/root/android-tools/android-ndk
     fi
+    export PATH=$PATH:${NDK_DIR}
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
     
     # build frontend
@@ -115,14 +114,14 @@ android_all()
     cp -r /root/libretro-super/retroarch/media/autoconfig/android/* /root/libretro-super/retroarch/android/phoenix/assets/autoconfig/
       
     # clean before building
-    cd /root/libretro-super/retroarch/android/phoenix && ant clean -Dndk.dir=/root/android-tools/android-ndk${STRING_64}
+    cd /root/libretro-super/retroarch/android/phoenix && ant clean -Dndk.dir=${NDK_DIR}
     
     KEYSTORE=/root/android-tools/my-release-key.keystore
     if [ $KEYSTORE_PASSWORD ]; then #release build case
       echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
       
       # release build
-      cd /root/libretro-super/retroarch/android/phoenix && ant release -Dndk.dir=/root/android-tools/android-ndk${STRING_64}
+      cd /root/libretro-super/retroarch/android/phoenix && ant release -Dndk.dir=${NDK_DIR}
       
       #download the keystore
       curl ${KEYSTORE_URL} > ${KEYSTORE}
@@ -147,7 +146,7 @@ android_all()
       sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
       
       # build debug apk
-      cd /root/libretro-super/retroarch/android/phoenix && ant debug -Dndk.dir=/root/android-tools/android-ndk${STRING_64}
+      cd /root/libretro-super/retroarch/android/phoenix && ant debug -Dndk.dir=${NDK_DIR}
       mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
     fi
     
