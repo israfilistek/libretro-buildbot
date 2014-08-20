@@ -14,7 +14,8 @@ rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 mkdir -p /home/buildbot/staging/android/build-logs/
 docker logs $(docker ps -l -q) > /home/buildbot/staging/android/build-logs/build.txt 2>&1
-cat -n /home/buildbot/staging/android/build-logs/build.txt > /home/buildbot/staging/android/build-logs/build.txt
+cat -n /home/buildbot/staging/android/build-logs/build.txt > /home/buildbot/staging/android/build-logs/build_num.txt
+mv /home/buildbot/staging/android/build-logs/build_num.txt /home/buildbot/staging/android/build-logs/build.txt
 
 ALL_CORES=`find /home/buildbot/staging/ -name *.so`
 for c in $ALL_CORES
