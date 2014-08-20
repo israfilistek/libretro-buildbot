@@ -76,14 +76,14 @@ android_all()
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean before building
-  cd /root/libretro-super/retroarch/android/phoneix && ant clean -Dndk.dir=/root/android-tools/android-ndk
+  cd /root/libretro-super/retroarch/android/phoenix && ant clean -Dndk.dir=/root/android-tools/android-ndk
   
   KEYSTORE=/root/android-tools/my-release-key.keystore
   if [ $KEYSTORE_PASSWORD ]; then #release build case
     echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
     
     # release build
-    cd /root/libretro-super/retroarch/android/phoneix && ant release -Dndk.dir=/root/android-tools/android-ndk
+    cd /root/libretro-super/retroarch/android/phoenix && ant release -Dndk.dir=/root/android-tools/android-ndk
     
     #download the keystore
     curl ${KEYSTORE_URL} > ${KEYSTORE}
@@ -108,7 +108,7 @@ android_all()
     sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
     
     # build debug apk
-    cd /root/libretro-super/retroarch/android/phoneix && ant debug -Dndk.dir=/root/android-tools/android-ndk
+    cd /root/libretro-super/retroarch/android/phoenix && ant debug -Dndk.dir=/root/android-tools/android-ndk
     mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
   fi
   
