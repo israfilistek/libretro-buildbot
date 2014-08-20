@@ -114,7 +114,6 @@ android_all()
     cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
     cp -r /root/libretro-super/retroarch/media/autoconfig/android/* /root/libretro-super/retroarch/android/phoenix/assets/autoconfig/
       
-    fi
     # clean before building
     cd /root/libretro-super/retroarch/android/phoenix && ant clean -Dndk.dir=/root/android-tools/android-ndk${64_STRING}
     
