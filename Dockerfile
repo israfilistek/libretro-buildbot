@@ -29,6 +29,10 @@ ENV PATH $PATH:/root/android-tools/android-ndk
 #ENV ndk.dir /root/android-tools/android-ndk
 ENV NDK_TOOLCHAIN_VERSION 4.8
 
+# standalone NDK (platform 9 too low?)
+RUN mkdir /root/android-tools/ndk-toolchain
+RUN /root/android-tools/android-ndk/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain
+
 # for optional signing of release  apk
 RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
