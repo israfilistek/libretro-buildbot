@@ -31,11 +31,28 @@ linux_retroarch()
   7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
 }
 
+windows_cores()
+{
+  ARCH="x86_64"
+  echo "Building windows cores..."
+  # build cores
+  rm -rf /root/libretro-super/dist/windows*
+  cd /root/libretro-super
+  ./libretro-build-win.sh
+  
+  rm -rf /staging/windows/${ARCH}/cores/
+  mkdir -p /staging/windows/${ARCH}/cores
+  #cd /root/libretro-super
+  #./libretro-install.sh /staging/linux/${ARCH}/cores
+  
+  7za a -r /staging/windows/${ARCH}/cores.7z /staging/windows/${ARCH}/cores/*
+}
+
 # builds all the cores
 linux_cores()
 {
   ARCH="x86_64"
-  echo "Building cores..."
+  echo "Building linux cores..."
   # build cores
   rm -rf /root/libretro-super/dist/unix*
   cd /root/libretro-super
