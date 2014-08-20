@@ -38,7 +38,7 @@ windows_cores()
   # build cores
   rm -rf /root/libretro-super/dist/windows*
   cd /root/libretro-super
-  CC=/usr/bin/i686-w64-mingw32-gcc CXX=/usr/bin/i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+  CC="ccache /usr/bin/i686-w64-mingw32-gcc" CXX="ccache /usr/bin/i686-w64-mingw32-g++" platform=mingw ./libretro-build.sh
   
   rm -rf /staging/windows/${ARCH}/cores/
   mkdir -p /staging/windows/${ARCH}/cores
