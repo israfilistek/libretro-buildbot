@@ -71,8 +71,6 @@ linux_cores()
 android_all()
 {
   ARCH="armeabi-v7a"
-  export NDK_TOOLCHAIN_VERSION=4.8
-  export ANDROID_HOME=/root/android-tools/android-sdk-linux 
   echo "Building for Android ..."
   # build cores
   rm -rf /root/libretro-super/dist/android/${ARCH}/*
