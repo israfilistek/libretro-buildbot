@@ -36,25 +36,25 @@ windows_cores()
 {
   declare -a ARCHES=("x86_64" "x86")
 
-  for a in "${ARCHES[@]}"
+  for b in "${ARCHES[@]}"
   do
-    echo "Building ${a} windows cores..."
+    echo "Building ${b} windows cores..."
     # build cores
     rm -rf /root/libretro-super/dist/win*
     cd /root/libretro-super
-    if [[ ${a} == "x86" ]]; then
+    if [[ ${b} == "x86" ]]; then
       CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
     fi
-    if [[ ${a} == "x86_64" ]]; then
+    if [[ ${b} == "x86_64" ]]; then
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh
     fi
   
-    rm -rf /staging/windows/${a}/cores/
-    mkdir -p /staging/windows/${a}/cores
+    rm -rf /staging/windows/${b}/cores/
+    mkdir -p /staging/windows/${b}/cores
     cd /root/libretro-super
-    platform=mingw ./libretro-install.sh /staging/windows/${a}/cores
+    platform=mingw ./libretro-install.sh /staging/windows/${b}/cores
   
-    7za a -r /staging/windows/${a}/cores.7z /staging/windows/${a}/cores/*
+    7za a -r /staging/windows/${b}/cores.7z /staging/windows/${b}/cores/*
   done
 }
 
@@ -84,14 +84,14 @@ android_all()
   #convert shaders
   cd /root/libretro-super/retroarch && make -f Makefile.griffin shaders-convert-glsl
   
-  for a in "${ARCHES[@]}"
+  for b in "${ARCHES[@]}"
   do
-    echo "Building for ${a} Android ..."
-    echo "export TARGET_ABIS=\"${a}\"" > /root/libretro-super/libretro-config-user.sh
+    echo "Building for ${b} Android ..."
+    echo "export TARGET_ABIS=\"${b}\"" > /root/libretro-super/libretro-config-user.sh
     
     # build cores
-    rm -rf /root/libretro-super/dist/android/${a}/*
-    if [[ ${a} == "*64*" ]]; then
+    rm -rf /root/libretro-super/dist/android/${b}/*
+    if [[ ${b} == "*64*" ]]; then
       STRING_64="64"
       ln -sf /root/android-tools/android-ndk64/ndk-build /bin/ndk-build
     else
@@ -108,7 +108,7 @@ android_all()
     mkdir -p /root/libretro-super/retroarch/android/phoenix/assets/autoconfig
     
     # copy cores and other assets
-    cp -r /root/libretro-super/dist/android/${a} /root/libretro-super/retroarch/android/phoenix/assets/cores
+    cp -r /root/libretro-super/dist/android/${b} /root/libretro-super/retroarch/android/phoenix/assets/cores
     cp -r /root/libretro-super/dist/info /root/libretro-super/retroarch/android/phoenix/assets/
     cp -r /root/libretro-super/retroarch/media/shaders_glsl /root/libretro-super/retroarch/android/phoenix/assets/
     cp -r /root/libretro-super/retroarch/media/overlays /root/libretro-super/retroarch/android/phoenix/assets/
@@ -151,13 +151,13 @@ android_all()
       mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
     fi
     
-    rm -rf /staging/android/${a}/*
-    mkdir -p /staging/android/${a}/cores
+    rm -rf /staging/android/${b}/*
+    mkdir -p /staging/android/${b}/cores
     
     # copy the binaries to staging
-    cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${a}/cores/
-    7za a -r /staging/android/${a}/cores.7z /root/libretro-super/dist/android/${a}/*
-    cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${a}/RetroArch.apk
+    cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${b}/cores/
+    7za a -r /staging/android/${b}/cores.7z /root/libretro-super/dist/android/${b}/*
+    cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${b}/RetroArch.apk
     
   done
   
