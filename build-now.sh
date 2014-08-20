@@ -117,7 +117,7 @@ android_all()
   
   # copy the binaries to staging
   cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${ARCH}/cores/
-  7za a -r /staging/android/${ARCH}/cores.7z /staging/android/${ARCH}/cores/*
+  7za a -r /staging/android/${ARCH}/cores.7z /root/libretro-super/dist/android/${ARCH}/*
   cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${ARCH}/RetroArch.apk
   
   # let's not leave the debug mess here
