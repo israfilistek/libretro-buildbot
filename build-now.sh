@@ -87,7 +87,7 @@ android_all()
   for a in "${ARCHES[@]}"
   do
     echo "Building for ${a} Android ..."
-    echo ' export TARGET_ABIS="${a}"'
+    echo "export TARGET_ABIS=\"${a}\"" > /root/libretro-super/libretro-config-user.sh
     
     # build cores
     rm -rf /root/libretro-super/dist/android/${a}/*
