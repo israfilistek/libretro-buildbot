@@ -55,18 +55,15 @@ android_all()
 {
   ARCH="armeabi-v7a"
   NDK_TOOLCHAIN_VERSION=4.8
+  ANDROID_HOME=/root/android-tools/android-sdk-linux 
   echo "Building for Android ..."
   # build cores
   rm -rf /root/libretro-super/dist/android/${ARCH}/*
   cd /root/libretro-super/
   ./libretro-build-android-mk.sh
   
-  # build frontend
-  cd /root/libretro-super/retroarch/android/phoenix
-  android update project --path .
-  echo "ndk.dir=/root/android-tools/android-ndk" >> local.properties
-  android update project --path libs/googleplay/
-  android update project --path libs/appcompat/
+  # build frontend TODO: use RA_ANDROID_API here
+  android update project --target android-20 --subprojects --path /root/libretro-super/retroarch/android/phoenix
   
   # setup paths
   rm -rf /root/libretro-super/retroarch/android/phoenix/assets
@@ -80,12 +77,14 @@ android_all()
   cp -r /root/libretro-super/retroarch/media/autoconfig /root/libretro-super/retroarch/android/phoenix/assets/
   
   # clean and build
-  ant clean
+  ant clean -Dndk.dir=/root/android-tools/android-ndk
   
   KEYSTORE=/root/android-tools/my-release-key.keystore
   if [ $KEYSTORE_PASSWORD ]; then #release build case
+    rm -rf /root/libretro-super/retroarch/android/phoenix
+    cd /root/libretro-super/retroarch && git stash
     echo "Release build using KEYSTORE_PASSWORD and KEYSTORE_URL environment variables."
-    ant release
+    ant release -Dndk.dir=/root/android-tools/android-ndk
     curl ${KEYSTORE_URL} > ${KEYSTORE}
     # sign the apk
     jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass ${KEYSTORE_PASSWORD} -keystore ${KEYSTORE} /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk retroarch
@@ -94,12 +93,19 @@ android_all()
     `find /root/android-tools/android-sdk-linux/ -name zipalign` -v 4 /root/libretro-super/retroarch/android/phoenix/bin/retroarch-release-unsigned.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
   else #debug(nighlty) build case
     KEYSTORE_PASSWORD=libretro
-    sed -i 's/com\.retroarch/com\.retroarchdebug/g' `grep -lr 'com.retroarch' /root/libretro-super/retroarch/android/phoenix`
-    mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch /root/libretro-super/retroarch/android/phoenix/src/com/retroarchdebug
+    rm -rf /root/libretro-super/retroarch/android/phoenix
+    cd /root/libretro-super/retroarch && git stash
+    
+    # this hacks a new "debug" version of RetroArch that can be installed alongside the play store version for testing
+    sed -i 's/com\.retroarch/com\.retroarchdebug/g' `grep -lr 'com\.retroarch' /root/libretro-super/retroarch/android/phoenix`
+    sed -i 's/com_retroarch/com_retroarchdebug/g' `grep -lr 'com_retroarch' /root/libretro-super/retroarch/android/phoenix`
+    mv /root/libretro-super/retroarch/android/phoenix/src/com/retroarch /root/libretro-super/retroarch/android/phoenix/src/com/retroarchdebug || true
+    mv /root/libretro-super/retroarch/android/phoenix/jni/native/com_retroarch_browser_NativeInterface.h /root/libretro-super/retroarch/android/phoenix/jni/native/com_retroarchdebug_browser_NativeInterface.h  || true
     sed -i 's,<string name="app_name">[^<]*</string>,<string name="app_name">RetroArch Dev</string>,g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
     sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
-    ant debug
-    mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
+    
+    ant debug -Dndk.dir=/root/android-tools/android-ndk
+    mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk || true
   fi
   
   rm -rf /staging/android/${ARCH}/*
