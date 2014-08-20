@@ -11,6 +11,9 @@ ADD https://dl.google.com/android/android-sdk_r23.0.2-linux.tgz /root/android-to
 RUN tar -xvf /root/android-tools/android-sdk.tgz -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-sdk.tgz
 ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
+ENV ANDROID_HOME /root/android-tools/android-sdk-linux
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/debug.keystore /.android/debug.keystore
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/debug.keystore /root/.android/debug.keystore
 
 #need to be able to run 32bit programs for some SDK pieces
 RUN echo "[multilib]" >> /etc/pacman.conf 
@@ -23,6 +26,8 @@ RUN tar -xvf /root/android-tools/android-ndk.tar.bz2 -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-ndk.tar.bz2
 RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk
 ENV PATH $PATH:/root/android-tools/android-ndk
+#ENV ndk.dir /root/android-tools/android-ndk
+ENV NDK_TOOLCHAIN_VERSION 4.8
 
 # for optional signing of release  apk
 RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
