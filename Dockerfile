@@ -20,21 +20,34 @@ RUN echo "[multilib]" >> /etc/pacman.conf
 RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf 
 RUN pacman -Suy --noconfirm lib32-glibc lib32-zlib lib32-ncurses lib32-gcc-libs
 
-# Android NDK
+# Android NDK for 32 bit targets
 ADD https://dl.google.com/android/ndk/android-ndk32-r10-linux-x86_64.tar.bz2 /root/android-tools/android-ndk.tar.bz2
 RUN tar -xvf /root/android-tools/android-ndk.tar.bz2 -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-ndk.tar.bz2
 RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk
-ENV PATH $PATH:/root/android-tools/android-ndk
+#ENV PATH $PATH:/root/android-tools/android-ndk
 #ENV ndk.dir /root/android-tools/android-ndk
-ENV NDK_TOOLCHAIN_VERSION 4.8
+#ENV NDK_TOOLCHAIN_VERSION 4.8
 
-# standalone NDK (platform 9 too low?)
+# Android NDK for 64 bit targets
+ADD https://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 /root/android-tools/android-ndk64.tar.bz2
+RUN tar -xvf /root/android-tools/android-ndk64.tar.bz2 -C /root/android-tools/
+RUN rm -rf /root/android-tools/android-ndk64.tar.bz2
+RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk64
+#ENV PATH $PATH:/root/android-tools/android-ndk
+#ENV ndk.dir /root/android-tools/android-ndk
+#ENV NDK_TOOLCHAIN_VERSION 4.8
+
+# standalone NDK32 (platform 9 too low?)
 RUN mkdir /root/android-tools/ndk-toolchain
 RUN /root/android-tools/android-ndk/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain
 
+# standalone NDK64 (platform 9 too low?)
+RUN mkdir /root/android-tools/ndk-toolchain64
+RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh --platform=android-9 --install-dir=/root/android-tools/ndk-toolchain64
+
 # for optional signing of release  apk
-RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
+# RUN keytool -genkey -v -keystore /root/android-tools/my-release-key.keystore -alias retroarch -keyalg RSA -keysize 2048 -validity 10000 -storepass libretro -keypass libretro -dname "cn=localhost, ou=IT, o=libretro, c=US"
 
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
