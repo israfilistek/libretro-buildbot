@@ -19,6 +19,7 @@ RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
 
 # add the build script
 ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/build-now.sh /bin/build-now.sh
+RUN chmod a+x /bin/build-now.sh
 
 # build once now to populate ccache
 RUN build-now.sh windows_cores
