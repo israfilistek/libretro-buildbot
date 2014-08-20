@@ -1,5 +1,5 @@
 #!/bin/bash -e
-# this script lives in the webserver and triggers the linux cores build and
+# this script lives in the webserver and triggers the windows cores build and
 # readies the files it generates for http consumption
 
 TODAY_IS=`date +"%Y-%m-%d"`
@@ -13,8 +13,9 @@ docker run --cpuset="0,1,2" libretro/win-core-builder
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 mkdir -p /home/buildbot/staging/windows/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/windows/build-logs/core-build.txt 2>&1
-#cat -n /home/buildbot/staging/windows/build-logs/core-build.txt > /home/buildbot/staging/windows/build-logs/core-build.txt
+docker logs $(docker ps -l -q) > /home/buildbot/staging/windows/build-logs/build.txt 2>&1
+cat -n /home/buildbot/staging/windows/build-logs/build.txt > /home/buildbot/staging/windows/build-logs/build_num.txt
+mv /home/buildbot/staging/windows/build-logs/build_num.txt /home/buildbot/staging/windows/build-logs/build.txt
 
 rm `find /home/buildbot/staging/ -name *.info`
 ALL_CORES=`find /home/buildbot/staging/ -name *.dll`
