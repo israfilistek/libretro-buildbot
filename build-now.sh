@@ -9,6 +9,9 @@ update_code()
   cd /root/
   repo sync
   repo forall -c git submodule update --init
+  
+  # this must go here because otherwise it might not exist
+  . ./root/libretro-super/libretro-config.sh
 }
 
 # builds the front end for linux
@@ -169,8 +172,6 @@ android_all()
   cd /root/libretro-super/retroarch/android && rm -rf phoenix
   cd /root/libretro-super/retroarch/android && git stash
 }
-
-. ./root/libretro-super/libretro-config.sh
 
 if [ $1 ]; then
   update_code
