@@ -97,7 +97,6 @@ android_all()
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
     
     # build frontend                  
-    echo "android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix"
     android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix
     
     # setup paths
