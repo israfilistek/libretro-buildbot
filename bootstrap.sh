@@ -14,6 +14,6 @@ repo forall -c git submodule update --init
 if [ $1 ]; then
   echo "Building $1..."
   cp /root/libretro-super/libretro-buildbot/build-now.sh /bin/build-now.sh
-  chmod a+x /bin/build-now.sh
+  chmod a+x /bin/build-now.sh $2
   build-now.sh $1
 fi
