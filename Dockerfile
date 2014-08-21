@@ -32,10 +32,6 @@ RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libas
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
 
-# add the build script
-ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/build-now.sh /bin/build-now.sh
-RUN chmod a+x /bin/build-now.sh
-
 # for packaging outputs
 RUN apt-get install -y p7zip-full
 
@@ -45,9 +41,14 @@ RUN nightly-build linux_retroarch
 # for working in the image
 RUN apt-get install -y vim
 
+# add the bootstrap script
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstrap.sh /bin/bootstrap.sh
+RUN chmod a+x /bin/bootstrap.sh
+
 # build once now to populate ccache
-RUN build-now.sh linux_retroarch
+RUN bootstrap.sh linux_retroarch
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD build-now.sh linux_retroarch
+CMD bootstrap.sh linux_retroarch
+
