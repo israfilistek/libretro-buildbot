@@ -5,11 +5,12 @@
 # grabs the latest code for all of libretro
 update_code()
 {
-  echo "Updating code..."
-  cd /root/
-  repo sync
-  repo forall -c git submodule update --init
-  
+  if [ -z "$NOSYNC" ]; then
+    echo "Updating code..."
+    cd /root/
+    repo sync
+    repo forall -c git submodule update --init
+  fi  
   # this must go here because otherwise it might not exist
   cd /root/libretro-super && . ./libretro-config.sh
 }
