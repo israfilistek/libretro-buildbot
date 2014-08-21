@@ -11,7 +11,7 @@ update_code()
   repo forall -c git submodule update --init
   
   # this must go here because otherwise it might not exist
-  cd /root/libretro-super && . ./root/libretro-super/libretro-config.sh
+  cd /root/libretro-super && . ./libretro-config.sh
 }
 
 # builds the front end for linux
