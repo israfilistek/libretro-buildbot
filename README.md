@@ -24,22 +24,26 @@ Now that the binaries have been built, you must copy them out of the build envir
 `docker cp $(docker ps -l -q):/staging/ .`  
 That copies the build output into your current working directory. 
 
-### Substituting upstream repos
-If you wish to replace any of the upstream git repositories with your own personal repositories during the build process, insert a local.xml file into a folder /root/.repo/local_manifests. This file tells the repo tool to remove the upstream project you want to replace and adds yours in place. For example, if you have your own personal repository for scummvm at https://github.com/l3iggs/scummvm your local.xml manifest file might look like:
+### Using the buildbot in your developement workflow
+Let's say you'd like to make a change to [RetroArch](https://github.com/libretro/RetroArch). Fork it to your own github account and create a new branch, "test-branch" and make whatever changes you'd like and commit & push them. Now you must formulate an xml file like this:
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <remove-project name="libretro/libretro-scummvm"/>
+  <remove-project name="libretro/RetroArch"/>
   <remote fetch="https://github.com/l3iggs/" name="mygithub"/>
-  <project name="scummvm" path="libretro-super/libretro-scummvm" remote="mygithub" />
+  <project name="RetroArch" path="libretro-super/retroarch" remote="mygithub" revision="test-branch" />
 </manifest>
+```
+This disables the upstream RetroArch repo (libretro/RetroArch) and uses test-branch of your repo in place of it. Now paste this xml into http://pastebin.com/ and get the link to the raw paste you just created (the url will look something  like this if you've done it properly: http://pastebin.com/raw.php?i=2QDA3cqE) You can now issue, say  
+```bash
+docker run --env MANIFEST_URL=http://pastebin.com/raw.php?i=2QDA3cqE libretro/android-build
 ```  
-To actually create the file in the proper location, you'll have to "chroot" to inside the docker image:  
-`docker run -i -t libretro/core-builder /bin/bash`  
-Once you've added your local.xml file to /root/.repo/local_manifests you should update the source code tree to reflect the change you just made:  
-`cd /root/ && repo sync && repo forall -c git submodule update --init`  
-Then build the project  
-`build-now.sh linux_cores`  
+to build the entire libretro project with your change and generate an .apk. Don't forget to `docker cp $(docker ps -l -q):/staging/ .` to extract your binaries from the build image.  
+If you'd like to compile only one android core after your change, say dinothwar, then issue  
+```bash
+docker run --env MANIFEST_URL=http://pastebin.com/raw.php?i=2QDA3cqE libretro/android-build bootstrap.sh android_all build_libretro_dinothawr
+```
+
 
 ### Take all projects back in time
 If you wish to, say compile an android APK with the entire code base in some previous state that you can pick by date:
@@ -49,5 +53,5 @@ cd /root
 repo forall -c 'git checkout `git rev-list --all -n1 --before="2014-08-15 15:00"`'
 /root/libretro-super/libretro-buildbot/build-now.sh android_all
 exit
-`docker cp $(docker ps -l -q):/staging/ .`
+docker cp $(docker ps -l -q):/staging/ .
 ```
