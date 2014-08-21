@@ -165,7 +165,7 @@ android_all()
   cd /root/libretro-super/retroarch/android && git stash
 }
 
-/root/libretro-super/libretro-config.sh
+. ./root/libretro-super/libretro-config.sh
 
 if [ $1 ]; then
   update_code
