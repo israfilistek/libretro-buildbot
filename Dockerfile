@@ -1,5 +1,5 @@
-# this builds the frontend for Fedora 21
-FROM fedora:21
+# this builds the frontend for Fedora Rawhide
+FROM fedora:rawhide
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
