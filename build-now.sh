@@ -17,6 +17,7 @@ linux_retroarch()
   make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
   
   7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
+  rm -rf /staging/linux/${ARCH}/RetroArch/file
 }
 
 # builds the windows cores
