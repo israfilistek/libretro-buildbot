@@ -92,7 +92,9 @@ android_all()
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
     
     # build frontend
-    android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix
+    cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && android update project --target ${RA_ANDROID_API} --path .
+    cd /root/libretro-super/retroarch/android/phoenix/libs/googleplay && android update project --target ${RA_ANDROID_API} --path .
+    cd /root/libretro-super/retroarch/android/phoenix && android update project --target ${RA_ANDROID_API} --path .
     
     # setup paths
     rm -rf /root/libretro-super/retroarch/android/phoenix/assets
