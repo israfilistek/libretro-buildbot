@@ -11,9 +11,10 @@ cd /root/
 repo sync
 repo forall -c git submodule update --init
 
+cp /root/libretro-super/libretro-buildbot/build-now.sh /bin/build-now.sh
+chmod a+x /bin/build-now.sh
+
 if [ $1 ]; then
-  echo "Building $1..."
-  cp /root/libretro-super/libretro-buildbot/build-now.sh /bin/build-now.sh
-  chmod a+x /bin/build-now.sh $2
-  build-now.sh $1
+  echo "Building $1 $2..."
+  build-now.sh $1 $2
 fi
