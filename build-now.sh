@@ -31,10 +31,10 @@ windows_cores()
     rm -rf /root/libretro-super/dist/win*
     cd /root/libretro-super
     if [[ ${a} == "x86" ]]; then
-      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh $2
     fi
     if [[ ${a} == "x86_64" ]]; then
-      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh
+      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh $2
     fi
   
     rm -rf /staging/windows/${a}/cores/
@@ -54,7 +54,7 @@ linux_cores()
   # build cores
   rm -rf /root/libretro-super/dist/unix*
   cd /root/libretro-super
-  ./libretro-build.sh
+  ./libretro-build.sh $2
   
   rm -rf /staging/linux/${ARCH}/cores/
   mkdir -p /staging/linux/${ARCH}/cores
