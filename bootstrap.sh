@@ -1,11 +1,11 @@
 #!/bin/bash -e
 
-if [ -z "MANIFEST_URL" ]; then
+if [ -z "$MANIFEST_URL" ]; then
   echo "Updating code..."
 else
   echo "Updating code using custom repositories..."
   mkdir -p /root/.repo/local_manifests
-  curl MANIFEST_URL > /root/.repo/local_manifests/my_manifest.xml
+  curl $MANIFEST_URL > /root/.repo/local_manifests/my_manifest.xml
 fi
 cd /root/
 repo sync
