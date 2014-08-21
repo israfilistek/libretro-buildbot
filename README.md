@@ -34,12 +34,12 @@ Let's say you'd like to make a change to [RetroArch](https://github.com/libretro
   <project name="RetroArch" path="libretro-super/retroarch" remote="mygithub" revision="test-branch" />
 </manifest>
 ```
-This disables the upstream RetroArch repo (libretro/RetroArch) and uses test-branch of your repo in place of it. Now paste this xml into http://pastebin.com/ and get the link to the raw paste you just created (the url will look something  like this if you've done it properly: http://pastebin.com/raw.php?i=2QDA3cqE) You can now issue, say  
+This disables the upstream RetroArch repo (libretro/RetroArch) and uses test-branch of your repo in place of it. Now paste this xml into http://pastebin.com/ and get the link to the raw paste you just created (the url will look something  like this if you've done it properly: http://pastebin.com/raw.php?i=2QDA3cqE). You can now issue, say:  
 ```bash
 docker run --env MANIFEST_URL=http://pastebin.com/raw.php?i=2QDA3cqE libretro/android-build
 ```  
 to build the entire libretro project with your change and generate an .apk. Don't forget to `docker cp $(docker ps -l -q):/staging/ .` to extract your binaries from the build image.  
-If you'd like to compile only one android core after your change, say dinothwar, then issue  
+If you'd like to compile only one android core after your change, say dinothwar, then issue:  
 ```bash
 docker run --env MANIFEST_URL=http://pastebin.com/raw.php?i=2QDA3cqE libretro/android-build bootstrap.sh android_all build_libretro_dinothawr
 ```
