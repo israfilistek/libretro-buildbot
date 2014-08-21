@@ -4,9 +4,11 @@
 # @daily curl https://raw.githubusercontent.com/libretro/libretro-buildbot/master/cron-master.sh > /home/buildbot/cron-master.sh; chmod a+x /home/buildbot/cron-master.sh; /home/buildbot/cron-master.sh;
 # ^^ this *should be* the only manual step required to installing this buildbot
 # everything else *shoudld be* automated and self-updating from code in this repository
-# this requires that there is a directroy /home/buildbot and the caller
-# has write access to that directory and can use the docker command
+# the scrips herin are all hardcoded to assume that there is a directroy /home/buildbot
+# and that output binaries should go into /home/buildbot/www
+# it also assumes the caller has write access to that directory and can use the docker command
 
+# this list defines the list of things that get done when the build bot is fired off by cron
 # these should be names of scripts in https://github.com/libretro/libretro-buildbot/tree/master
 declare -a BUILD_SCRIPTS=("cron-android-build.sh" "cron-linux-core-build.sh" "cron-wondows-core-build.sh")
 
@@ -18,7 +20,7 @@ do
   /home/buildbot/${s}
 done
 
-# let's clean up docker
+# docker cleanup (if you're not careful, docker loves to eat disk space)
 echo "Cleaning up unneeded docker images."
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
