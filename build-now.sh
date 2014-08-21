@@ -76,27 +76,31 @@ linux_cores()
 # builds the android frontend and cores and packages them into an apk
 android_all()
 {
-  declare -a ARCHES=("x86_64" "armeabi-v7a")
+  IFS=' ' read -ra ABIS <<< "$TARGET_ABIS"
   
   #convert shaders
   cd /root/libretro-super/retroarch && make -f Makefile.griffin shaders-convert-glsl
   
-  for a in "${ARCHES[@]}"
+  OLD_PATH=$PATH
+  
+  for a in "${ABIS[@]}"
   do
     echo "Building for ${a} Android ..."
+    
+    # this allows all the cores to be build for one ABI at a time
     echo "export TARGET_ABIS=\"${a}\"" > /root/libretro-super/libretro-config-user.sh
     
     # build cores
     rm -rf /root/libretro-super/dist/android/${a}/*
     if [[ ${a} == "*64*" ]]; then
-      export NDK_DIR=/root/android-tools/android-ndk64
+      NDK_DIR=/root/android-tools/android-ndk64
     else
-      export NDK_DIR=/root/android-tools/android-ndk
+      NDK_DIR=/root/android-tools/android-ndk
     fi
-    export PATH=$PATH:${NDK_DIR}
+    export PATH=$OLD_PATH:${NDK_DIR}
     cd /root/libretro-super/ && ./libretro-build-android-mk.sh
     
-    # build frontend                  
+    # build frontend
     android update project --target ${RA_ANDROID_API} --subprojects --path /root/libretro-super/retroarch/android/phoenix
     
     # setup paths
@@ -156,6 +160,8 @@ android_all()
     cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${a}/RetroArch.apk
     
   done
+  
+  export PATH=$OLD_PATH
   
   rm /root/libretro-super/libretro-config-user.sh
   
