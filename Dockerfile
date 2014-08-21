@@ -20,7 +20,7 @@ RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-c++
 RUN pacman -Suy --noconfirm vim
 
 # for packaging outputs
-RUN pacman -Suy --noconfirm p7zip
+RUN pacman -Suy --noconfirm p7zip zip
 
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
