@@ -40,3 +40,14 @@ Once you've added your local.xml file to /root/.repo/local_manifests you should 
 `cd /root/ && repo sync && repo forall -c git submodule update --init`  
 Then build the project  
 `build-now.sh linux_cores`  
+
+### Take all projects back in time
+If you wish to, say compile an android APK with the entire code base in some previous state that you can pick by date:
+```bash
+docker run -i -t libretro/android-builder /bin/bash  
+cd /root
+repo forall -c 'git checkout `git rev-list --all -n1 --before="2014-08-15 15:00"`'
+NOSYNC=1 build-now.sh android_all
+exit
+`docker cp $(docker ps -l -q):/staging/ .`
+```
