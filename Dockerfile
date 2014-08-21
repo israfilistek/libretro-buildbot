@@ -31,19 +31,19 @@ RUN yum install --nogpgcheck -y make automake clang gcc gcc-c++ mesa-libEGL-deve
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
 
-# add the build script
-ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/build-now.sh /bin/build-now.sh
-RUN chmod a+x /bin/build-now.sh
-
 # for packaging outputs
 RUN yum install --nogpgcheck -y p7zip
 
 # for working in the image
 RUN yum install --nogpgcheck -y vim
 
+# add the bootstrap script
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstrap.sh /bin/bootstrap.sh
+RUN chmod a+x /bin/bootstrap.sh
+
 # build once now to populate ccache
-RUN build-now.sh linux_retroarch
+RUN bootstrap.sh linux_retroarch
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD build-now.sh linux_retroarch
+CMD bootstrap.sh linux_retroarch
