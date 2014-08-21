@@ -2,19 +2,6 @@
 # this script lives in each of the Docker build images and initiates and
 # manages fetching new code and doing the actual compilation and moving the generated binaries to /staging
 
-# grabs the latest code for all of libretro
-update_code()
-{
-  if [ -z "$NOSYNC" ]; then
-    echo "Updating code..."
-    cd /root/
-    repo sync
-    repo forall -c git submodule update --init
-  fi  
-  # this must go here because otherwise it might not exist
-  cd /root/libretro-super && . ./libretro-config.sh
-}
-
 # builds the front end for linux
 linux_retroarch()
 {
@@ -175,6 +162,6 @@ android_all()
 }
 
 if [ $1 ]; then
-  update_code
+  cd /root/libretro-super && . ./libretro-config.sh
   $1 || echo "Non-zero return from build."
 fi
