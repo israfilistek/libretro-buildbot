@@ -26,24 +26,17 @@ windows_frontend()
   for a in "${ARCHES[@]}"
   do
     echo "Building ${a} windows frontend..."
-    cd /root/libretro-super
+    cd /root/libretro-super/retroarch
     if [[ ${a} == "x86" ]]; then
-      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./retroarch-build.sh
+      # CROSS_COMPILE=i686-w64-mingw32- ./configure
+      C_INCLUDE_PATH=/usr/i686-w64-mingw32/include/SDL:/usr/i686-w64-mingw32/include/libxml2/:/usr/i686-w64-mingw32/include/freetype2  HOST_PREFIX=i686-w64-mingw32- make -f Makefile.win clean
+      C_INCLUDE_PATH=/usr/i686-w64-mingw32/include/SDL:/usr/i686-w64-mingw32/include/libxml2/:/usr/i686-w64-mingw32/include/freetype2  HOST_PREFIX=i686-w64-mingw32- make -f Makefile.win
     fi
     if [[ ${a} == "x86_64" ]]; then
-      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./retroarch-build.sh
+      C_INCLUDE_PATH=/usr/x86_64-w64-mingw32/include/SDL:/usr/x86_64-w64-mingw32/include/libxml2/:/usr/x86_64-w64-mingw32/include/freetype2  HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win clean
+      C_INCLUDE_PATH=/usr/x86_64-w64-mingw32/include/SDL:/usr/x86_64-w64-mingw32/include/libxml2/:/usr/x86_64-w64-mingw32/include/freetype2  HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win
     fi
-    
-      # ln -s /usr/i686-w64-mingw32/include/SDL/*
-      # ln -s /usr/x86_64-w64-mingw32/include/libxml2/libxml/ .
-      # ln -s /usr/x86_64-w64-mingw32/include/freetype2/* .
-      # ln -s /usr/include/python3.4m/* .
-      # ln -s /usr/include/sys .
-      # ln -s /usr/x86_64-w64-mingw32/include/c++/4.9.1/parallel/* .
-      # ln -s /usr/include/bits .
-      # HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win
-      # CROSS_COMPILE=i686-w64-mingw32- ./configure
-    
+      
     rm -rf /staging/windows/${a}/RetroArch/*
     mkdir -p /staging/windows/${a}/RetroArch/files
     
