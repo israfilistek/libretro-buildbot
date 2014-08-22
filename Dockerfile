@@ -60,7 +60,7 @@ RUN python2 /root/android-tools/android-sdk-installer.py
 RUN pacman -Suy --noconfirm vim
 
 # for packaging outputs
-RUN pacman -Suy --noconfirm p7zip
+RUN pacman -Suy --noconfirm p7zip zip
 
 # enable ccache for NDK builds
 ENV NDK_CCACHE ccache
