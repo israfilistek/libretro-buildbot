@@ -13,10 +13,17 @@ docker run --cpuset="0,1,2" libretro/retroarch-fedora20-builder
 
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
-mkdir -p /home/buildbot/staging/android/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/android/build-logs/build.txt 2>&1
-cat -n /home/buildbot/staging/android/build-logs/build.txt > /home/buildbot/staging/android/build-logs/build_num.txt
-mv /home/buildbot/staging/android/build-logs/build_num.txt /home/buildbot/staging/android/build-logs/${LOG_NAME}
+
+shopt -s globstar
+for dir in /home/buildbot/staging/linux/*/; do
+  mkdir ${dir}/Fedora20
+  mv ${dir}/RetroArch.7z ${dir}/Fedora20/
+done
+
+mkdir -p /home/buildbot/staging/linux/build-logs/
+docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/build.txt 2>&1
+cat -n /home/buildbot/staging/linux/build-logs/build.txt > /home/buildbot/staging/linux/build-logs/build_num.txt
+mv /home/buildbot/staging/linux/build-logs/build_num.txt /home/buildbot/staging/linux/build-logs/${LOG_NAME}
 
 ALL_FILES=`find /home/buildbot/staging/ -type f`
 for f in $ALL_FILES
