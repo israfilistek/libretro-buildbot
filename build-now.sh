@@ -20,6 +20,31 @@ linux_retroarch()
   rm -rf /staging/linux/${ARCH}/RetroArch/files
 }
 
+windows_frontend()
+{
+  declare -a ARCHES=("x86_64" "x86")
+  for a in "${ARCHES[@]}"
+  do
+    echo "Building ${a} windows frontend..."
+    cd /root/libretro-super
+    if [[ ${a} == "x86" ]]; then
+      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./retroarch-build.sh
+    fi
+    if [[ ${a} == "x86_64" ]]; then
+      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./retroarch-build.sh
+    fi
+    
+    rm -rf /staging/windows/${a}/RetroArch/*
+    mkdir -p /staging/windows/${a}/RetroArch/files
+    
+    cd /root/libretro-super/retroarch/
+    platform=mingw make DESTDIR=/staging/windows/${a}/RetroArch/files install
+    
+    7za a -r /staging/linux/${a}/RetroArch.7z /staging/windows/${a}/RetroArch/files/*
+    rm -rf /staging/windows/${a}/RetroArch/files
+  done
+}
+
 # builds the windows cores
 windows_cores()
 {
