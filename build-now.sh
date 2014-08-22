@@ -34,6 +34,15 @@ windows_frontend()
       CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./retroarch-build.sh
     fi
     
+      # ln -s /usr/i686-w64-mingw32/include/SDL/*
+      # ln -s /usr/x86_64-w64-mingw32/include/libxml2/libxml/ .
+      # ln -s /usr/x86_64-w64-mingw32/include/freetype2/* .
+      # ln -s /usr/include/python3.4m/* .
+      # ln -s /usr/include/sys .
+      # ln -s /usr/x86_64-w64-mingw32/include/c++/4.9.1/parallel/* .
+      # ln -s /usr/include/bits .
+      # HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win
+    
     rm -rf /staging/windows/${a}/RetroArch/*
     mkdir -p /staging/windows/${a}/RetroArch/files
     
