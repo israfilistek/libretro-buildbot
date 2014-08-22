@@ -20,7 +20,8 @@ linux_retroarch()
   rm -rf /staging/linux/${ARCH}/RetroArch/files
 }
 
-windows_frontend()
+# builds windows cores and frontend
+windows_all()
 {
   declare -a ARCHES=("x86_64" "x86")
   for a in "${ARCHES[@]}"
@@ -28,50 +29,40 @@ windows_frontend()
     echo "Building ${a} windows frontend..."
     cd /root/libretro-super/retroarch
     if [[ ${a} == "x86" ]]; then
-      # CROSS_COMPILE=i686-w64-mingw32- ./configure
-      C_INCLUDE_PATH=/usr/i686-w64-mingw32/include/SDL:/usr/i686-w64-mingw32/include/libxml2/:/usr/i686-w64-mingw32/include/freetype2  HOST_PREFIX=i686-w64-mingw32- make -f Makefile.win clean
-      C_INCLUDE_PATH=/usr/i686-w64-mingw32/include/SDL:/usr/i686-w64-mingw32/include/libxml2/:/usr/i686-w64-mingw32/include/freetype2  HOST_PREFIX=i686-w64-mingw32- make -f Makefile.win
+      TOOLSTRING=i686
     fi
     if [[ ${a} == "x86_64" ]]; then
-      C_INCLUDE_PATH=/usr/x86_64-w64-mingw32/include/SDL:/usr/x86_64-w64-mingw32/include/libxml2/:/usr/x86_64-w64-mingw32/include/freetype2  HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win clean
-      C_INCLUDE_PATH=/usr/x86_64-w64-mingw32/include/SDL:/usr/x86_64-w64-mingw32/include/libxml2/:/usr/x86_64-w64-mingw32/include/freetype2  HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win
+      TOOLSTRING=x86_64
     fi
+    
+    # CROSS_COMPILE=i686-w64-mingw32- ./configure
+    C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win clean
+    C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win
       
-    rm -rf /staging/windows/${a}/RetroArch/*
+    rm -rf /staging/windows/${a}/RetroArch
     mkdir -p /staging/windows/${a}/RetroArch/files
     
     cd /root/libretro-super/retroarch/
     platform=mingw make DESTDIR=/staging/windows/${a}/RetroArch/files install
+    cp /usr/${TOOLSTRING}-w64-mingw32/bin/* /staging/windows/${a}/RetroArch/files
     
-    7za a -r /staging/linux/${a}/RetroArch.7z /staging/windows/${a}/RetroArch/files/*
-    rm -rf /staging/windows/${a}/RetroArch/files
-  done
-}
-
-# builds the windows cores
-windows_cores()
-{
-  declare -a ARCHES=("x86_64" "x86")
-
-  for a in "${ARCHES[@]}"
-  do
+    cd /staging/windows/${a}/RetroArch/files && zip -r ../RetroArch.zip *
+    
     echo "Building ${a} windows cores..."
-    # build cores
-    rm -rf /root/libretro-super/dist/win*
+    
+    rm -rf /root/libretro-super/dist/win/${a}
     cd /root/libretro-super
-    if [[ ${a} == "x86" ]]; then
-      CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++ platform=mingw ./libretro-build.sh $2
-    fi
-    if [[ ${a} == "x86_64" ]]; then
-      CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ platform=mingw ./libretro-build.sh $2
-    fi
-  
+    CC=${TOOLSTRING}-w64-mingw32-gcc CXX=${TOOLSTRING}-w64-mingw32-g++ STRIP=${TOOLSTRING}-w64-mingw32-strip platform=mingw ./libretro-build.sh $2
+    
     rm -rf /staging/windows/${a}/cores/
     mkdir -p /staging/windows/${a}/cores
-    cd /root/libretro-super
     platform=mingw ./libretro-install.sh /staging/windows/${a}/cores
-  
-    7za a -r /staging/windows/${a}/cores.7z /staging/windows/${a}/cores/*
+    cd /staging/windows/${a}/cores && zip -r ../cores.zip *
+    
+    cp /staging/windows/${a}/cores /staging/windows/${a}/RetroArch/files/
+    cd /staging/windows/${a}/RetroArch/files && zip -r ../../RetroArch_all.zip *
+    
+    rm -rf /staging/windows/${a}/RetroArch/files
   done
 }
 
