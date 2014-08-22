@@ -16,8 +16,8 @@ docker cp $(docker ps -l -q):/staging /home/buildbot/
 
 shopt -s globstar
 for dir in /home/buildbot/staging/linux/*/; do
-  mkdir ${dir}/Fedora20
-  mv ${dir}/RetroArch.7z ${dir}/Fedora20/
+  mkdir ${dir}/RetroArch/Fedora20
+  mv ${dir}/RetroArch.7z ${dir}/RetroArch/Fedora20/
 done
 
 mkdir -p /home/buildbot/staging/linux/build-logs/
