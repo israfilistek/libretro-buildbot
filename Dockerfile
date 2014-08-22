@@ -3,8 +3,8 @@ FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # packages required to build the frontend for windows
-RUN pacman -Suy --noconfirm mingw-w64-toolchain
-RUN yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2 mingw-w64-python
+RUN pacman -Suy --noconfirm mingw-w64-toolchain python
+RUN yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2
 
 #maybe one day this will work, but today it doesn't so i'm commenting it out
 #RUN yaourt -Sa --noconfirm mingw-w64-ffmpeg
