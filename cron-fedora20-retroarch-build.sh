@@ -21,9 +21,9 @@ for dir in /home/buildbot/staging/linux/*/; do
 done
 
 mkdir -p /home/buildbot/staging/linux/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/build.txt 2>&1
-cat -n /home/buildbot/staging/linux/build-logs/build.txt > /home/buildbot/staging/linux/build-logs/build_num.txt
-mv /home/buildbot/staging/linux/build-logs/build_num.txt /home/buildbot/staging/linux/build-logs/${LOG_NAME}
+docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/${LOG_NAME} 2>&1
+cat -n /home/buildbot/staging/linux/build-logs/${LOG_NAME} > /home/buildbot/staging/linux/build-logs/${LOG_NAME}_num.txt
+mv /home/buildbot/staging/linux/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/linux/build-logs/${LOG_NAME}
 
 ALL_FILES=`find /home/buildbot/staging/ -type f`
 for f in $ALL_FILES
