@@ -4,7 +4,7 @@ MAINTAINER l3iggs <l3iggs@live.com>
 
 # packages required to build the frontend for windows
 RUN pacman -Suy --noconfirm mingw-w64-toolchain
-yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-ffmpeg mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2 mingw-w64-python
+RUN yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-ffmpeg mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2 mingw-w64-python
 
 # setup ccache for this toolchain
 RUN cp /usr/bin/ccache /usr/local/bin/
