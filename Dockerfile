@@ -1,9 +1,10 @@
-# this builds the cores for windows
+# this builds the frontend for windows
 FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# packages required to build cores for windows
-RUN pacman -Suy --noconfirm mingw-w64-toolchain 
+# packages required to build the frontend for windows
+RUN pacman -Suy --noconfirm mingw-w64-toolchain
+yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-ffmpeg mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2 mingw-w64-python
 
 # setup ccache for this toolchain
 RUN cp /usr/bin/ccache /usr/local/bin/
@@ -30,8 +31,8 @@ ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstra
 RUN chmod a+x /bin/bootstrap.sh
 
 # build once now to populate ccache
-RUN bootstrap.sh windows_cores
+RUN bootstrap.sh windows_frontend
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD bootstrap.sh windows_cores
+CMD bootstrap.sh windows_frontend
