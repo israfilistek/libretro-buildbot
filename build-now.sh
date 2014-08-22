@@ -42,6 +42,7 @@ windows_frontend()
       # ln -s /usr/x86_64-w64-mingw32/include/c++/4.9.1/parallel/* .
       # ln -s /usr/include/bits .
       # HOST_PREFIX=x86_64-w64-mingw32- make -f Makefile.win
+      # CROSS_COMPILE=i686-w64-mingw32- ./configure
     
     rm -rf /staging/windows/${a}/RetroArch/*
     mkdir -p /staging/windows/${a}/RetroArch/files
