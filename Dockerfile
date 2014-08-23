@@ -19,3 +19,6 @@ RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
 ENV PATH /usr/lib/ccache/bin:$PATH
 RUN ccache -M 6
+
+#update all the packages every time this is used in a build downstream
+ONBUILD RUN pacman -Suy --noconfirm
