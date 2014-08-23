@@ -50,27 +50,3 @@ RUN pacman -Suy --noconfirm
 RUN yaourt -Sa --noconfirm mingw-w64-openjpeg
 RUN yaourt -Sa --noconfirm mingw-w64-libass
 RUN yaourt -Sa --noconfirm mingw-w64-ffmpeg
-RUN yaourt -Sa --noconfirm mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2
-
-# ffmpeg currently won't compile because mingw-w64-icu won't, so I'm leaving ffmpeg out for now
-WORKDIR /
-RUN yaourt -Sa --noconfirm mingw-w64-pkg-config mingw-w64-clang
-RUN pacman -Qdtq
-#RUN fdsafasd
-
-# setup ccache for this toolchain
-RUN cp /usr/bin/ccache /usr/local/bin/
-RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-gcc
-RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-g++
-RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-cc
-RUN ln -s ccache /usr/local/bin/i686-w64-mingw32-c++
-RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-gcc
-RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-g++
-RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-cc
-RUN ln -s ccache /usr/local/bin/x86_64-w64-mingw32-c++
-
-# for working in the image
-RUN pacman -Suy --noconfirm vim
-
-# for packaging outputs
-RUN pacman -Suy --noconfirm p7zip zip
