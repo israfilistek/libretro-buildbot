@@ -6,6 +6,7 @@ MAINTAINER l3iggs <l3iggs@live.com>
 RUN pacman -Suy --noconfirm mingw-w64-toolchain
 RUN echo MAKEFLAGS="-j`nproc`" >> /etc/makepkg.conf
 
+RUN yaourt -Sa --noconfirm --needed mingw-w64-gsm
 RUN yaourt -Sa --noconfirm --needed mingw-w64-fontconfig
 RUN yaourt -Sa --noconfirm --needed mingw-w64-lcms2
 
@@ -19,7 +20,6 @@ WORKDIR /
 
 RUN yaourt -Sa --noconfirm --needed mingw-w64-libunistring
 RUN yaourt -Sa --noconfirm --needed mingw-w64-icu
-RUN yaourt -Sa --noconfirm --needed mingw-w64-gsm
 RUN yaourt -Sa --noconfirm --needed mingw-w64-bzip2
 RUN yaourt -Sa --noconfirm --needed mingw-w64-crt
 RUN yaourt -Sa --noconfirm --needed mingw-w64-gnutls
