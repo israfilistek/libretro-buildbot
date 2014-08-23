@@ -81,7 +81,7 @@ linux_cores()
   cd /root/libretro-super
   ./libretro-install.sh /staging/linux/${ARCH}/cores
   
-  7za a -r /staging/linux/${ARCH}/cores.7z /staging/linux/${ARCH}/cores/*
+  cd /staging/linux/${ARCH}/cores/ && zip -r /staging/linux/${ARCH}/cores.zip *
 }
 
 # builds the android frontend and cores and packages them into an apk
@@ -169,7 +169,7 @@ android_all()
     
     # copy the binaries to staging
     cp /root/libretro-super/retroarch/android/phoenix/assets/cores/* /staging/android/${a}/cores/
-    7za a -r /staging/android/${a}/cores.7z /root/libretro-super/dist/android/${a}/*
+    cd /root/libretro-super/dist/android/${a}/ && zip -r /staging/android/${a}/cores.zip *
     cp /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk /staging/android/${a}/RetroArch.apk
     
   done
