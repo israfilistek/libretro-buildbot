@@ -27,6 +27,8 @@ windows_all()
   for a in "${ARCHES[@]}"
   do
     echo "Building ${a} windows frontend..."
+    # cd /root/libretro-super 
+    # HOST_CC=i686-w64-mingw32- platform=mingw ./retroarch-build.sh
     cd /root/libretro-super/retroarch
     if [[ ${a} == "x86" ]]; then
       TOOLSTRING=i686
@@ -36,7 +38,12 @@ windows_all()
     fi
     
     # CROSS_COMPILE=i686-w64-mingw32- ./configure
-    C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win clean
+    
+    # disable some stuff
+    sed -i 's/HAVE_RSOUND = 1/HAVE_RSOUND = 0/g' /root/libretro-super/retroarch/Makefile.win
+    sed -i 's/HAVE_PYTHON = 1/HAVE_PYTHON = 0/g' /root/libretro-super/retroarch/Makefile.win
+
+    platform=mingw make -f Makefile.win clean
     C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win
       
     rm -rf /staging/windows/${a}/RetroArch
