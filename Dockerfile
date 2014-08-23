@@ -6,17 +6,19 @@ MAINTAINER l3iggs <l3iggs@live.com>
 RUN pacman -Suy --noconfirm mingw-w64-toolchain
 RUN echo MAKEFLAGS="-j`nproc`" >> /etc/makepkg.conf
 
+RUN yaourt -Sa --noconfirm --needed mingw-w64-lcms2
+
 RUN mkdir /x264
 WORKDIR /x264
 RUN curl https://aur.archlinux.org/packages/mi/mingw-w64-x264/PKGBUILD > PKGBUILD
 RUN sed -i 's,source=(git://git\.videolan\.org/x264\.git#commit=aff928d2),source=(git://git\.videolan\.org/x264\.git#commit=ea0ca51e94323318b95bd8b27b7f9438cdcf4d9e),g' PKGBUILD
 RUN makepkg -s --asroot --noconfirm
 RUN pacman -U --noconfirm mingw-w64-x264-*
+WORKDIR /
 
 RUN yaourt -Sa --noconfirm --needed mingw-w64-libunistring
 RUN yaourt -Sa --noconfirm --needed mingw-w64-icu
 RUN yaourt -Sa --noconfirm --needed mingw-w64-gsm
-RUN yaourt -Sa --noconfirm --needed mingw-w64-lcms2
 RUN yaourt -Sa --noconfirm --needed mingw-w64-bzip2
 RUN yaourt -Sa --noconfirm --needed mingw-w64-crt
 RUN yaourt -Sa --noconfirm --needed mingw-w64-fontconfig
