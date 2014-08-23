@@ -185,5 +185,5 @@ android_all()
 
 if [ $1 ]; then
   cd /root/libretro-super && . ./libretro-config.sh
-  $1 || echo "Non-zero return from build."
+  $1
 fi
