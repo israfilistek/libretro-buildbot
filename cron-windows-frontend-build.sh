@@ -6,10 +6,10 @@ TODAY_IS=`date +"%Y-%m-%d"`
 LOG_NAME=frontend_windows.txt
 
 # ensure the image is up to date
-docker pull libretro/retroarch-win-builder
+docker pull libretro/win-builder
 
 # run the build
-docker run --cpuset="0,1,2" libretro/retroarch-win-builder
+docker run --cpuset="0,1,2" libretro/win-builder
 
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
