@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 # this script lives in each of the Docker build images and initiates and
 # manages fetching new code and doing the actual compilation and moving the generated binaries to /staging
 
