@@ -2,9 +2,6 @@
 FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
-# might fix some download issues 
-RUN chattr +i /etc/resolv.conf
-
 # packages required to build the frontend for windows
 RUN pacman -Suy --noconfirm mingw-w64-toolchain
 RUN echo MAKEFLAGS="-j`nproc`" >> /etc/makepkg.conf
