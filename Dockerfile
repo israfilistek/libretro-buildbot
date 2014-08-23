@@ -1,4 +1,4 @@
-#this builds the frontend for windows
+#this is the mess that crosscompiles ffmpeg for windows
 FROM libretro/arch-base:latest
 MAINTAINER l3iggs <l3iggs@live.com>
 
