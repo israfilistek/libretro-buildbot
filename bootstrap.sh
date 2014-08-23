@@ -16,7 +16,7 @@ chmod a+x /bin/build-now.sh
 
 if [ $1 ]; then
   echo "Building $1 $2..."
-  build-now.sh $1 $2 || echo "Non-zero returned from build-now.sh
+  build-now.sh $1 $2 || echo "Non-zero returned from build-now.sh"
 
   # clean up cruft from all builds, this prevents possible future code update issues
   cd /root && repo for all -c 'git clean -fd'
