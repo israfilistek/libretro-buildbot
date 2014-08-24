@@ -92,7 +92,7 @@ windows_all()
     rm -rf /root/libretro-super/dist/win
     cd /root/libretro-super
     # build cores
-    NOCLEAN=1 CC=${TOOLSTRING}-w64-mingw32-gcc CXX=${TOOLSTRING}-w64-mingw32-g++ STRIP=${TOOLSTRING}-w64-mingw32-strip platform=mingw ./libretro-build.sh $2
+    CC=${TOOLSTRING}-w64-mingw32-gcc CXX=${TOOLSTRING}-w64-mingw32-g++ STRIP=${TOOLSTRING}-w64-mingw32-strip platform=mingw ./libretro-build.sh $2
     
     #install cores and other assets
     rm -rf /staging/windows/${a}/cores/
