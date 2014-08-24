@@ -19,6 +19,17 @@ docker logs $(docker ps -l -q) > /home/buildbot/staging/windows/build-logs/${LOG
 cat -n /home/buildbot/staging/windows/build-logs/${LOG_NAME} > /home/buildbot/staging/windows/build-logs/${LOG_NAME}_num.txt
 mv /home/buildbot/staging/windows/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/windows/build-logs/${LOG_NAME}
 
+rm `find /home/buildbot/staging/ -name *.info`
+ALL_CORES=`find /home/buildbot/staging/ -name *.dll`
+for c in $ALL_CORES
+do
+  PARENT=`dirname $c`
+  CORE_NAME=`basename $c`
+  CORE_FOLDER=${PARENT}/${CORE_NAME%%.*}
+  mkdir ${CORE_FOLDER}
+  mv $c ${CORE_FOLDER}
+done
+
 ALL_FILES=`find /home/buildbot/staging/ -type f`
 for f in $ALL_FILES
 do
