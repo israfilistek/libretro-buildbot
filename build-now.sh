@@ -229,4 +229,7 @@ android_all()
 if [ $1 ]; then
   cd /root/libretro-super && . ./libretro-config.sh
   $1
+  
+  # show ccache stats
+  ccache -s
 fi
