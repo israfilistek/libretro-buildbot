@@ -49,23 +49,42 @@ windows_all()
     platform=mingw make -f Makefile.win clean
     # build frontend
     C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win
-      
+    
     rm -rf /staging/windows/${a}/*
     mkdir -p /staging/windows/${a}/RetroArch/files/bin
     mkdir -p /staging/windows/${a}/RetroArch/files/assets/autoconfig
+    mkdir -p /staging/windows/${a}/RetroArch/files/user-content
+    mkdir -p /staging/windows/${a}/RetroArch/files/save-files
+    mkdir -p /staging/windows/${a}/RetroArch/files/save-states
+    mkdir -p /staging/windows/${a}/RetroArch/files/system
+    mkdir -p /staging/windows/${a}/RetroArch/files/screenshots
     
     # "install" the front end
     cd /root/libretro-super/retroarch/
     # platform=mingw make DESTDIR=/staging/windows/${a}/RetroArch/files install
-    cp /root/libretro-super/retroarch/retroarch.cfg /staging/windows/${a}/RetroArch/files/retroarch.cfg
+    cp /root/libretro-super/retroarch/retroarch.cfg /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
     cp /root/libretro-super/retroarch/retroarch.exe /staging/windows/${a}/RetroArch/files/bin
     cp /root/libretro-super/retroarch//tools/retroarch-joyconfig.exe /staging/windows/${a}/RetroArch/files/bin
-    #cp /usr/${TOOLSTRING}-w64-mingw32/bin/*.dll* /staging/windows/${a}/RetroArch/files/bin
-    cp /usr/${TOOLSTRING}-w64-mingw32/bin/* /staging/windows/${a}/RetroArch/files/bin
+    #TODO: insert logic here to only copy the required dll files
+    cp /usr/${TOOLSTRING}-w64-mingw32/bin/*.dll* /staging/windows/${a}/RetroArch/files/bin
     cp -r /root/libretro-super/dist/info /staging/windows/${a}/RetroArch/files/assets/
     cp -r /root/libretro-super/retroarch/media/shaders /staging/windows/${a}/RetroArch/files/assets/
+    rm -rf /staging/windows/${a}/RetroArch/files/assets/shaders/.git
     cp -r /root/libretro-super/retroarch/media/autoconfig/winxinput/* /staging/windows/${a}/RetroArch/files/assets/autoconfig
     
+    # some sane defaults for .cfg
+    sed -i 's,# savefile_directory =,savefile_directory = ":\\..\\save-files",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# savestate_directory =,savefile_directory = ":\\..\\save-states",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# libretro_directory =,libretro_directory = ":\\..\\assets\\cores",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# libretro_info_path =,libretro_info_path = ":\\..\\assets\\info",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# system_directory =,system_directory = ":\\..\\system",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# rgui_browser_directory =,rgui_browser_directory = ":\\..",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# content_directory =,content_directory = ":\\..\\user-content",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# assets_directory =,assets_directory = ":\\..\\assets",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# video_shader_dir =,video_shader_dir = ":\\..\\assets\\shaders",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# joypad_autoconfig_dir  =,joypad_autoconfig_dir  = ":\\..\\assets\\autoconfig",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+    sed -i 's,# screenshot_directory =,screenshot_directory  = ":\\..\\screenshots",g' /staging/windows/${a}/RetroArch/files/bin/retroarch.cfg
+
     cd /staging/windows/${a}/RetroArch/files && zip -r ../RetroArch.zip *
     
     echo "Building ${a} windows cores..."
@@ -83,6 +102,7 @@ windows_all()
     cd /staging/windows/${a}/cores && zip -r ../cores.zip *
     
     cp -r /staging/windows/${a}/cores /staging/windows/${a}/RetroArch/files/assets/
+    rm -rf /staging/windows/${a}/RetroArch/files/assets/cores/*.info
     cd /staging/windows/${a}/RetroArch/files && zip -r ../../RetroArch_with_cores.zip *
     
     rm -rf /staging/windows/${a}/RetroArch/files
