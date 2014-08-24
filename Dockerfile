@@ -1,4 +1,4 @@
-FROM base/devel:latest
+FROM libretro/arch-base
 MAINTAINER l3iggs <l3iggs@live.com>
 
 #update pacman
@@ -22,7 +22,8 @@ RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 RUN pacman -Suy --noconfirm
 
 #install ffmpeg then remove anything unneeded
-RUN yaourt -Suya --noconfirm --needed mingw-w64-ffmpeg && pacman -Rsn --noconfirm $(pacman -Qdtq)
+RUN yaourt -Suya --noconfirm --needed mingw-w64-ffmpeg
+# RUN pacman -Rsn --noconfirm $(pacman -Qdtq)
 
 # disable multilib
 RUN head -n -2 /etc/pacman.conf > /etc/pacman.conf.new && mv /etc/pacman.conf.new /etc/pacman.conf
