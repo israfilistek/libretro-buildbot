@@ -50,15 +50,21 @@ windows_all()
     # build frontend
     C_INCLUDE_PATH=/usr/${TOOLSTRING}-w64-mingw32/include/SDL:/usr/${TOOLSTRING}-w64-mingw32/include/libxml2/:/usr/${TOOLSTRING}-w64-mingw32/include/freetype2  HOST_PREFIX=${TOOLSTRING}-w64-mingw32- make -f Makefile.win
       
-    rm -rf /staging/windows/${a}/RetroArch
-    mkdir -p /staging/windows/${a}/RetroArch/files
+    rm -rf /staging/windows/${a}/*
+    mkdir -p /staging/windows/${a}/RetroArch/files/bin
+    mkdir -p /staging/windows/${a}/RetroArch/files/assets/autoconfig
     
     # "install" the front end
     cd /root/libretro-super/retroarch/
     # platform=mingw make DESTDIR=/staging/windows/${a}/RetroArch/files install
-    cp /root/libretro-super/retroarch/retroarch.exe /staging/windows/${a}/RetroArch/files/
-    cp /root/libretro-super/retroarch//tools/retroarch-joyconfig.exe /staging/windows/${a}/RetroArch/files/
-    cp /usr/${TOOLSTRING}-w64-mingw32/bin/* /staging/windows/${a}/RetroArch/files/
+    cp /root/libretro-super/retroarch/retroarch.cfg /staging/windows/${a}/RetroArch/files/retroarch.cfg
+    cp /root/libretro-super/retroarch/retroarch.exe /staging/windows/${a}/RetroArch/files/bin
+    cp /root/libretro-super/retroarch//tools/retroarch-joyconfig.exe /staging/windows/${a}/RetroArch/files/bin
+    #cp /usr/${TOOLSTRING}-w64-mingw32/bin/*.dll* /staging/windows/${a}/RetroArch/files/bin
+    cp /usr/${TOOLSTRING}-w64-mingw32/bin/* /staging/windows/${a}/RetroArch/files/bin
+    cp -r /root/libretro-super/dist/info /staging/windows/${a}/RetroArch/files/assets/
+    cp -r /root/libretro-super/retroarch/media/shaders /staging/windows/${a}/RetroArch/files/assets/
+    cp -r /root/libretro-super/retroarch/media/autoconfig/winxinput/* /staging/windows/${a}/RetroArch/files/assets/autoconfig
     
     cd /staging/windows/${a}/RetroArch/files && zip -r ../RetroArch.zip *
     
@@ -69,12 +75,14 @@ windows_all()
     # build cores
     NOCLEAN=1 CC=${TOOLSTRING}-w64-mingw32-gcc CXX=${TOOLSTRING}-w64-mingw32-g++ STRIP=${TOOLSTRING}-w64-mingw32-strip platform=mingw ./libretro-build.sh $2
     
+    #install cores and other assets
     rm -rf /staging/windows/${a}/cores/
     mkdir -p /staging/windows/${a}/cores
     platform=mingw ./libretro-install.sh /staging/windows/${a}/cores
+    
     cd /staging/windows/${a}/cores && zip -r ../cores.zip *
     
-    cp -r /staging/windows/${a}/cores/ /staging/windows/${a}/RetroArch/files/
+    cp -r /staging/windows/${a}/cores /staging/windows/${a}/RetroArch/files/assets/
     cd /staging/windows/${a}/RetroArch/files && zip -r ../../RetroArch_with_cores.zip *
     
     rm -rf /staging/windows/${a}/RetroArch/files
