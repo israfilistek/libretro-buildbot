@@ -32,9 +32,11 @@ windows_all()
     cd /root/libretro-super/retroarch
     if [[ ${a} == "x86" ]]; then
       TOOLSTRING=i686
+      sed -i 's/HAVE_D3D9 = 0/HAVE_D3D9 = 1/g' /root/libretro-super/retroarch/Makefile.win
     fi
     if [[ ${a} == "x86_64" ]]; then
       TOOLSTRING=x86_64
+      sed -i 's/HAVE_D3D9 = 1/HAVE_D3D9 = 0/g' /root/libretro-super/retroarch/Makefile.win
     fi
     
     # CROSS_COMPILE=i686-w64-mingw32- ./configure
