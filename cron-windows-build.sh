@@ -14,10 +14,10 @@ docker run --cpuset="0,1,2" libretro/win-builder
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 
-mkdir -p /home/buildbot/staging/linux/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/${LOG_NAME} 2>&1
-cat -n /home/buildbot/staging/linux/build-logs/${LOG_NAME} > /home/buildbot/staging/linux/build-logs/${LOG_NAME}_num.txt
-mv /home/buildbot/staging/linux/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/linux/build-logs/${LOG_NAME}
+mkdir -p /home/buildbot/staging/windows/build-logs/
+docker logs $(docker ps -l -q) > /home/buildbot/staging/windows/build-logs/${LOG_NAME} 2>&1
+cat -n /home/buildbot/staging/windows/build-logs/${LOG_NAME} > /home/buildbot/staging/windows/build-logs/${LOG_NAME}_num.txt
+mv /home/buildbot/staging/windows/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/windows/build-logs/${LOG_NAME}
 
 ALL_FILES=`find /home/buildbot/staging/ -type f`
 for f in $ALL_FILES
