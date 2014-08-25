@@ -3,7 +3,7 @@
 # and readies the files it generates for http consumption
 
 TODAY_IS=`date +"%Y-%m-%d"`
-LOG_NAME=build.txt
+LOG_NAME=build
 
 # ensure the image is up to date
 docker pull libretro/win-builder
