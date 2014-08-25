@@ -3,6 +3,7 @@
 # readies the files it generates for http consumption
 
 TODAY_IS=`date +"%Y-%m-%d"`
+LOG_NAME=build
 
 # ensure the image is up to date
 docker pull libretro/android-builder
@@ -13,9 +14,9 @@ docker run --cpuset="0,1,2" libretro/android-builder
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 mkdir -p /home/buildbot/staging/android/build-logs/
-docker logs $(docker ps -l -q) > /home/buildbot/staging/android/build-logs/build.txt 2>&1
-cat -n /home/buildbot/staging/android/build-logs/build.txt > /home/buildbot/staging/android/build-logs/build_num.txt
-mv /home/buildbot/staging/android/build-logs/build_num.txt /home/buildbot/staging/android/build-logs/build.txt
+docker logs $(docker ps -l -q) | curl -XPOST http://hastebin.com/documents --data-binary @- > /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
+sed -i 's,{"key":",<meta http-equiv="refresh" content="0; url=http://hastebin.com/,g' /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
+sed -i 's,"}," />,g' /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
 
 ALL_CORES=`find /home/buildbot/staging/ -name *.so`
 for c in $ALL_CORES
