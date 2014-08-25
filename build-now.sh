@@ -201,6 +201,7 @@ android_all()
       mv /root/libretro-super/retroarch/android/phoenix/jni/native/com_retroarch_browser_NativeInterface.h /root/libretro-super/retroarch/android/phoenix/jni/native/com_debugretroarch_browser_NativeInterface.h  || true
       sed -i 's,<string name="app_name">[^<]*</string>,<string name="app_name">RetroArch Dev</string>,g' /root/libretro-super/retroarch/android/phoenix/res/values/strings.xml
       sed -i "s/android:versionCode=\"[0-9]*\"/android:versionCode=\"`date -u +%s`\"/g" /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
+      #sed -i 's/android:minSdkVersion="9"/android:minSdkVersion="L"/g' /root/libretro-super/retroarch/android/phoenix/AndroidManifest.xml
       
       # build debug apk
       cd /root/libretro-super/retroarch/android/phoenix && ant debug -Dndk.dir=${NDK_DIR}
