@@ -3,7 +3,7 @@
 # readies the files it generates for http consumption
 
 TODAY_IS=`date +"%Y-%m-%d"`
-LOG_NAME=cores.txt
+LOG_NAME=cores
 
 # ensure the image is up to date
 docker pull libretro/core-builder
