@@ -10,7 +10,7 @@
 
 # this list defines the list of things that get done when the build bot is fired off by cron
 # these should be names of scripts in https://github.com/libretro/libretro-buildbot/tree/master
-declare -a BUILD_SCRIPTS=("cron-android-build.sh" "cron-linux-core-build.sh" "cron-fedora20-retroarch-build.sh" "cron-wondows-build.sh")
+declare -a BUILD_SCRIPTS=("cron-android-build.sh" "cron-linux-core-build.sh" "cron-fedora20-retroarch-build.sh" "cron-windows-build.sh")
 
 # for each script, make sure it's up to date from the repo and then run it
 for s in "${BUILD_SCRIPTS[@]}"
