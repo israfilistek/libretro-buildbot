@@ -15,9 +15,9 @@ rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
 
 mkdir -p /home/buildbot/staging/windows/build-logs/
-docker logs $(docker ps -l -q) | curl -XPOST http://hastebin.com/documents --data-binary @- > /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
-sed -i 's,{"key":",<meta http-equiv="refresh" content="0; url=http://hastebin.com/,g' /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
-sed -i 's,"}," />,g' /home/buildbot/staging/linux/build-logs/${LOG_NAME}.html
+docker logs $(docker ps -l -q) > /home/buildbot/staging/android/build-logs/${LOG_NAME}.txt 2>&1
+cat -n /home/buildbot/staging/android/build-logs/${LOG_NAME}.txt > /home/buildbot/staging/android/build-logs/${LOG_NAME}_num.txt
+mv /home/buildbot/staging/android/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/android/build-logs/${LOG_NAME}.txt
 
 rm `find /home/buildbot/staging/ -name *.info`
 ALL_CORES=`find /home/buildbot/staging/ -name *.dll`
