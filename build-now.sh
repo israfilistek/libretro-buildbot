@@ -106,6 +106,9 @@ windows_all()
     cd /staging/windows/${a}/RetroArch/files && zip -r ../../RetroArch_with_cores.zip *
     
     rm -rf /staging/windows/${a}/RetroArch/files
+    
+    #cleanup changes to windows makefile
+    rm -rf /root/libretro-super/retroarch/Makefile.win && git stash
   done
 }
 
