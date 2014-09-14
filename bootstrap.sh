@@ -7,6 +7,12 @@ else
   mkdir -p /root/.repo/local_manifests
   curl $MANIFEST_URL > /root/.repo/local_manifests/my_manifest.xml
 fi
+
+#TODO: remove his hackfix
+#cleanup changes to windows makefile
+rm -rf /root/libretro-super/retroarch/Makefile.win
+cd /root/libretro-super/retroarch/ && git stash
+
 cd /root/
 repo sync
 repo forall -c git submodule update --init
