@@ -8,11 +8,6 @@ else
   curl $MANIFEST_URL > /root/.repo/local_manifests/my_manifest.xml
 fi
 
-#TODO: remove his hackfix
-#cleanup changes to windows makefile
-rm -rf /root/libretro-super/retroarch/Makefile.win
-cd /root/libretro-super/retroarch/ && git stash
-
 cd /root/
 repo sync
 repo forall -c git submodule update --init
@@ -26,4 +21,5 @@ if [ $1 ]; then
 
   # clean up cruft from all builds, this prevents possible future code update issues
   cd /root && repo forall -c 'git clean -fd'
+  cd /root && repo forall -c 'git reset --hard'
 fi
