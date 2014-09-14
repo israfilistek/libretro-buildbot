@@ -109,7 +109,8 @@ windows_all()
     rm -rf /staging/windows/${a}/RetroArch/files
     
     #cleanup changes to windows makefile
-    rm -rf /root/libretro-super/retroarch/Makefile.win && git stash
+    rm -rf /root/libretro-super/retroarch/Makefile.win
+    cd /root/libretro-super/retroarch/ && git stash
   done
 }
 
