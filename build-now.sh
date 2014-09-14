@@ -7,6 +7,7 @@ linux_retroarch()
 {
   ARCH="x86_64" 
   echo "Building RetroArch ..."
+  export STRIP=strip
   # build frontend
   cd /root/libretro-super
   ./retroarch-build.sh
@@ -117,6 +118,7 @@ linux_cores()
 {
   ARCH="x86_64"
   echo "Building linux cores..."
+  export STRIP=strip
   # build cores
   rm -rf /root/libretro-super/dist/unix*
   cd /root/libretro-super
