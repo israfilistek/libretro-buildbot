@@ -15,8 +15,7 @@ RUN yaourt -Suya --noconfirm --needed mingw-w64-ffmpeg
 # RUN pacman -Rsn --noconfirm $(pacman -Qdtq)
 
 # disable multilib
-RUN head -n -2 /etc/pacman.conf > /etc/pacman.conf.new && mv /etc/pacman.conf.
-new /etc/pacman.conf
+RUN head -n -2 /etc/pacman.conf > /etc/pacman.conf.new && mv /etc/pacman.conf.new /etc/pacman.conf
 RUN pacman -Suy --noconfirm
 
 # packages required to build the frontend and cores for windows
