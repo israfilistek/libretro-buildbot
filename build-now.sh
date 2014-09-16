@@ -31,13 +31,6 @@ windows_all()
     # cd /root/libretro-super 
     # HOST_CC=i686-w64-mingw32- platform=mingw ./retroarch-build.sh
     
-    if [[ ${ARCH} == "i686" ]]; then
-      sed -i 's/HAVE_D3D9 = 0/HAVE_D3D9 = 1/g' /root/libretro-super/retroarch/Makefile.win
-    fi
-    if [[ ${ARCH} == "x86_64" ]]; then
-      sed -i 's/HAVE_D3D9 = 1/HAVE_D3D9 = 0/g' /root/libretro-super/retroarch/Makefile.win
-    fi
-    
     cd /root/libretro-super/retroarch
     # CROSS_COMPILE=i686-w64-mingw32- ./configure
     
