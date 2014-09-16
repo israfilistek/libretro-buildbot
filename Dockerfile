@@ -20,6 +20,10 @@ RUN pacman -Suy --noconfirm
 
 # packages required to build the frontend and cores for windows
 RUN pacman -Suy --noconfirm mingw-w64
+
+#fix for missing d3d file for win64:
+RUN ln -s /usr/x86_64-w64-mingw32/lib/libd3dx9_43.a /usr/x86_64-w64-mingw32/lib/libd3dx9.a
+
 RUN yaourt -Suya --noconfirm --needed mingw-w64-zlib mingw-w64-nvidia-cg-toolkit mingw-w64-freetype mingw-w64-sdl mingw-w64-sdl2 mingw-w64-libxml2
 RUN yaourt -Suya --noconfirm --needed mingw-w64-pkg-config mingw-w64-clang
 #RUN pacman -Rsn --noconfirm $(pacman -Qdtq)
