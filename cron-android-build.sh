@@ -6,10 +6,10 @@ TODAY_IS=`date +"%Y-%m-%d"`
 LOG_NAME=build
 
 # ensure the image is up to date
-docker pull libretro/android-builder
+docker pull libretro/build-android
 
 # run the build
-docker run --cpuset="0,1,2" libretro/android-builder
+docker run --cpuset="0,1,2" libretro/build-android
 
 rm -rf /home/buildbot/staging
 docker cp $(docker ps -l -q):/staging /home/buildbot/
