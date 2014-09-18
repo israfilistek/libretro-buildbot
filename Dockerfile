@@ -12,8 +12,8 @@ RUN tar -xvf /root/android-tools/android-sdk.tgz -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-sdk.tgz
 ENV PATH $PATH:/root/android-tools/android-sdk-linux/tools
 ENV ANDROID_HOME /root/android-tools/android-sdk-linux
-ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/debug.keystore /.android/debug.keystore
-ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/debug.keystore /root/.android/debug.keystore
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/build-android/debug.keystore /.android/debug.keystore
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/build-android/debug.keystore /root/.android/debug.keystore
 
 #need to be able to run 32bit programs for some SDK pieces
 RUN echo "[multilib]" >> /etc/pacman.conf
@@ -53,7 +53,7 @@ RUN /root/android-tools/android-ndk64/build/tools/make-standalone-toolchain.sh -
 
 # update/install android sdk components
 RUN pacman -Suy --noconfirm expect
-ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/android-setup/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/build-android/android-sdk-installer.py /root/android-tools/android-sdk-installer.py
 RUN python2 /root/android-tools/android-sdk-installer.py
 
 # for working in the image
