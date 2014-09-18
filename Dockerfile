@@ -20,8 +20,8 @@ RUN echo "[multilib]" >> /etc/pacman.conf
 RUN echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
 RUN pacman -Suy --noconfirm lib32-glibc lib32-zlib lib32-ncurses lib32-gcc-libs
 
-# Android NDK for 32 bit targets
-ADD https://dl.google.com/android/ndk/android-ndk32-r10-linux-x86_64.tar.bz2 /root/android-tools/android-ndk.tar.bz2
+# Android NDK r10b for 32 bit targets
+ADD https://dl.google.com/android/ndk/android-ndk32-r10b-linux-x86_64.tar.bz2 /root/android-tools/android-ndk.tar.bz2
 RUN tar -xvf /root/android-tools/android-ndk.tar.bz2 -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-ndk.tar.bz2
 RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk
@@ -29,8 +29,8 @@ RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk
 #ENV ndk.dir /root/android-tools/android-ndk
 #ENV NDK_TOOLCHAIN_VERSION 4.8
 
-# Android NDK for 64 bit targets
-ADD https://dl.google.com/android/ndk/android-ndk64-r10-linux-x86_64.tar.bz2 /root/android-tools/android-ndk64.tar.bz2
+# Android NDK r10b for 64 bit targets
+ADD https://dl.google.com/android/ndk/android-ndk64-r10b-linux-x86_64.tar.bz2 /root/android-tools/android-ndk64.tar.bz2
 RUN tar -xvf /root/android-tools/android-ndk64.tar.bz2 -C /root/android-tools/
 RUN rm -rf /root/android-tools/android-ndk64.tar.bz2
 RUN mv /root/android-tools/android-ndk-* /root/android-tools/android-ndk64
