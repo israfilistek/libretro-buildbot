@@ -64,3 +64,17 @@ RUN pacman -Suy --noconfirm p7zip zip
 
 # enable ccache for NDK builds
 ENV NDK_CCACHE ccache
+
+# setup repo for this project
+RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
+
+# add the bootstrap script
+ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstrap.sh /bin/bootstrap.sh
+RUN chmod a+x /bin/bootstrap.sh
+
+# build once now to populate ccache
+RUN bootstrap.sh android_all
+
+# the commands above here set up the static image
+# the command below here gets executed by default when the container is "run" with the `docker run` command
+CMD bootstrap.sh android_all
