@@ -1,6 +1,6 @@
 #!/bin/bash
 # this script lives in each of the Docker build images and initiates and
-# manages fetching new code and doing the actual compilation and moving the generated binaries to /staging
+# manages doing the actual compilation and moving the generated binaries to /staging
 
 # builds the front end for linux
 linux_all()
@@ -19,8 +19,8 @@ linux_all()
     cd /root/libretro-super/retroarch/
     make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
   
-    7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
-    rm -rf /staging/linux/${ARCH}/RetroArch/files
+    #7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
+    
     
     echo "Building ${ARCH} linux cores..."
     # build cores
@@ -28,12 +28,13 @@ linux_all()
     cd /root/libretro-super
     ./libretro-build.sh $2
     
-    rm -rf /staging/linux/${ARCH}/cores/
-    mkdir -p /staging/linux/${ARCH}/cores
+    rm -rf /staging/linux/${ARCH}/files/cores/
+    mkdir -p /staging/linux/${ARCH}/files/cores
     cd /root/libretro-super
-    ./libretro-install.sh /staging/linux/${ARCH}/cores
+    ./libretro-install.sh /staging/linux/${ARCH}/files/cores
     
-    cd /staging/linux/${ARCH}/cores/ && zip -r /staging/linux/${ARCH}/cores.zip *
+    cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
+rm -rf /staging/linux/${ARCH}/RetroArch/files
   done
 }
 
