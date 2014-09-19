@@ -1,6 +1,21 @@
-# this builds the frontend for Arch Linux
-FROM libretro/arch-base:latest
+# this builds the frontend and cores for arch linux
+FROM base/devel:latest
 MAINTAINER l3iggs <l3iggs@live.com>
+
+# setup the generic build environment
+RUN pacman -Suy --noconfirm
+RUN git config --global user.email "buildbot@none.com"
+RUN git config --global user.name "Build Bot"
+
+# install repo tool
+RUN yaourt -Suya --noconfirm --needed repo
+
+# setup ccache
+RUN pacman -Suy --noconfirm ccache
+RUN mkdir /ccache
+ENV CCACHE_DIR /ccache
+ENV PATH /usr/lib/ccache/bin:$PATH
+RUN ccache -M 6
 
 # packages required to build for linux x86_64
 RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl sdl2 ffmpeg libxkbcommon libxinerama libxv python glu clang
@@ -9,7 +24,7 @@ RUN pacman -Suy --noconfirm nvidia-cg-toolkit mesa-libgl sdl sdl2 ffmpeg libxkbc
 RUN pacman -Suy --noconfirm vim
 
 # for packaging outputs
-RUN pacman -Suy --noconfirm p7zip
+RUN pacman -Suy --noconfirm p7zip zip
 
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
