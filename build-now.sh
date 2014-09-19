@@ -3,22 +3,38 @@
 # manages fetching new code and doing the actual compilation and moving the generated binaries to /staging
 
 # builds the front end for linux
-linux_retroarch()
+linux_all()
 {
-  ARCH="x86_64" 
-  echo "Building RetroArch ..."
-  export STRIP=strip
-  # build frontend
-  cd /root/libretro-super
-  ./retroarch-build.sh
+  #declare -a ARCHES=("x86_64" "i686")
+  declare -a ARCHES=("x86_64")
+  for ARCH in "${ARCHES[@]}"
+  do
+    echo "Building ${ARCH} linux frontend..."
+    export STRIP=strip
+    cd /root/libretro-super
+    ./retroarch-build.sh
+    
+    rm -rf /staging/linux/${ARCH}/RetroArch/*
+    mkdir -p /staging/linux/${ARCH}/RetroArch/files
+    cd /root/libretro-super/retroarch/
+    make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
   
-  rm -rf /staging/linux/${ARCH}/RetroArch/*
-  mkdir -p /staging/linux/${ARCH}/RetroArch/files
-  cd /root/libretro-super/retroarch/
-  make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
-  
-  7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
-  rm -rf /staging/linux/${ARCH}/RetroArch/files
+    7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
+    rm -rf /staging/linux/${ARCH}/RetroArch/files
+    
+    echo "Building ${ARCH} linux cores..."
+    # build cores
+    rm -rf /root/libretro-super/dist/unix*
+    cd /root/libretro-super
+    ./libretro-build.sh $2
+    
+    rm -rf /staging/linux/${ARCH}/cores/
+    mkdir -p /staging/linux/${ARCH}/cores
+    cd /root/libretro-super
+    ./libretro-install.sh /staging/linux/${ARCH}/cores
+    
+    cd /staging/linux/${ARCH}/cores/ && zip -r /staging/linux/${ARCH}/cores.zip *
+  done
 }
 
 # builds windows cores and frontend
@@ -103,25 +119,6 @@ windows_all()
     rm -rf /root/libretro-super/retroarch/Makefile.win
     cd /root/libretro-super/retroarch/ && git stash
   done
-}
-
-# builds the linux cores
-linux_cores()
-{
-  ARCH="x86_64"
-  echo "Building linux cores..."
-  export STRIP=strip
-  # build cores
-  rm -rf /root/libretro-super/dist/unix*
-  cd /root/libretro-super
-  ./libretro-build.sh $2
-  
-  rm -rf /staging/linux/${ARCH}/cores/
-  mkdir -p /staging/linux/${ARCH}/cores
-  cd /root/libretro-super
-  ./libretro-install.sh /staging/linux/${ARCH}/cores
-  
-  cd /staging/linux/${ARCH}/cores/ && zip -r /staging/linux/${ARCH}/cores.zip *
 }
 
 # builds the android frontend and cores and packages them into an apk
