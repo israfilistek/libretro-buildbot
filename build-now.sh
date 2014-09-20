@@ -14,10 +14,10 @@ linux_all()
     cd /root/libretro-super
     ./retroarch-build.sh
     
-    rm -rf /staging/linux/${ARCH}/RetroArch/*
-    mkdir -p /staging/linux/${ARCH}/RetroArch/files
+    rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/*
+    mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files
     cd /root/libretro-super/retroarch/
-    make DESTDIR=/staging/linux/${ARCH}/RetroArch/files install
+    make DESTDIR=/staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files install
   
     #7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
     
@@ -28,13 +28,19 @@ linux_all()
     cd /root/libretro-super
     ./libretro-build.sh $2
     
-    rm -rf /staging/linux/${ARCH}/files/cores/
-    mkdir -p /staging/linux/${ARCH}/files/cores
+    rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
+    mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
+    rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
+    mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
     cd /root/libretro-super
-    ./libretro-install.sh /staging/linux/${ARCH}/files/cores
+    ./libretro-install.sh /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
+    ./libretro-install.sh /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
     
-    cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
-rm -rf /staging/linux/${ARCH}/RetroArch/files
+    7za a -r /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/libRetro.7z /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/*
+    rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files
+
+    #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
+    
   done
 }
 
