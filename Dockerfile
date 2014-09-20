@@ -1,5 +1,6 @@
 # this builds the frontend and cores for arch linux
 FROM base/devel:latest
+ENV THIS_DISTRO arch_linux
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
