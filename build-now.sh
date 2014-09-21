@@ -28,12 +28,11 @@ linux_all()
     cd /root/libretro-super
     ./libretro-build.sh $2
     
-    rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
-    mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
+    mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/usr/lib/libretro
     rm -rf /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
     mkdir -p /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
     cd /root/libretro-super
-    ./libretro-install.sh /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/cores/
+    ./libretro-install.sh /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/usr/lib/libretro
     ./libretro-install.sh /staging/linux/${ARCH}/${THIS_DISTRO}/cores/
     
     7za a -r /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/libRetro.7z /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/*
