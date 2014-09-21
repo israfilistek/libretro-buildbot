@@ -6,7 +6,9 @@ TODAY_IS=`date +"%Y-%m-%d"`
 LOG_NAME=build
 
 #these strings must match the names of the repos in registry.hub.docker.com (prefixed with "libretro/build-linux-")
-declare -a DISTROS=("arch_linux" "ubuntu_14.04" "fedora_20")
+#declare -a DISTROS=("arch_linux" "ubuntu_14.04" "fedora_20")
+declare -a DISTROS=("arch_linux")
+
 
 for DISTRO in "${DISTROS[@]}"
   do
