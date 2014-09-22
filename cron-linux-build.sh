@@ -20,10 +20,10 @@ for DISTRO in "${DISTROS[@]}"
 
   rm -rf /home/buildbot/staging
   docker cp $(docker ps -l -q):/staging /home/buildbot/
-  mkdir -p /home/buildbot/staging/linux/${DISTRO}/build-logs/
-  docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}.txt 2>&1
-  cat -n /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}.txt > /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}_num.txt
-  mv /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}.txt
+  mkdir -p /home/buildbot/staging/linux/build-logs/${DISTRO}
+  docker logs $(docker ps -l -q) > /home/buildbot/staging/linux/build-logs/${DISTRO}/${LOG_NAME}.txt 2>&1
+  cat -n /home/buildbot/staging/linux/build-logs/${DISTRO}/${LOG_NAME}.txt > /home/buildbot/staging/linux/build-logs/${DISTRO}/${LOG_NAME}_num.txt
+  mv /home/buildbot/staging/linux/${DISTRO}/build-logs/${LOG_NAME}_num.txt /home/buildbot/staging/linux/build-logs/${DISTRO}/${LOG_NAME}.txt
 
   rm `find /home/buildbot/staging/ -name *.info`
   ALL_CORES=`find /home/buildbot/staging/ -name *.so`
