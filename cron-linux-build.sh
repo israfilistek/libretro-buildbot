@@ -9,9 +9,10 @@ LOG_NAME=build
 #declare -a DISTROS=("arch_linux" "ubuntu_14.04" "fedora_20")
 declare -a DISTROS=("arch_linux")
 
-
 for DISTRO in "${DISTROS[@]}"
   do
+  export DISTRO
+  
   # ensure the image is up to date
   docker pull libretro/build-linux-${DISTRO}
 
