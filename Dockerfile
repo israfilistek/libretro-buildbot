@@ -1,5 +1,6 @@
 # this builds the frontend and cores for arch linux
 FROM base/devel:latest
+ENV DISTRO arch_linux #this image shold be tagged with "build-linux=${DISTRO}" for the bot to pull it and build properly
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
