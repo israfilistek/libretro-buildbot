@@ -14,12 +14,18 @@ linux_all()
     cd /root/libretro-super
     ./retroarch-build.sh
     
-    rm -rf /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/*
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files
+    rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
+    
+    rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
+    
     cd /root/libretro-super/retroarch/
-    make DESTDIR=/staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files install
-  
-    #7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
+    make DESTDIR=/staging/linux/${DISTRO}/${ARCH}/RetroArch/files install
+    make DESTDIR=/staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files install
+    
+    7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch/files/*
+    rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
     
     echo "Building ${ARCH} cores for ${DISTRO}..."
     # build cores
@@ -27,18 +33,24 @@ linux_all()
     cd /root/libretro-super
     ./libretro-build.sh $2
     
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files/usr/lib/libretro
-    rm -rf /staging/linux/${DISTRO}/${ARCH}/cores/
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
+    
+    rm -rf   /staging/linux/${DISTRO}/${ARCH}/cores
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
+    
+    rm -rf   /staging/linux/${DISTRO}/${ARCH}/all_cores
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/all_cores/
+    
     cd /root/libretro-super
-    ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files/usr/lib/libretro
+    ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
+    
+    7za a -r /staging/linux/${DISTRO}/${ARCH}/all_cores/cores.7z /staging/linux/${DISTRO}/${ARCH}/cores/*
     
     7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files/*
     rm -rf   /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files
     
     #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
-    
   done
 }
 
