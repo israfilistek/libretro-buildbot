@@ -5,6 +5,7 @@
 # builds the front end for linux
 linux_all()
 {
+  rm -rf   /staging/
   #declare -a ARCHES=("x86_64" "i686")
   declare -a ARCHES=("x86_64")
   for ARCH in "${ARCHES[@]}"
@@ -14,10 +15,7 @@ linux_all()
     cd /root/libretro-super
     ./retroarch-build.sh
     
-    rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
-    
-    rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
     
     cd /root/libretro-super/retroarch/
@@ -34,11 +32,7 @@ linux_all()
     ./libretro-build.sh $2
     
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
-    
-    rm -rf   /staging/linux/${DISTRO}/${ARCH}/cores
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
-    
-    rm -rf   /staging/linux/${DISTRO}/${ARCH}/all_cores
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/all_cores/
     
     cd /root/libretro-super
@@ -46,7 +40,6 @@ linux_all()
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
     
     7za a -r /staging/linux/${DISTRO}/${ARCH}/all_cores/cores.7z /staging/linux/${DISTRO}/${ARCH}/cores/*
-    
     7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/RetroArch_with_cores.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/*
     rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
     
@@ -57,6 +50,7 @@ linux_all()
 # builds windows cores and frontend
 windows_all()
 {
+  rm -rf /staging
   declare -a ARCHES=("x86_64" "i686")
   for ARCH in "${ARCHES[@]}"
   do
@@ -75,7 +69,6 @@ windows_all()
     # build frontend
     C_INCLUDE_PATH=/usr/${ARCH}-w64-mingw32/include/SDL:/usr/${ARCH}-w64-mingw32/include/libxml2/:/usr/${ARCH}-w64-mingw32/include/freetype2  HOST_PREFIX=${ARCH}-w64-mingw32- make -f Makefile.win
     
-    rm -rf /staging/windows/${ARCH}/*
     mkdir -p /staging/windows/${ARCH}/RetroArch/files/bin
     mkdir -p /staging/windows/${ARCH}/RetroArch/files/assets/autoconfig
     mkdir -p /staging/windows/${ARCH}/RetroArch/files/user-content
@@ -120,7 +113,6 @@ windows_all()
     HOST_CC=${ARCH}-w64-mingw32 platform=mingw ./libretro-build.sh $2
     
     #install cores and other assets
-    rm -rf /staging/windows/${ARCH}/cores/
     mkdir -p /staging/windows/${ARCH}/cores
     platform=mingw ./libretro-install.sh /staging/windows/${ARCH}/cores
     
@@ -141,6 +133,7 @@ windows_all()
 # builds the android frontend and cores and packages them into an apk
 android_all()
 {
+  rm -rf /staging/
   IFS=' ' read -ra ABIS <<< "$TARGET_ABIS"
   
   #convert shaders
@@ -219,7 +212,6 @@ android_all()
       mv /root/libretro-super/retroarch/android/phoenix/bin/retroarch-debug.apk /root/libretro-super/retroarch/android/phoenix/bin/RetroArch.apk
     fi
     
-    rm -rf /staging/android/${a}/*
     mkdir -p /staging/android/${a}/cores
     
     # copy the binaries to staging
