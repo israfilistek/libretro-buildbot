@@ -35,7 +35,7 @@ linux_all()
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files/usr/lib/libretro
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
     
-    7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/libRetro.7z /staging/linux/${ARCH}/${THIS_DISTRO}/coresAndFronend/files/*
+    7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/RetroArch.7z /staging/linux/${ARCH}/${DISTRO}/coresAndFronend/files/*
     rm -rf /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files
 
     #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
