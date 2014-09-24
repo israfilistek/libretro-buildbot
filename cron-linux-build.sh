@@ -11,7 +11,7 @@ declare -a DISTROS=("arch_linux")
 
 for DISTRO in "${DISTROS[@]}"
   do
-  export DISTRO
+  export DISTRO=${DISTRO}
   
   # ensure the image is up to date
   docker pull libretro/build-linux-${DISTRO}
