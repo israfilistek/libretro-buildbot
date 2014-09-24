@@ -9,35 +9,34 @@ linux_all()
   declare -a ARCHES=("x86_64")
   for ARCH in "${ARCHES[@]}"
   do
-    echo "Building ${ARCH} linux frontend for ${DISTRO}..."
+    echo "Building ${ARCH} frontend for ${DISTRO}..."
     export STRIP=strip
     cd /root/libretro-super
     ./retroarch-build.sh
     
-    rm -rf /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/*
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files
+    rm -rf /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/*
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files
     cd /root/libretro-super/retroarch/
-    make DESTDIR=/staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files install
+    make DESTDIR=/staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files install
   
     #7za a -r /staging/linux/${ARCH}/RetroArch.7z /staging/linux/${ARCH}/RetroArch/files/*
     
-    
-    echo "Building ${ARCH} linux cores for ${DISTRO}..."
+    echo "Building ${ARCH} cores for ${DISTRO}..."
     # build cores
     rm -rf /root/libretro-super/dist/unix*
     cd /root/libretro-super
     ./libretro-build.sh $2
     
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files/usr/lib/libretro
+    mkdir -p /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files/usr/lib/libretro
     rm -rf /staging/linux/${DISTRO}/${ARCH}/cores/
     mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
     cd /root/libretro-super
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files/usr/lib/libretro
     ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
     
-    7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/RetroArch.7z /staging/linux/${ARCH}/${DISTRO}/coresAndFronend/files/*
-    rm -rf /staging/linux/${DISTRO}/${ARCH}/coresAndFronend/files
-
+    7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files/*
+    rm -rf   /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files
+    
     #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
     
   done
