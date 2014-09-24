@@ -1,6 +1,6 @@
 # this builds the frontend and cores for ubuntu 14.04
 FROM ubuntu:14.04
-ENV THIS_DISTRO ubuntu_14.04
+ENV DISTRO ubuntu_14.04
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
