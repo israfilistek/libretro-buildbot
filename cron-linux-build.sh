@@ -11,13 +11,12 @@ declare -a DISTROS=("arch_linux")
 
 for DISTRO in "${DISTROS[@]}"
   do
-  export DISTRO=${DISTRO}
   
   # ensure the image is up to date
   docker pull libretro/build-linux-${DISTRO}
 
   # run the build
-  docker run --cpuset="0,1,2" libretro/build-linux-${DISTRO}
+  docker run -e DISTRO=${DISTRO} --cpuset="0,1,2" libretro/build-linux-${DISTRO}
 
   rm -rf /home/buildbot/staging
   docker cp $(docker ps -l -q):/staging /home/buildbot/
