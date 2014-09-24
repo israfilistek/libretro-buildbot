@@ -47,8 +47,8 @@ linux_all()
     
     7za a -r /staging/linux/${DISTRO}/${ARCH}/all_cores/cores.7z /staging/linux/${DISTRO}/${ARCH}/cores/*
     
-    7za a -r /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files/*
-    rm -rf   /staging/linux/${DISTRO}/${ARCH}/coresAndFrontend/files
+    7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/*
+    rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
     
     #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
   done
