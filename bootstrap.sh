@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+echo "the $1 eats a $2 every time there is a $3"
+
 
 if [ -z "$MANIFEST_URL" ]; then
   echo "Updating code..."
