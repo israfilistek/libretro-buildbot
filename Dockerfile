@@ -30,7 +30,7 @@ RUN ln -s ccache /usr/local/bin/c++
 RUN ccache -M 6
 
 # install dependancies
-RUN yum install --nogpgcheck -y make automake clang gcc gcc-c++ mesa-libEGL-devel libv5l-devel libxkbcommon-devel mesa-libgbm-devel Cg libCg zlib-devel freetype-devel libxml2-devel ffmpeg-devel SDL2-devel SDL-devel python3-devel libXv-devel
+RUN yum install --nogpgcheck -y make automake clang gcc gcc-c++ mesa-libEGL-devel libv4l-devel libxkbcommon-devel mesa-libgbm-devel Cg libCg zlib-devel freetype-devel libxml2-devel ffmpeg-devel SDL2-devel SDL-devel python3-devel libXv-devel
 
 # for working in the image
 RUN yum install --nogpgcheck -y vim
