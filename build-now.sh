@@ -248,6 +248,12 @@ android()
 }
 
 if [ $1 ]; then
+  if [ -z "$2" ]; then
+    echo "Building $1 cores and frontened"
+  elif [ "$2" == "frontend" ]; then
+    echo "Building only $1 $2"
+  fi
+
   cd /root/libretro-super && . ./libretro-config.sh
   $1
   
