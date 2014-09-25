@@ -46,8 +46,8 @@ ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstra
 RUN chmod a+x /bin/bootstrap.sh
 
 # build once now to populate ccache
-RUN bootstrap.sh linux_all
+RUN bootstrap.sh linux
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD bootstrap.sh linux_all
+ENTRYPOINT bootstrap.sh linux
