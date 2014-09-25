@@ -27,7 +27,7 @@ linux()
       rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
     fi
     
-    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+    if [ "$2" -ne "frontend" ] ; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} cores for ${DISTRO}..."
       # build cores
       rm -rf /root/libretro-super/dist/unix*
@@ -116,7 +116,7 @@ windows()
       cd /root/libretro-super/retroarch/ && git stash
     fi
     
-    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+    if [ "$2" -ne "frontend" ] ; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} windows cores..."
       
       rm -rf /root/libretro-super/dist/win
