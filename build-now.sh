@@ -10,7 +10,7 @@ linux()
   declare -a ARCHES=("x86_64")
   for ARCH in "${ARCHES[@]}"
   do
-    if [ "$2" -e "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
       echo "Building ${ARCH} frontend for ${DISTRO}..."
       export STRIP=strip
       cd /root/libretro-super
@@ -27,7 +27,7 @@ linux()
       rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
     fi
     
-    if [ "$2" -ne "frontend" ] ; then # build cores unless this is a frontend only build
+    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} cores for ${DISTRO}..."
       # build cores
       rm -rf /root/libretro-super/dist/unix*
@@ -59,7 +59,7 @@ windows()
   declare -a ARCHES=("x86_64" "i686")
   for ARCH in "${ARCHES[@]}"
   do
-    if [ "$2" -e "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
       echo "Building ${ARCH} windows frontend..."
       # cd /root/libretro-super 
       # HOST_CC=i686-w64-mingw32- platform=mingw ./retroarch-build.sh
@@ -116,7 +116,7 @@ windows()
       cd /root/libretro-super/retroarch/ && git stash
     fi
     
-    if [ "$2" -ne "frontend" ] ; then # build cores unless this is a frontend only build
+    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} windows cores..."
       
       rm -rf /root/libretro-super/dist/win
@@ -163,7 +163,7 @@ android()
     rm -rf /root/libretro-super/retroarch/android/phoenix/assets
     
     echo "Building ${a} Android cores..."
-    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
       rm -rf /root/libretro-super/dist/android/${a}/*
       cd /root/libretro-super/ && ./libretro-build-android-mk.sh $2
       
@@ -176,7 +176,7 @@ android()
       cd /root/libretro-super/dist/android/${a}/ && zip -r /staging/android/${a}/cores.zip *
     fi
     
-    if [ "$2" -e "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
       echo "Building ${a} Android frontend..."
       # build frontend
       cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && android update project --target ${RA_ANDROID_API} --path .
