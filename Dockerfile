@@ -1,26 +1,25 @@
-# this builds the frontend and cores for ubuntu 14.04
-FROM ubuntu:14.04
+# this builds the frontend and cores for Fedora 20
+FROM fedora:20
 
 # this image should be tagged with "build-linux-${DISTRO}" for the bot to pull it and build properly
-ENV DISTRO ubuntu_14.04
+ENV DISTRO fedora_20
 
 MAINTAINER l3iggs <l3iggs@live.com>
 
 # setup the generic build environment
-RUN echo deb http://archive.ubuntu.com/ubuntu/ trusty multiverse >> /etc/apt/sources.list
-RUN echo deb http://archive.ubuntu.com/ubuntu/ trusty-updates multiverse >> /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get -y dist-upgrade
+RUN yum install -y deltarpm
+RUN yum localinstall -y --nogpgcheck http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+RUN yum distro-sync -y --nogpgcheck full
 
-# install repo tool
-RUN apt-get install -y python git
-RUN git config --global user.email "buildbot@libretro.com"
+# setup repo
+RUN yum install --nogpgcheck -y python python-gnupg git
+RUN git config --global user.email "buildbot@none.com"
 RUN git config --global user.name "Build Bot"
 ADD https://storage.googleapis.com/git-repo-downloads/repo /bin/repo
 RUN chmod a+x /bin/repo
 
 # setup ccache
-RUN apt-get install -y ccache
+RUN yum install --nogpgcheck -y ccache
 RUN mkdir /ccache
 ENV CCACHE_DIR /ccache
 RUN cp /usr/bin/ccache /usr/local/bin/
@@ -31,13 +30,13 @@ RUN ln -s ccache /usr/local/bin/c++
 RUN ccache -M 6
 
 # install dependancies
-RUN apt-get install -y build-essential pkg-config libcggl libegl1-mesa-dev libasound2-dev libsdl2-dev libsdl1.2-dev libavformat-dev libavcodec-dev libswscale-dev libgbm-dev libxml2-dev libopenvg1-mesa-dev libv4l-dev libfreetype6-dev libxv-dev libxinerama-dev python3-dev nvidia-cg-toolkit libavdevice-dev libavresample-dev libass-dev libxkbcommon-dev
+RUN yum install --nogpgcheck -y make automake clang gcc gcc-c++ mesa-libEGL-devel libv5l-devel libxkbcommon-devel mesa-libgbm-devel Cg libCg zlib-devel freetype-devel libxml2-devel ffmpeg-devel SDL2-devel SDL-devel python3-devel libXv-devel
 
 # for working in the image
-RUN apt-get install -y vim
+RUN yum install --nogpgcheck -y vim
 
 # for packaging outputs
-RUN apt-get install -y p7zip-full
+RUN yum install --nogpgcheck -y p7zip
 
 # setup repo for this project
 RUN cd /root/ && repo init -u https://github.com/libretro/libretro-manifest.git
