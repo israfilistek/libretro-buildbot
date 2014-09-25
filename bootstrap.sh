@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+
 if [ -z "$MANIFEST_URL" ]; then
   echo "Updating code..."
 else
