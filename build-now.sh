@@ -25,25 +25,27 @@ linux_all()
     7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch/RetroArch.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch/files/*
     rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
     
-    echo "Building ${ARCH} cores for ${DISTRO}..."
-    # build cores
-    rm -rf /root/libretro-super/dist/unix*
-    cd /root/libretro-super
-    ./libretro-build.sh $2
-    
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
-    mkdir -p /staging/linux/${DISTRO}/${ARCH}/all_cores/
-    
-    cd /root/libretro-super
-    ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
-    ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
-    
-    7za a -r /staging/linux/${DISTRO}/${ARCH}/all_cores/cores.7z /staging/linux/${DISTRO}/${ARCH}/cores/*
-    7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/RetroArch_with_cores.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/*
-    rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
-    
-    #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
+    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+      echo "Building ${ARCH} cores for ${DISTRO}..."
+      # build cores
+      rm -rf /root/libretro-super/dist/unix*
+      cd /root/libretro-super
+      ./libretro-build.sh $2
+      
+      mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
+      mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
+      mkdir -p /staging/linux/${DISTRO}/${ARCH}/all_cores/
+      
+      cd /root/libretro-super
+      ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
+      ./libretro-install.sh /staging/linux/${DISTRO}/${ARCH}/cores/
+      
+      7za a -r /staging/linux/${DISTRO}/${ARCH}/all_cores/cores.7z /staging/linux/${DISTRO}/${ARCH}/cores/*
+      7za a -r /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/RetroArch_with_cores.7z /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/*
+      rm -rf   /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files
+      
+      #cd /staging/linux/${ARCH}/files/ && zip -r /staging/linux/${ARCH}/RetroArch.zip *
+    fi
   done
 }
 
@@ -105,28 +107,30 @@ windows_all()
 
     cd /staging/windows/${ARCH}/RetroArch/files && zip -r ../RetroArch.zip *
     
-    echo "Building ${ARCH} windows cores..."
-    
-    rm -rf /root/libretro-super/dist/win
-    cd /root/libretro-super
-    # build cores
-    HOST_CC=${ARCH}-w64-mingw32 platform=mingw ./libretro-build.sh $2
-    
-    #install cores and other assets
-    mkdir -p /staging/windows/${ARCH}/cores
-    platform=mingw ./libretro-install.sh /staging/windows/${ARCH}/cores
-    
-    cd /staging/windows/${ARCH}/cores && zip -r ../cores.zip *
-    
-    cp -r /staging/windows/${ARCH}/cores /staging/windows/${ARCH}/RetroArch/files/assets/
-    rm -rf /staging/windows/${ARCH}/RetroArch/files/assets/cores/*.info
-    cd /staging/windows/${ARCH}/RetroArch/files && zip -r ../../RetroArch_with_cores.zip *
-    
-    rm -rf /staging/windows/${ARCH}/RetroArch/files
-    
     #cleanup changes to windows makefile
     rm -rf /root/libretro-super/retroarch/Makefile.win
     cd /root/libretro-super/retroarch/ && git stash
+    
+    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+      echo "Building ${ARCH} windows cores..."
+      
+      rm -rf /root/libretro-super/dist/win
+      cd /root/libretro-super
+      # build cores
+      HOST_CC=${ARCH}-w64-mingw32 platform=mingw ./libretro-build.sh $2
+      
+      #install cores and other assets
+      mkdir -p /staging/windows/${ARCH}/cores
+      platform=mingw ./libretro-install.sh /staging/windows/${ARCH}/cores
+      
+      cd /staging/windows/${ARCH}/cores && zip -r ../cores.zip *
+      
+      cp -r /staging/windows/${ARCH}/cores /staging/windows/${ARCH}/RetroArch/files/assets/
+      rm -rf /staging/windows/${ARCH}/RetroArch/files/assets/cores/*.info
+      cd /staging/windows/${ARCH}/RetroArch/files && zip -r ../../RetroArch_with_cores.zip *
+      
+      rm -rf /staging/windows/${ARCH}/RetroArch/files
+    fi
   done
 }
 
@@ -156,7 +160,10 @@ android_all()
       NDK_DIR=/root/android-tools/android-ndk
     fi
     export PATH=$OLD_PATH:${NDK_DIR}
-    cd /root/libretro-super/ && ./libretro-build-android-mk.sh
+    
+    if [ "$2" -ne "frontend" ]; then # build cores unless this is a frontend only build
+      cd /root/libretro-super/ && ./libretro-build-android-mk.sh $2
+    fi
     
     # build frontend
     cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && android update project --target ${RA_ANDROID_API} --path .
