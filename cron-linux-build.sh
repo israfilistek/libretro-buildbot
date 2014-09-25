@@ -44,6 +44,7 @@ for DISTRO in "${DISTROS[@]}"
     mv $f ${PARENT}/${TODAY_IS}_${FILE_NAME}
     ln -sf ./${TODAY_IS}_${FILE_NAME} ${PARENT}/latest_${FILE_NAME}
   done
+  mkdir -p /home/buildbot/www/nightly/
+  cp -r  /home/buildbot/staging/* /home/buildbot/www/nightly/
 done
-mkdir -p /home/buildbot/www/nightly/
-cp -r  /home/buildbot/staging/* /home/buildbot/www/nightly/
+
