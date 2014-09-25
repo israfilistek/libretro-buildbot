@@ -3,7 +3,7 @@
 # manages doing the actual compilation and moving the generated binaries to /staging
 
 # builds the front end for linux
-linux_all()
+linux()
 {
   rm -rf /staging/
   #declare -a ARCHES=("x86_64" "i686")
@@ -52,7 +52,7 @@ linux_all()
 }
 
 # builds windows cores and frontend
-windows_all()
+windows()
 {
   
   rm -rf /staging
@@ -140,7 +140,7 @@ windows_all()
 }
 
 # builds the android frontend and cores and packages them into an apk
-android_all()
+android()
 {
   rm -rf /staging/
   IFS=' ' read -ra ABIS <<< "$TARGET_ABIS"
