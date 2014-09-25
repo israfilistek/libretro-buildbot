@@ -1,7 +1,7 @@
 # this builds the frontend and cores for ubuntu 14.04
 FROM ubuntu:14.04
 
- #this image should be tagged with "build-linux-${DISTRO}" for the bot to pull it and build properly
+# this image should be tagged with "build-linux-${DISTRO}" for the bot to pull it and build properly
 ENV DISTRO ubuntu_14.04
 
 MAINTAINER l3iggs <l3iggs@live.com>
