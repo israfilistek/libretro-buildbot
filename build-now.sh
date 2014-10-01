@@ -10,7 +10,7 @@ linux()
   declare -a ARCHES=("x86_64")
   for ARCH in "${ARCHES[@]}"
   do
-    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$1" == "frontend" ] || [ -z "$1" ]; then #build frontend unless this is a core specific build
       echo "Building ${ARCH} frontend for ${DISTRO}..."
       export STRIP=strip
       cd /root/libretro-super
@@ -27,12 +27,12 @@ linux()
       rm -rf /staging/linux/${DISTRO}/${ARCH}/RetroArch/files
     fi
     
-    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
+    if [ "$1" != "frontend" ]; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} cores for ${DISTRO}..."
       # build cores
       rm -rf /root/libretro-super/dist/unix*
       cd /root/libretro-super
-      ./libretro-build.sh $2
+      ./libretro-build.sh $1
       
       mkdir -p /staging/linux/${DISTRO}/${ARCH}/RetroArch_with_cores/files/usr/lib/libretro
       mkdir -p /staging/linux/${DISTRO}/${ARCH}/cores/
@@ -54,12 +54,11 @@ linux()
 # builds windows cores and frontend
 windows()
 {
-  
   rm -rf /staging
   declare -a ARCHES=("x86_64" "i686")
   for ARCH in "${ARCHES[@]}"
   do
-    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$1" == "frontend" ] || [ -z "$1" ]; then #build frontend unless this is a core specific build
       echo "Building ${ARCH} windows frontend..."
       # cd /root/libretro-super 
       # HOST_CC=i686-w64-mingw32- platform=mingw ./retroarch-build.sh
@@ -116,13 +115,13 @@ windows()
       cd /root/libretro-super/retroarch/ && git stash
     fi
     
-    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
+    if [ "$1" != "frontend" ] ; then # build cores unless this is a frontend only build
       echo "Building ${ARCH} windows cores..."
       
       rm -rf /root/libretro-super/dist/win
       cd /root/libretro-super
       # build cores
-      HOST_CC=${ARCH}-w64-mingw32 platform=mingw ./libretro-build.sh $2
+      HOST_CC=${ARCH}-w64-mingw32 platform=mingw ./libretro-build.sh $1
       
       #install cores and other assets
       mkdir -p /staging/windows/${ARCH}/cores
@@ -163,9 +162,9 @@ android()
     rm -rf /root/libretro-super/retroarch/android/phoenix/assets
     
     echo "Building ${a} Android cores..."
-    if [ "$2" != "frontend" ] ; then # build cores unless this is a frontend only build
+    if [ "$1" != "frontend" ]; then # build cores unless this is a frontend only build
       rm -rf /root/libretro-super/dist/android/${a}/*
-      cd /root/libretro-super/ && ./libretro-build-android-mk.sh $2
+      cd /root/libretro-super/ && ./libretro-build-android-mk.sh $1
       
       #setup paths
       mkdir -p /staging/android/${a}/cores
@@ -176,7 +175,7 @@ android()
       cd /root/libretro-super/dist/android/${a}/ && zip -r /staging/android/${a}/cores.zip *
     fi
     
-    if [ "$2" == "frontend" ] || [ -z "$2" ] ; then #build frontend unless this is a core specific build
+    if [ "$1" == "frontend" ] || [ -z "$1" ]; then #build frontend unless this is a core specific build
       echo "Building ${a} Android frontend..."
       # build frontend
       cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && android update project --target ${RA_ANDROID_API} --path .
@@ -250,13 +249,15 @@ android()
 if [ $1 ]; then
   if [ -z "$2" ]; then
     echo "Building $1 cores and frontened"
-  elif [ "$2" == "frontend" ]; then
-    echo "Building only $1 $2"
+  else
+    echo "Building only $2 for $1"
   fi
 
   cd /root/libretro-super && . ./libretro-config.sh
-  $1
+  $1 $2
   
   # show ccache stats
   ccache -s
+else
+  echo "Not building anything"
 fi
