@@ -77,4 +77,4 @@ RUN bootstrap.sh android
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-ENTRYPOINT bootstrap.sh android
+ENTRYPOINT ["bootstrap.sh", "android"]
