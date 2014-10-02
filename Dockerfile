@@ -56,7 +56,7 @@ ADD https://raw.githubusercontent.com/libretro/libretro-buildbot/master/bootstra
 RUN chmod a+x /bin/bootstrap.sh
 
 # build once now to fetch code and populate ccache
-RUN bootstrap.sh windows_all
+RUN bootstrap.sh windows
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
