@@ -51,4 +51,4 @@ RUN bootstrap.sh linux
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-ENTRYPOINT bootstrap.sh linux
+ENTRYPOINT ["bootstrap.sh", "linux"]
