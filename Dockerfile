@@ -60,4 +60,4 @@ RUN bootstrap.sh windows_all
 
 # the commands above here set up the static image
 # the command below here gets executed by default when the container is "run" with the `docker run` command
-CMD bootstrap.sh windows_all
+ENTRYPOINT ["bootstrap.sh", "windows"]
