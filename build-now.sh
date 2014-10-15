@@ -153,9 +153,9 @@ android()
     
     # setup ndk
     if [[ ${a} == "*64*" ]]; then
-      NDK_DIR=/root/android-tools/android-ndk64
+      NDK_DIR=/opt/android-ndk64
     else
-      NDK_DIR=/root/android-tools/android-ndk
+      NDK_DIR=/opt/android-ndk32
     fi
     export PATH=$OLD_PATH:${NDK_DIR}
     
