@@ -178,9 +178,9 @@ android()
     if [ "$1" == "frontend" ] || [ -z "$1" ]; then #build frontend unless this is a core specific build
       echo "Building ${a} Android frontend..."
       # build frontend
-      cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && android update project --target ${RA_ANDROID_API} --path .
-      cd /root/libretro-super/retroarch/android/phoenix/libs/googleplay && android update project --target ${RA_ANDROID_API} --path .
-      cd /root/libretro-super/retroarch/android/phoenix && android update project --target ${RA_ANDROID_API} --path .
+      cd /root/libretro-super/retroarch/android/phoenix/libs/appcompat && /opt/android-sdk/tools/android update project --target ${RA_ANDROID_API} --path .
+      cd /root/libretro-super/retroarch/android/phoenix/libs/googleplay && /opt/android-sdk/tools/android update project --target ${RA_ANDROID_API} --path .
+      cd /root/libretro-super/retroarch/android/phoenix && /opt/android-sdk/tools/android update project --target ${RA_ANDROID_API} --path .
       
       # setup paths
       mkdir -p /root/libretro-super/retroarch/android/phoenix/assets/autoconfig
